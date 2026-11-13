@@ -17,7 +17,7 @@ npm run sample-data   # regenerate public/data/sample-stories.json (the sample h
 ```
 
 Useful URLs: `/?demo=1` autoplays the golden path for screen recording (press **D** any time to restart) ·
-`/?story=delta-north-coast` opens a story directly (the URL updates as you select stories; the copy-link button in the panel shares it).
+`/?story=manzala-flooded-vegetation` opens a story directly (the URL updates as you select stories; the copy-link button in the panel shares it).
 **Esc** closes the top-most panel/modal.
 
 ## Deploy (Vercel or Netlify, static)

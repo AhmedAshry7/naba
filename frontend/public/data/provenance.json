@@ -1,5 +1,5 @@
 {
-  "exported_at": "2026-11-13T22:46:37+02:00",
+  "exported_at": "2026-11-13T23:24:26+02:00",
   "exporter": "naba_data 0.1.0",
   "source": {
     "mission": "NASA-ISRO NISAR",
@@ -292,26 +292,21 @@
     "open_water": 0,
     "flooded_vegetation": 3781
   },
-  "network_MB": 1384.119,
+  "network_MB": 0.0,
   "ledger_totals": {
     "1-METADATA": {
       "MB": 0.0,
-      "seconds": 2.31,
+      "seconds": 7.87,
       "operations": 1
     },
-    "3-REMOTE": {
-      "MB": 75.501,
-      "seconds": 50.3,
-      "operations": 9
-    },
-    "4-PARTIAL": {
-      "MB": 1308.618,
-      "seconds": 536.07,
+    "cache/local": {
+      "MB": 98.701,
+      "seconds": 3.08,
       "operations": 18
     }
   },
   "output_bytes": {
-    "changes.geojson": 314211,
+    "changes.geojson": 221963,
     "wetlands.geojson": 439903,
     "layers.json": 765,
     "frames/*.png": 291142
@@ -319,5 +314,5 @@
   "stories": [
     "manzala-flooded-vegetation"
   ],
-  "sample_stories_kept": 19
+  "sample_stories_kept": 0
 }
