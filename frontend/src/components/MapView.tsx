@@ -3,7 +3,7 @@ import maplibregl, { type GeoJSONSource } from 'maplibre-gl'
 import 'maplibre-gl/dist/maplibre-gl.css'
 import type { Feature, FeatureCollection } from 'geojson'
 import { useStore } from '../store'
-import { CLASS_META, DELTA_VIEW, EGYPT_VIEW, GLOBE_VIEW } from '../lib'
+import { CLASS_META, DELTA_VIEW, EGYPT_VIEW, GLOBE_VIEW, WETLAND_META } from '../lib'
 
 export const BASEMAP = 'https://basemaps.cartocdn.com/gl/dark-matter-gl-style/style.json'
 
@@ -15,6 +15,21 @@ const colorExpr: maplibregl.ExpressionSpecification = [
   'stable', CLASS_META.stable.color,
   'water', CLASS_META.water.color,
   '#93A3C0',
+]
+
+// Measured wetland classes, coloured as in the analysis notebook (see WETLAND_META).
+const wetlandColorExpr: maplibregl.ExpressionSpecification = [
+  'match',
+  ['get', 'class'],
+  'open_water', WETLAND_META.open_water.color,
+  'flooded_vegetation', WETLAND_META.flooded_vegetation.color,
+  '#93A3C0',
+]
+
+const monthFilter = (month: string | undefined): maplibregl.ExpressionSpecification => [
+  '==',
+  ['get', 'month'],
+  month ?? '',
 ]
 
 const isDesktop = () => window.innerWidth >= 1024
@@ -34,6 +49,9 @@ export default function MapView() {
   const [ready, setReady] = useState(false)
 
   const stories = useStore((s) => s.stories)
+  const wetlands = useStore((s) => s.wetlands)
+  const months = useStore((s) => s.months)
+  const monthIndex = useStore((s) => s.monthIndex)
   const selectedId = useStore((s) => s.selectedId)
   const camera = useStore((s) => s.camera)
   const projection = useStore((s) => s.projection)
@@ -99,6 +117,46 @@ export default function MapView() {
         paint: { 'line-color': '#ffffff', 'line-width': 3 },
       })
 
+      // ---- measured wetland extents, one month at a time ----
+      // Above the story fill (so the measured classes are not tinted by it) but below every
+      // outline and dot, which stay the way stories are picked out and clicked.
+      map.addSource('wetlands', { type: 'geojson', data: { type: 'FeatureCollection', features: [] } })
+      map.addLayer(
+        {
+          id: 'wetland-fill',
+          type: 'fill',
+          source: 'wetlands',
+          filter: monthFilter(undefined),
+          paint: { 'fill-color': wetlandColorExpr, 'fill-opacity': 0.8 },
+        },
+        'zones-line',
+      )
+      map.addLayer(
+        {
+          id: 'wetland-line',
+          type: 'line',
+          source: 'wetlands',
+          filter: monthFilter(undefined),
+          paint: { 'line-color': wetlandColorExpr, 'line-width': 1, 'line-opacity': 0.95 },
+        },
+        'zones-line',
+      )
+      map.setPaintProperty('wetland-fill', 'fill-opacity-transition', { duration: 250 })
+
+      // The most specific thing under the cursor wins the popup: a measured wetland class beats
+      // the story headline, which is also one click away on the dot and in the panel.
+      map.on('mousemove', 'wetland-fill', (e) => {
+        const f = e.features?.[0]
+        if (!f) return
+        map.getCanvas().style.cursor = 'pointer'
+        const props = f.properties as { class: keyof typeof WETLAND_META; month_label: string; area_km2: number }
+        popup
+          .setLngLat(e.lngLat)
+          .setText(`${WETLAND_META[props.class]?.label ?? props.class} · ${props.area_km2} km² · ${props.month_label}`)
+          .addTo(map)
+      })
+      map.on('mouseleave', 'wetland-fill', () => popup.remove())
+
       // glowing dots so every story is visible when the whole planet is in view (fade out as polygons grow)
       map.addSource('changes-pts', { type: 'geojson', data: { type: 'FeatureCollection', features: [] } })
       const fade: maplibregl.ExpressionSpecification = ['interpolate', ['linear'], ['zoom'], 3.5, 1, 6.5, 0]
@@ -145,6 +203,8 @@ export default function MapView() {
           hoverId.current = id
           map.setFeatureState({ source: 'changes', id }, { hover: true })
         }
+        // inside a measured wetland polygon, that layer's own popup is the more specific one
+        if (map.getLayer('wetland-fill') && map.queryRenderedFeatures(e.point, { layers: ['wetland-fill'] }).length) return
         popup.setLngLat(e.lngLat).setText(f.properties?.headline as string).addTo(map)
       })
       map.on('mouseleave', 'zones-fill', () => {
@@ -193,6 +253,21 @@ export default function MapView() {
       })),
     })
   }, [ready, stories])
+
+  // ---- wetland extents: data once, then just re-filter as the month changes ----
+  useEffect(() => {
+    const map = mapRef.current
+    if (!ready || !map) return
+    ;(map.getSource('wetlands') as GeoJSONSource).setData(wetlands ?? { type: 'FeatureCollection', features: [] })
+  }, [ready, wetlands])
+
+  useEffect(() => {
+    const map = mapRef.current
+    if (!ready || !map) return
+    const filter = monthFilter(months[monthIndex]?.month)
+    map.setFilter('wetland-fill', filter)
+    map.setFilter('wetland-line', filter)
+  }, [ready, months, monthIndex])
 
   // ---- globe <-> flat map ----
   useEffect(() => {

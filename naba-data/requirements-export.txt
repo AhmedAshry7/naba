@@ -1,0 +1,20 @@
+# Just what the exporter imports (verified against naba_data/ and tests/).
+# Use this to run `python -m naba_data ...`; requirements.txt is the full project list,
+# including the deferred FastAPI + PostGIS service and the notebook's wider toolkit.
+numpy
+pandas
+scipy
+xarray
+h5py
+rasterio
+pyproj
+shapely
+Pillow
+
+# NISAR access: CMR search, Earthdata Login, authenticated HTTPS range reads
+earthaccess
+fsspec
+aiohttp
+
+# tests
+pytest

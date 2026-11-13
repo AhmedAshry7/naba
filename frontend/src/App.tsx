@@ -7,6 +7,7 @@ import MapView from './components/MapView'
 import StoryPanel from './components/StoryPanel'
 import ExplainSection from './components/ExplainSection'
 import Legend from './components/Legend'
+import TimeSlider from './components/TimeSlider'
 import ProjectionToggle from './components/ProjectionToggle'
 import CompareModal from './components/CompareModal'
 import AboutModal from './components/AboutModal'
@@ -44,6 +45,7 @@ export default function App() {
         <MapView />
         <ProjectionToggle />
         <Legend />
+        <TimeSlider />
         <StoryPanel />
 
         {status === 'error' && (

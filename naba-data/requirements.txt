@@ -1,7 +1,12 @@
+# The FULL project list. To only run the exporter, `requirements-export.txt` is a much
+# smaller subset (11 third-party packages) and installs far faster.
+
+# Core analysis
 numpy
 scipy
 pandas
 h5py
+h5netcdf
 xarray
 dask[array]
 netCDF4
@@ -17,17 +22,26 @@ scikit-learn
 matplotlib
 Pillow
 pmtiles
+
+# NISAR access (CMR search + authenticated HTTPS range reads)
 asf_search
 earthaccess
+fsspec
+aiohttp
 requests
+
+# Config / tooling
 pyyaml
 tqdm
+pytest
+
+# Deferred: the FastAPI + PostGIS service that will serve the same JSON shapes
+# (see PROJECT.md "Status and roadmap"). Not needed by the exporter.
 fastapi
 uvicorn[standard]
 pydantic
 sqlalchemy
 geoalchemy2
 psycopg[binary]
-pytest
 #pip install -r requirements.txt
-#pip download -r requirements.txt -d wheels      # offline backup of every whee
+#pip download -r requirements.txt -d wheels      # offline backup of every wheel
