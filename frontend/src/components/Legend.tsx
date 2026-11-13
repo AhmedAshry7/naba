@@ -1,15 +1,17 @@
 import { useState } from 'react'
 import { ChevronDown, Layers } from 'lucide-react'
-import { CLASS_META, WETLAND_META } from '../lib'
+import { CLASS_META, FIRE_META, WETLAND_META } from '../lib'
 import { useStore } from '../store'
-import type { ChangeClass, WetlandClass } from '../types'
+import type { BurnTier, ChangeClass, WetlandClass } from '../types'
 
 const ORDER: ChangeClass[] = ['significant', 'moderate', 'stable', 'water']
 const WETLAND_ORDER: WetlandClass[] = ['open_water', 'flooded_vegetation']
+const FIRE_ORDER: BurnTier[] = ['likely', 'possible']
 
 export default function Legend() {
   const [open, setOpen] = useState(() => window.innerWidth >= 640)
   const hasWetlands = useStore((s) => s.months.length > 0)
+  const hasFires = useStore((s) => !!s.fires)
   return (
     <div className="absolute bottom-8 left-3 z-10 w-[230px] rounded-card border border-line bg-bg/90 shadow-card backdrop-blur">
       <button
@@ -46,6 +48,21 @@ export default function Legend() {
                 ))}
               </ul>
               <p className="mt-2 text-[12px] leading-snug text-sub">Measured radar brightness, exploratory thresholds</p>
+            </div>
+          )}
+
+          {hasFires && (
+            <div className="mt-3 border-t border-line pt-2.5">
+              <span className="section-label !text-[11px]">Burn scar</span>
+              <ul className="mt-2 space-y-2">
+                {FIRE_ORDER.map((t) => (
+                  <li key={t} className="flex items-center gap-2.5 text-[13px]">
+                    <span className="h-3.5 w-3.5 shrink-0 rounded-[4px]" style={{ background: FIRE_META[t].color }} aria-hidden />
+                    {FIRE_META[t].label}
+                  </li>
+                ))}
+              </ul>
+              <p className="mt-2 text-[12px] leading-snug text-sub">Drop in HV radar after the fire, exploratory thresholds</p>
             </div>
           )}
         </div>

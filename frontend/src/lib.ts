@@ -1,4 +1,4 @@
-import type { ChangeClass, ChangeStory, Confidence, Filter, WetlandClass } from './types'
+import type { BurnTier, ChangeClass, ChangeStory, Confidence, Filter, Layer, WetlandClass } from './types'
 
 export const CLASS_META: Record<ChangeClass, { label: string; chip: string; color: string; tag: 'BREAKING' | 'UPDATE' }> = {
   significant: { label: 'Significant change', chip: 'SIGNIFICANT CHANGE', color: '#F0484D', tag: 'BREAKING' },
@@ -15,6 +15,30 @@ export const CLASS_META: Record<ChangeClass, { label: string; chip: string; colo
 export const WETLAND_META: Record<WetlandClass, { label: string; color: string; hint: string }> = {
   open_water: { label: 'Open water', color: '#1f4e9c', hint: 'Dark in both polarisations' },
   flooded_vegetation: { label: 'Flooded vegetation', color: '#e7298a', hint: 'Bright HH, weak HV' },
+}
+
+/**
+ * Burn tiers, in the same two colours the exporter uses for the burn-mask frames
+ * (BURN_COLORS in naba-data/naba_data/config.py).
+ */
+export const FIRE_META: Record<BurnTier, { label: string; color: string; hint: string }> = {
+  likely: { label: 'Likely burned', color: '#d7301f', hint: 'HV radar dropped by more than 3 dB' },
+  possible: { label: 'Possibly burned', color: '#fc8d59', hint: 'HV radar dropped by 2–3 dB' },
+}
+
+/**
+ * The Compare-dates layers for a story: the ones that name it, or - for layers written before
+ * layers named their stories - the ones whose image covers the story's point.
+ */
+export function layersForStory(layers: Layer[], story: ChangeStory | undefined): Layer[] {
+  if (!story) return []
+  const named = layers.filter((l) => l.story_ids?.includes(story.id))
+  if (named.length) return named
+  return layers.filter((l) => {
+    if (l.story_ids?.length) return false
+    const [[w, n], [e], [, s]] = l.bounds
+    return story.lon >= w && story.lon <= e && story.lat >= s && story.lat <= n
+  })
 }
 
 export const CONFIDENCE_LEVEL: Record<Confidence, number> = { low: 2, moderate: 3, high: 4 }
