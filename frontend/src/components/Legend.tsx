@@ -10,6 +10,8 @@ const WETLAND_ORDER: WetlandClass[] = ['open_water', 'flooded_vegetation']
 export default function Legend() {
   const [open, setOpen] = useState(() => window.innerWidth >= 640)
   const hasWetlands = useStore((s) => s.months.length > 0)
+  const wetlands = useStore((s) => s.wetlands)
+  const present = new Set<string>(wetlands?.features.map((f) => f.properties.class) ?? [])
   return (
     <div className="absolute bottom-8 left-3 z-10 w-[230px] rounded-card border border-line bg-bg/90 shadow-card backdrop-blur">
       <button
@@ -32,20 +34,27 @@ export default function Legend() {
               </li>
             ))}
           </ul>
-          <p className="mt-3 border-t border-line pt-2 text-[12px] leading-snug text-sub">Colored areas = land analyzed</p>
+          <p className="mt-3 border-t border-line pt-2 text-[12px] leading-snug text-sub">
+            Outline colour = the kind of story (how big the change is). It does not say what is on the ground.
+          </p>
 
           {hasWetlands && (
             <div className="mt-3 border-t border-line pt-2.5">
-              <span className="section-label !text-[11px]">Wetland classes</span>
+              <span className="section-label !text-[11px]">What the radar measured (filled areas)</span>
               <ul className="mt-2 space-y-2">
                 {WETLAND_ORDER.map((c) => (
                   <li key={c} className="flex items-center gap-2.5 text-[13px]">
                     <span className="h-3.5 w-3.5 shrink-0 rounded-[4px]" style={{ background: WETLAND_META[c].color }} aria-hidden />
-                    {WETLAND_META[c].label}
+                    <span>
+                      {WETLAND_META[c].label}
+                      <span className="block text-[11px] leading-tight text-sub">
+                        {present.has(c) ? WETLAND_META[c].hint : 'None found in this data'}
+                      </span>
+                    </span>
                   </li>
                 ))}
               </ul>
-              <p className="mt-2 text-[12px] leading-snug text-sub">Measured radar brightness, exploratory thresholds</p>
+              <p className="mt-2 text-[12px] leading-snug text-sub">Each pixel is one or the other, never both. Based on radar brightness: an estimate, not a verified flood map.</p>
             </div>
           )}
         </div>

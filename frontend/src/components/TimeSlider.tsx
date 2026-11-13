@@ -42,8 +42,9 @@ export default function TimeSlider() {
 
   return (
     <div
-      className={`absolute bottom-3 left-3 right-3 z-10 flex justify-center lg:bottom-8 lg:left-[252px] lg:right-[470px] ${
-        selectedId ? 'max-lg:hidden' : ''
+      className={`absolute bottom-3 left-3 right-3 z-10 flex justify-center lg:bottom-8 lg:left-[252px] ${
+        // centred on the globe; moves left only while the story panel (right side) is open
+        selectedId ? 'max-lg:hidden lg:right-[470px]' : 'lg:right-[252px]'
       }`}
     >
       <div className="w-full max-w-[560px] rounded-card border border-line bg-bg/90 px-4 py-3 shadow-card backdrop-blur">
@@ -60,7 +61,7 @@ export default function TimeSlider() {
           <div className="min-w-0 flex-1">
             <div className="mb-1 flex items-baseline gap-2">
               <Clock size={13} className="shrink-0 text-sub" aria-hidden />
-              <span className="section-label !text-[11px]">Wetland month</span>
+              <span className="section-label !text-[11px]">Month shown on the map</span>
               <span className="ml-auto font-display text-[17px] font-semibold tabular-nums text-gold">{active.label}</span>
             </div>
             <input
@@ -85,7 +86,7 @@ export default function TimeSlider() {
           </div>
         </div>
         <p className="mt-2 border-t border-line pt-2 text-[11px] leading-snug text-sub">
-          Each step is one month of NISAR passes, combined. Data: NASA–ISRO NISAR.
+          The filled areas show what NISAR measured in that month (several radar passes combined). Data: NASA–ISRO NISAR.
         </p>
       </div>
     </div>

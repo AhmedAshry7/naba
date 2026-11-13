@@ -259,6 +259,14 @@ export default function MapView() {
     const map = mapRef.current
     if (!ready || !map) return
     ;(map.getSource('wetlands') as GeoJSONSource).setData(wetlands ?? { type: 'FeatureCollection', features: [] })
+    // The story zone is only an outline of the area. With measured classes on the map, its own
+    // blue tint would sit under (and next to) the pink/blue measurements and read as a second
+    // measurement, so keep just the outline and a faint hover highlight.
+    map.setPaintProperty(
+      'zones-fill',
+      'fill-opacity',
+      wetlands ? ['case', ['boolean', ['feature-state', 'hover'], false], 0.18, 0] : ['case', ['boolean', ['feature-state', 'hover'], false], 0.82, 0.55],
+    )
   }, [ready, wetlands])
 
   useEffect(() => {

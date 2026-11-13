@@ -4,7 +4,7 @@ export const CLASS_META: Record<ChangeClass, { label: string; chip: string; colo
   significant: { label: 'Significant change', chip: 'SIGNIFICANT CHANGE', color: '#F0484D', tag: 'BREAKING' },
   moderate: { label: 'Moderate change', chip: 'MODERATE CHANGE', color: '#F5B83D', tag: 'UPDATE' },
   stable: { label: 'No significant change', chip: 'NO SIGNIFICANT CHANGE', color: '#3DD68C', tag: 'UPDATE' },
-  water: { label: 'Water-related change', chip: 'WATER-RELATED CHANGE', color: '#4AA8FF', tag: 'UPDATE' },
+  water: { label: 'Water-related story', chip: 'WATER-RELATED STORY', color: '#4AA8FF', tag: 'UPDATE' },
 }
 
 /**
@@ -13,8 +13,8 @@ export const CLASS_META: Record<ChangeClass, { label: string; chip: string; colo
  * mean "how big is the change", these mean "what is on the ground".
  */
 export const WETLAND_META: Record<WetlandClass, { label: string; color: string; hint: string }> = {
-  open_water: { label: 'Open water', color: '#1f4e9c', hint: 'Dark in both polarisations' },
-  flooded_vegetation: { label: 'Flooded vegetation', color: '#e7298a', hint: 'Bright HH, weak HV' },
+  open_water: { label: 'Open water', color: '#1f4e9c', hint: 'Calm, open water: dark in the radar image' },
+  flooded_vegetation: { label: 'Flooded vegetation', color: '#e7298a', hint: 'Water standing under reeds or plants: very bright in the radar image' },
 }
 
 export const CONFIDENCE_LEVEL: Record<Confidence, number> = { low: 2, moderate: 3, high: 4 }
