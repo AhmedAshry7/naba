@@ -18,7 +18,6 @@ export default function IntroScreen() {
       {!storyStarted ? (
         <>
           <Starfield />
-          <div className="absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-brand-blue via-sky to-gold" aria-hidden />
           <div aria-hidden>
             <span className="intro-ring" />
             <span className="intro-ring" style={{ animationDelay: '1.6s' }} />
