@@ -1,6 +1,6 @@
 import { create } from 'zustand'
-import type { ChangeStory, Filter, Layer } from './types'
-import { loadLayers, loadStories } from './data/loadData'
+import type { ChangeStory, Filter, Layer, MonthStep, WetlandData } from './types'
+import { loadLayers, loadStories, loadWetlands } from './data/loadData'
 
 export type CameraTarget = 'globe' | 'egypt' | 'delta'
 
@@ -8,9 +8,14 @@ interface State {
   status: 'loading' | 'ready' | 'error'
   stories: ChangeStory[]
   layers: Layer[]
+  /** Monthly wetland extents drawn on the globe; null when the dataset has none. */
+  wetlands: WetlandData | null
+  /** The months the wetland layer can show, oldest first. */
+  months: MonthStep[]
   selectedId: string | null
   filter: Filter
-  frameIndex: number
+  /** Index into `months`: which month the globe is showing. */
+  monthIndex: number
   isPlaying: boolean
   explainOpen: boolean
   compareOpen: boolean
@@ -23,7 +28,7 @@ interface State {
   load: () => Promise<void>
   select: (id: string | null) => void
   setFilter: (f: Filter) => void
-  setFrame: (i: number) => void
+  setMonth: (i: number) => void
   setPlaying: (p: boolean) => void
   set: (p: Partial<State>) => void
   moveCamera: (target: CameraTarget) => void
@@ -32,6 +37,14 @@ interface State {
 const params = typeof window !== 'undefined' ? new URLSearchParams(window.location.search) : new URLSearchParams()
 export const isDemo = params.get('demo') === '1'
 const initialStory = params.get('story')
+
+/** The distinct months present in the wetland features, oldest first. */
+function monthsOf(wetlands: WetlandData | null): MonthStep[] {
+  if (!wetlands) return []
+  const byMonth = new Map<string, string>()
+  for (const f of wetlands.features) byMonth.set(f.properties.month, f.properties.month_label)
+  return [...byMonth.entries()].sort(([a], [b]) => a.localeCompare(b)).map(([month, label]) => ({ month, label }))
+}
 
 function syncUrl(id: string | null) {
   const u = new URL(window.location.href)
@@ -44,9 +57,11 @@ export const useStore = create<State>((set, get) => ({
   status: 'loading',
   stories: [],
   layers: [],
+  wetlands: null,
+  months: [],
   selectedId: null,
   filter: 'all',
-  frameIndex: 0,
+  monthIndex: 0,
   isPlaying: false,
   explainOpen: false,
   compareOpen: false,
@@ -60,9 +75,11 @@ export const useStore = create<State>((set, get) => ({
   load: async () => {
     set({ status: 'loading' })
     try {
-      const [stories, layers] = await Promise.all([loadStories(), loadLayers()])
+      const [stories, layers, wetlands] = await Promise.all([loadStories(), loadLayers(), loadWetlands()])
       const sorted = [...stories].sort((a, b) => b.published.localeCompare(a.published))
-      set({ stories: sorted, layers, status: 'ready' })
+      const months = monthsOf(wetlands)
+      // open on the most recent month, the way a news site opens on today
+      set({ stories: sorted, layers, wetlands, months, monthIndex: Math.max(0, months.length - 1), status: 'ready' })
       if (initialStory && sorted.some((s) => s.id === initialStory)) set({ selectedId: initialStory })
     } catch (e) {
       console.error('Failed to load Naba data', e)
@@ -79,7 +96,7 @@ export const useStore = create<State>((set, get) => ({
     set({ filter })
     if (sel && filter !== 'all' && sel.change_class !== filter) get().select(null)
   },
-  setFrame: (frameIndex) => set({ frameIndex }),
+  setMonth: (monthIndex) => set({ monthIndex }),
   setPlaying: (isPlaying) => set({ isPlaying }),
   set: (p) => set(p),
   moveCamera: (target) => set((s) => ({ camera: { target, n: (s.camera?.n ?? 0) + 1 } })),

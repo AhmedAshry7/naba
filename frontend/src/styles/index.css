@@ -185,6 +185,42 @@ body {
   border: 0;
 }
 
+/* Month slider for the measured wetland layer (TimeSlider) */
+.naba-months {
+  -webkit-appearance: none;
+  appearance: none;
+  height: 22px;
+  background: transparent;
+  cursor: pointer;
+}
+.naba-months::-webkit-slider-runnable-track {
+  height: 4px;
+  border-radius: 999px;
+  background: #1E2D4A;
+}
+.naba-months::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  margin-top: -6px;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: #E8B84A;
+  border: 2px solid #060B16;
+  box-shadow: 0 0 0 1px #E8B84A;
+}
+.naba-months::-moz-range-track {
+  height: 4px;
+  border-radius: 999px;
+  background: #1E2D4A;
+}
+.naba-months::-moz-range-thumb {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: #E8B84A;
+  border: 2px solid #060B16;
+}
+
 /* Chart line draw-in */
 .draw-line {
   stroke-dasharray: 1;
