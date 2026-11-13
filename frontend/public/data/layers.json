@@ -1,0 +1,60 @@
+{
+ "layers": [
+  {
+   "id": "surface-change",
+   "label": "Surface change",
+   "bounds": [
+    [
+     29.5,
+     32
+    ],
+    [
+     32.6,
+     32
+    ],
+    [
+     32.6,
+     29.8
+    ],
+    [
+     29.5,
+     29.8
+    ]
+   ],
+   "frames": [
+    {
+     "date": "2026-01-05",
+     "url": "/data/frames/change_2026-01-05.png"
+    },
+    {
+     "date": "2026-02-10",
+     "url": "/data/frames/change_2026-02-10.png"
+    },
+    {
+     "date": "2026-03-30",
+     "url": "/data/frames/change_2026-03-30.png"
+    },
+    {
+     "date": "2026-05-05",
+     "url": "/data/frames/change_2026-05-05.png"
+    },
+    {
+     "date": "2026-06-22",
+     "url": "/data/frames/change_2026-06-22.png"
+    },
+    {
+     "date": "2026-07-28",
+     "url": "/data/frames/change_2026-07-28.png"
+    },
+    {
+     "date": "2026-09-14",
+     "url": "/data/frames/change_2026-09-14.png"
+    },
+    {
+     "date": "2026-10-20",
+     "url": "/data/frames/change_2026-10-20.png"
+    }
+   ]
+  }
+ ]
+}

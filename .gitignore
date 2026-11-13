@@ -1,2 +1,6 @@
 .venv/
 wheels/
+# secrets / frontend build output
+token.txt
+frontend/node_modules/
+frontend/dist/

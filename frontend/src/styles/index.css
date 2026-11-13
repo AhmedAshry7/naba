@@ -1,0 +1,248 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: dark;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  background: #060B16;
+  color: #EEF2FA;
+  font-family: Inter, system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  overflow: hidden;
+}
+
+/* Visible keyboard focus everywhere */
+:focus-visible {
+  outline: 2px solid #E8B84A;
+  outline-offset: 2px;
+  border-radius: 6px;
+}
+
+/* Thin dark scrollbars */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #1E2D4A transparent;
+}
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-thumb {
+  background: #1E2D4A;
+  border-radius: 8px;
+}
+
+@layer components {
+  .section-label {
+    @apply font-sans text-[12px] font-semibold uppercase tracking-[0.12em] text-sub;
+  }
+  .btn {
+    @apply inline-flex items-center justify-center gap-2 rounded-card px-4 py-2.5 text-[14px] font-semibold transition-colors duration-150;
+  }
+}
+
+/* ---------- MapLibre theming ---------- */
+.maplibregl-ctrl-attrib {
+  background: rgba(14, 21, 32, 0.78) !important;
+  color: #93A3C0 !important;
+  border-radius: 8px 0 0 0;
+  font-size: 11px;
+}
+.maplibregl-ctrl-attrib a {
+  color: #c4cddc !important;
+}
+.maplibregl-ctrl-group {
+  background: #0D1628 !important;
+  border: 1px solid #1E2D4A;
+  box-shadow: none !important;
+  border-radius: 12px !important;
+  overflow: hidden;
+}
+.maplibregl-ctrl-group button {
+  border-color: #1E2D4A !important;
+}
+.maplibregl-ctrl-group button .maplibregl-ctrl-icon {
+  filter: invert(1) brightness(0.9);
+}
+.maplibregl-popup-content {
+  background: #0D1628;
+  color: #EEF2FA;
+  border: 1px solid #1E2D4A;
+  border-radius: 10px;
+  padding: 8px 12px;
+  font: 600 13px/1.3 Inter, sans-serif;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.45);
+  max-width: 260px;
+}
+.maplibregl-popup-anchor-bottom .maplibregl-popup-tip {
+  border-top-color: #0D1628;
+}
+.maplibregl-popup-anchor-top .maplibregl-popup-tip {
+  border-bottom-color: #0D1628;
+}
+
+/* Pulsing marker for the selected zone */
+.naba-pulse {
+  position: relative;
+  width: 18px;
+  height: 18px;
+  pointer-events: none;
+}
+.naba-pulse::before,
+.naba-pulse::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 9999px;
+}
+.naba-pulse::before {
+  background: #fff;
+  border: 3px solid var(--pulse, #f0484d);
+  box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.9);
+}
+.naba-pulse::after {
+  background: var(--pulse, #f0484d);
+  opacity: 0.6;
+  animation: pulseRing 1.8s ease-out infinite;
+}
+
+/* Time-machine slider */
+.naba-range {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  height: 22px;
+  background: transparent;
+  cursor: pointer;
+}
+.naba-range::-webkit-slider-runnable-track {
+  height: 6px;
+  border-radius: 6px;
+  background: linear-gradient(to right, #E8B84A var(--pct, 0%), #1E2D4A var(--pct, 0%));
+}
+.naba-range::-moz-range-track {
+  height: 6px;
+  border-radius: 6px;
+  background: #1E2D4A;
+}
+.naba-range::-moz-range-progress {
+  height: 6px;
+  border-radius: 6px;
+  background: #E8B84A;
+}
+.naba-range::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 18px;
+  height: 18px;
+  margin-top: -6px;
+  border-radius: 9999px;
+  background: #fff;
+  border: 3px solid #E8B84A;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
+}
+.naba-range::-moz-range-thumb {
+  width: 14px;
+  height: 14px;
+  border-radius: 9999px;
+  background: #fff;
+  border: 3px solid #E8B84A;
+}
+
+/* Compare swipe: invisible full-size range input that drives the handle */
+.naba-swipe {
+  -webkit-appearance: none;
+  appearance: none;
+  background: transparent;
+  cursor: ew-resize;
+}
+.naba-swipe::-webkit-slider-runnable-track {
+  background: transparent;
+  height: 100%;
+}
+.naba-swipe::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 44px;
+  height: 100%;
+  background: transparent;
+}
+.naba-swipe::-moz-range-track {
+  background: transparent;
+}
+.naba-swipe::-moz-range-thumb {
+  width: 44px;
+  height: 100%;
+  background: transparent;
+  border: 0;
+}
+
+/* Chart line draw-in */
+.draw-line {
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  animation: draw 1.1s 0.15s ease-out forwards;
+}
+@keyframes draw {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+/* Skeleton shimmer */
+.skeleton {
+  position: relative;
+  overflow: hidden;
+  background: #0D1628;
+}
+.skeleton::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  transform: translateX(-100%);
+  background: linear-gradient(90deg, transparent, rgba(240, 244, 250, 0.06), transparent);
+  animation: shimmer 1.4s infinite;
+}
+
+/* Intro radar rings */
+@keyframes ring {
+  0% {
+    transform: translate(-50%, -50%) scale(0.2);
+    opacity: 0.6;
+  }
+  100% {
+    transform: translate(-50%, -50%) scale(1.6);
+    opacity: 0;
+  }
+}
+.intro-ring {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 70vmin;
+  height: 70vmin;
+  border-radius: 9999px;
+  border: 1.5px solid rgba(76, 141, 240, 0.5);
+  animation: ring 5s ease-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+  .draw-line {
+    stroke-dashoffset: 0;
+  }
+}
