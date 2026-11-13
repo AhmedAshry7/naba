@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useRef } from 'react'
 import { isDemo, useStore } from '../store'
 
-const DEMO_STORY = 'delta-north-coast'
+const DEMO_STORY = 'manzala-flooded-vegetation'
 
 /**
  * Scripted golden path for screen recording:

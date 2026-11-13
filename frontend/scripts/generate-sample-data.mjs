@@ -1,12 +1,16 @@
-// Generates SAMPLE data for the Naba UI (public/data). Every story is flagged is_sample: true.
-// Real data from the backend replaces these files (or the API) without any UI change.
+// Generates the SAMPLE half of the Naba feed: public/data/sample-stories.json.
+// Every story here is flagged is_sample: true and is illustrative, not measured.
+//
+// This script does NOT write changes.geojson / layers.json / frames: the `naba-data` exporter owns
+// those files and folds this one in, so real measurements can never be clobbered by a sample run.
+//   python -m naba_data export --preset manzala      (full rebuild, needs Earthdata credentials)
+//   python -m naba_data export --samples-only        (sample half only, no network)
 import { writeFileSync, mkdirSync } from 'node:fs'
-import { deflateSync } from 'node:zlib'
 import { dirname, join } from 'node:path'
 import { fileURLToPath } from 'node:url'
 
 const root = join(dirname(fileURLToPath(import.meta.url)), '..', 'public', 'data')
-mkdirSync(join(root, 'frames'), { recursive: true })
+mkdirSync(root, { recursive: true })
 
 // ---------- helpers ----------
 function rng(seed) {
@@ -68,7 +72,6 @@ const stories = [
     explanation: 'Between January and October the radar measured the ground along this stretch of coast dropping by about 6.7 millimetres, which is a rate of roughly 8 millimetres per year.\n\nThe sinking is smooth and continuous. A sudden event such as an earthquake would show up as a sharp step, and there is none here. That pattern is consistent with slow settling of soft delta soil, possibly made faster by groundwater being pumped out.\n\nWhy it matters: the Delta is already very flat. Even small drops can let seawater reach farmland more easily. This is an early signal to check against groundwater and land-use records, not a confirmed cause.',
     series: series((t) => -6.7 * (0.85 * t + 0.15 * smooth(t)), 11, 0.25),
     poly: blob(31.7, 31.35, 0.5, 0.11, 3, 32, -0.08),
-    frame: { color: 'significant', rx: 0.5, ry: 0.11, rot: -0.08, curve: (t) => 0.25 + 0.75 * t },
   },
   {
     id: 'delta-mid-farmland',
@@ -86,7 +89,6 @@ const stories = [
     explanation: 'Radar is sensitive to water in the soil: wetter ground reflects the signal differently. Across this region the signal grew steadily stronger through the year, with a small seasonal wobble.\n\nThat is consistent with a combination of irrigation and a higher water table. Farmers flood fields on a schedule, so some of the movement is simply the farming calendar.\n\nThis is a trend worth watching rather than a warning. If moisture keeps rising, soil salinity could become a concern.',
     series: series((t) => 12 * smooth(t) + 1.6 * Math.sin(t * Math.PI * 4), 21, 0.6),
     poly: blob(31.0, 30.85, 0.38, 0.24, 7, 30, 0.2),
-    frame: { color: 'moderate', rx: 0.38, ry: 0.24, rot: 0.2, curve: (t) => 0.3 + 0.5 * smooth(t) },
   },
   {
     id: 'east-cairo-city',
@@ -104,25 +106,6 @@ const stories = [
     explanation: 'Hard, angular surfaces like walls and roofs bounce radar straight back to the satellite, so built-up areas look very bright. Here the signal jumped by about 3.8 decibels over just a few passes.\n\nA sudden step like this is different from slow natural change. It is consistent with construction starting across a large area.\n\nA photo from another satellite could confirm what is being built.',
     series: series((t) => (t < 0.45 ? 0.2 * t : 0.1 + 3.7 * smooth(Math.min(1, (t - 0.45) / 0.2))), 31, 0.18),
     poly: blob(31.75, 30.05, 0.14, 0.09, 5, 24, 0.4),
-    frame: { color: 'significant', rx: 0.14, ry: 0.09, rot: 0.4, curve: (t) => (t < 0.45 ? 0.05 : 0.05 + 0.95 * smooth(Math.min(1, (t - 0.45) / 0.2))) },
-  },
-  {
-    id: 'manzala-lagoon',
-    headline: 'Water edges moving around the north-eastern lagoon',
-    region: 'Lake Manzala',
-    subtitle: 'Coastal lagoon',
-    lat: 31.22, lon: 31.95,
-    change_class: 'water', change_type: 'water',
-    metric: { label: 'Water edge movement', value: 120, unit: 'm inland', direction: 'upward' },
-    area_km2: 74, confidence: 'moderate', confidence_note: 'Tides and seasons both play a part',
-    summary: 'Open water is smooth and looks dark to radar, so the edge of the lagoon is easy to trace. Over the year that edge crept inland in places.',
-    causes: ['Seasonal changes in water level', 'Sea level and tides pushing into the lagoon'],
-    why_it_matters: 'Moving shorelines affect fishing, nearby farms and wetland wildlife.',
-    next_step: 'Compare with tide and rainfall records.',
-    explanation: 'Calm water reflects radar away from the satellite, so it appears dark. That makes shorelines very clear in radar images.\n\nOver the observation period the lagoon edge shifted inland by up to about 120 metres in some places.\n\nThe movement is consistent with seasonal water-level changes and possibly the sea pushing in. More data would show whether this is a cycle or a lasting trend.',
-    series: series((t) => 120 * (0.6 * smooth(t) + 0.4 * t) + 6 * Math.sin(t * Math.PI * 6), 41, 3),
-    poly: blob(31.95, 31.22, 0.27, 0.13, 9, 30, 0.1),
-    frame: { color: 'water', rx: 0.27, ry: 0.13, rot: 0.1, curve: (t) => 0.3 + 0.6 * t },
   },
   {
     id: 'nasser-shoreline',
@@ -140,7 +123,6 @@ const stories = [
     explanation: 'The shoreline of this large reservoir is easy to track because water looks dark on radar. Over the year the edge retreated, which means the water level fell by an estimated 1.8 metres.\n\nReservoir levels naturally rise and fall with the seasons and with how much water is released. This pattern is consistent with a normal drawdown, though operation records would be needed to be sure.',
     series: series((t) => -1.8 * (0.5 * t + 0.5 * smooth(t)) + 0.15 * Math.sin(t * Math.PI * 2), 51, 0.05),
     poly: blob(32.7, 23.2, 0.13, 0.55, 13, 34, 0.15),
-    frame: null,
   },
   {
     id: 'toshka-farms',
@@ -158,7 +140,6 @@ const stories = [
     explanation: 'Growing plants and wet soil change how radar bounces back. West of the lake, signals in several round patches shifted in a way consistent with irrigated crops.\n\nRadar only sees plants indirectly, so confidence is lower here. An optical satellite image would show green fields clearly and confirm it.',
     series: series((t) => 9 * smooth(t) + 0.5 * Math.sin(t * Math.PI * 5), 61, 0.4),
     poly: blob(31.25, 22.85, 0.26, 0.16, 17, 28, -0.3),
-    frame: null,
   },
 ]
 
@@ -192,7 +173,6 @@ EXTRA.forEach((e, i) => {
     explanation: `Between January and October the radar measured ${label.toLowerCase()} of ${value > 0 ? '+' : ''}${value} ${unit} across about ${area} km².\n\nThis pattern is consistent with ${lc(causes[0])}, and possibly ${lc(causes[1])}. This does not prove a cause.\n\nWhy it matters: ${why}`,
     series: series((t) => endv * (0.85 * t + 0.15 * smooth(t)), 200 + i, noise),
     poly: blob(lon, lat, rx, ry, 100 + i, 28, (i % 5) * 0.25 - 0.4),
-    frame: null,
     extraIndex: i,
   })
 })
@@ -211,83 +191,10 @@ const features = stories.map((s, i) => ({
     published: addDays(END, 2 + (publishedOffsets[i] ?? -9 - (s.extraIndex ?? 0))), is_sample: true,
   },
 }))
-writeFileSync(join(root, 'changes.geojson'), JSON.stringify({ type: 'FeatureCollection', features }, null, 1))
-
-// ---------- frames (PNG, no dependencies) ----------
-const COLORS = { significant: [240, 72, 77], moderate: [245, 184, 61], stable: [61, 214, 140], water: [74, 168, 255] }
-const BOUNDS = { w: 29.5, e: 32.6, n: 32.0, s: 29.8 }
-const W = 620, H = 440
-const crcTable = Array.from({ length: 256 }, (_, n) => {
-  let c = n
-  for (let k = 0; k < 8; k++) c = c & 1 ? 0xedb88320 ^ (c >>> 1) : c >>> 1
-  return c >>> 0
-})
-const crc32 = (buf) => {
-  let c = 0xffffffff
-  for (const b of buf) c = crcTable[(c ^ b) & 255] ^ (c >>> 8)
-  return (c ^ 0xffffffff) >>> 0
-}
-function chunk(type, data) {
-  const len = Buffer.alloc(4); len.writeUInt32BE(data.length)
-  const td = Buffer.concat([Buffer.from(type), data])
-  const crc = Buffer.alloc(4); crc.writeUInt32BE(crc32(td))
-  return Buffer.concat([len, td, crc])
-}
-function png(rgba) {
-  const raw = Buffer.alloc((W * 4 + 1) * H)
-  for (let y = 0; y < H; y++) {
-    raw[y * (W * 4 + 1)] = 0
-    rgba.copy(raw, y * (W * 4 + 1) + 1, y * W * 4, (y + 1) * W * 4)
-  }
-  const ihdr = Buffer.alloc(13)
-  ihdr.writeUInt32BE(W, 0); ihdr.writeUInt32BE(H, 4); ihdr[8] = 8; ihdr[9] = 6
-  return Buffer.concat([Buffer.from([137, 80, 78, 71, 13, 10, 26, 10]), chunk('IHDR', ihdr), chunk('IDAT', deflateSync(raw)), chunk('IEND', Buffer.alloc(0))])
-}
-
-const frameStories = stories.filter((s) => s.frame)
-const FRAMES = 8
-const frames = []
-for (let f = 0; f < FRAMES; f++) {
-  const idx = Math.round((f * (N - 1)) / (FRAMES - 1))
-  const t = idx / (N - 1)
-  const px = Buffer.alloc(W * H * 4)
-  const r = rng(99 + f)
-  for (let y = 0; y < H; y++) {
-    const lat = BOUNDS.n - ((y + 0.5) / H) * (BOUNDS.n - BOUNDS.s)
-    for (let x = 0; x < W; x++) {
-      const lon = BOUNDS.w + ((x + 0.5) / W) * (BOUNDS.e - BOUNDS.w)
-      // "land analysed": soft delta-shaped wash in green (no significant change)
-      const dx = (lon - 31.0) / 1.15, dy = (lat - 30.9) / 0.95
-      const dd = dx * dx + dy * dy
-      let col = COLORS.stable, a = dd < 1 ? 0.2 * (1 - dd) ** 0.6 : 0
-      for (const s of frameStories) {
-        const fr = s.frame
-        const ox = lon - s.lon, oy = lat - s.lat
-        const ex = (ox * Math.cos(-fr.rot) - oy * Math.sin(-fr.rot)) / fr.rx
-        const ey = (ox * Math.sin(-fr.rot) + oy * Math.cos(-fr.rot)) / fr.ry
-        const d = ex * ex + ey * ey
-        if (d < 1) {
-          const sa = Math.min(0.85, fr.curve(t) * 0.85) * (1 - d ** 1.4) * (0.85 + 0.15 * r())
-          if (sa > a) { a = sa; col = COLORS[fr.color] }
-        }
-      }
-      const i = (y * W + x) * 4
-      px[i] = col[0]; px[i + 1] = col[1]; px[i + 2] = col[2]; px[i + 3] = Math.round(a * 255)
-    }
-  }
-  const file = `change_${dates[idx]}.png`
-  writeFileSync(join(root, 'frames', file), png(px))
-  frames.push({ date: dates[idx], url: `/data/frames/${file}` })
-}
 
 writeFileSync(
-  join(root, 'layers.json'),
-  JSON.stringify({
-    layers: [{
-      id: 'surface-change', label: 'Surface change',
-      bounds: [[BOUNDS.w, BOUNDS.n], [BOUNDS.e, BOUNDS.n], [BOUNDS.e, BOUNDS.s], [BOUNDS.w, BOUNDS.s]],
-      frames,
-    }],
-  }, null, 1),
+  join(root, 'sample-stories.json'),
+  JSON.stringify({ type: 'FeatureCollection', features }, null, 1),
 )
-console.log(`Sample data written: ${features.length} stories, ${frames.length} frames → ${root}`)
+console.log(`Sample stories written: ${features.length} -> ${join(root, 'sample-stories.json')}`)
+console.log('Run `python -m naba_data export --samples-only` to fold them into changes.geojson.')

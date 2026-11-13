@@ -1,10 +1,20 @@
-import type { ChangeClass, ChangeStory, Confidence, Filter } from './types'
+import type { ChangeClass, ChangeStory, Confidence, Filter, WetlandClass } from './types'
 
 export const CLASS_META: Record<ChangeClass, { label: string; chip: string; color: string; tag: 'BREAKING' | 'UPDATE' }> = {
   significant: { label: 'Significant change', chip: 'SIGNIFICANT CHANGE', color: '#F0484D', tag: 'BREAKING' },
   moderate: { label: 'Moderate change', chip: 'MODERATE CHANGE', color: '#F5B83D', tag: 'UPDATE' },
   stable: { label: 'No significant change', chip: 'NO SIGNIFICANT CHANGE', color: '#3DD68C', tag: 'UPDATE' },
   water: { label: 'Water-related change', chip: 'WATER-RELATED CHANGE', color: '#4AA8FF', tag: 'UPDATE' },
+}
+
+/**
+ * Wetland classes keep the colours the analysis notebook uses for them, so a map in the app and a
+ * figure from the notebook read the same way. They are deliberately not CLASS_META colours: those
+ * mean "how big is the change", these mean "what is on the ground".
+ */
+export const WETLAND_META: Record<WetlandClass, { label: string; color: string; hint: string }> = {
+  open_water: { label: 'Open water', color: '#1f4e9c', hint: 'Dark in both polarisations' },
+  flooded_vegetation: { label: 'Flooded vegetation', color: '#e7298a', hint: 'Bright HH, weak HV' },
 }
 
 export const CONFIDENCE_LEVEL: Record<Confidence, number> = { low: 2, moderate: 3, high: 4 }
