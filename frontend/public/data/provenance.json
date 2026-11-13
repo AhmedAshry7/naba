@@ -1,318 +1,869 @@
 {
-  "exported_at": "2026-11-13T23:24:26+02:00",
+  "exported_at": "2026-11-14T01:37:54+02:00",
   "exporter": "naba_data 0.1.0",
-  "source": {
-    "mission": "NASA-ISRO NISAR",
-    "product": "GCOV",
-    "maturity": "PROVISIONAL",
-    "frequency": "A",
-    "collection_search": "NASA CMR via earthaccess"
-  },
-  "preset": {
-    "key": "manzala",
-    "name": "Lake Manzala wetlands, Nile Delta, Egypt",
-    "bbox": [
-      31.95,
-      31.15,
-      32.2,
-      31.4
-    ],
-    "search_start": "2026-06-17",
-    "search_end": "2026-11-13"
-  },
-  "method": {
-    "grid_res_deg": 0.0002,
-    "thresholds_db": {
-      "water_hh_max": -15.0,
-      "water_hv_max": -22.0,
-      "flooded_hh_min": -5.0,
-      "flooded_ratio_min": 7.0
-    },
-    "class_values": {
-      "no_data": 0,
-      "open_water": 1,
-      "flooded_vegetation": 2,
-      "other": 3
-    },
-    "monthly_composite": "per-pixel median of that month's acquisitions, in dB",
-    "vectorize": {
-      "min_area_km2": 0.02,
-      "simplify_m": 40.0,
-      "majority_filter": 3
-    },
-    "notebook_reference": "NABA_NISAR_Explorer.ipynb Section 14"
-  },
-  "granules": [
-    {
-      "name": "NISAR_L2_PR_GCOV_024_007_D_073_4005_DHDH_A_20260626T164222_20260626T164300_P05023_N_F_J_001",
-      "size_MB_catalog": null,
-      "h5_url": "https://nisar.asf.earthdatacloud.nasa.gov/NISAR/NISAR_L2_GCOV_PROVISIONAL_V1/NISAR_L2_PR_GCOV_024_007_D_073_4005_DHDH_A_20260626T164222_20260626T164300_P05023_N_F_J_001/NISAR_L2_PR_GCOV_024_007_D_073_4005_DHDH_A_20260626T164222_20260626T164300_P05023_N_F_J_001.h5",
-      "track": 7,
-      "direction": "DSC",
-      "frame": 73,
-      "pol_code": "DHDH",
-      "date": "2026-06-26 00:00:00"
-    },
-    {
-      "name": "NISAR_L2_PR_GCOV_025_007_D_073_4005_DHDH_A_20260708T164225_20260708T164259_P05023_N_F_J_001",
-      "size_MB_catalog": null,
-      "h5_url": "https://nisar.asf.earthdatacloud.nasa.gov/NISAR/NISAR_L2_GCOV_PROVISIONAL_V1/NISAR_L2_PR_GCOV_025_007_D_073_4005_DHDH_A_20260708T164225_20260708T164259_P05023_N_F_J_001/NISAR_L2_PR_GCOV_025_007_D_073_4005_DHDH_A_20260708T164225_20260708T164259_P05023_N_F_J_001.h5",
-      "track": 7,
-      "direction": "DSC",
-      "frame": 73,
-      "pol_code": "DHDH",
-      "date": "2026-07-08 00:00:00"
-    },
-    {
-      "name": "NISAR_L2_PR_GCOV_026_007_D_073_4005_DHDH_A_20260720T164221_20260720T164258_P05023_N_F_J_001",
-      "size_MB_catalog": null,
-      "h5_url": "https://nisar.asf.earthdatacloud.nasa.gov/NISAR/NISAR_L2_GCOV_PROVISIONAL_V1/NISAR_L2_PR_GCOV_026_007_D_073_4005_DHDH_A_20260720T164221_20260720T164258_P05023_N_F_J_001/NISAR_L2_PR_GCOV_026_007_D_073_4005_DHDH_A_20260720T164221_20260720T164258_P05023_N_F_J_001.h5",
-      "track": 7,
-      "direction": "DSC",
-      "frame": 73,
-      "pol_code": "DHDH",
-      "date": "2026-07-20 00:00:00"
-    },
-    {
-      "name": "NISAR_L2_PR_GCOV_028_007_D_073_4005_DHDH_A_20260813T164220_20260813T164257_P05023_N_F_J_001",
-      "size_MB_catalog": null,
-      "h5_url": "https://nisar.asf.earthdatacloud.nasa.gov/NISAR/NISAR_L2_GCOV_PROVISIONAL_V1/NISAR_L2_PR_GCOV_028_007_D_073_4005_DHDH_A_20260813T164220_20260813T164257_P05023_N_F_J_001/NISAR_L2_PR_GCOV_028_007_D_073_4005_DHDH_A_20260813T164220_20260813T164257_P05023_N_F_J_001.h5",
-      "track": 7,
-      "direction": "DSC",
-      "frame": 73,
-      "pol_code": "DHDH",
-      "date": "2026-08-13 00:00:00"
-    },
-    {
-      "name": "NISAR_L2_PR_GCOV_029_007_D_073_4005_DHDH_A_20260825T164220_20260825T164257_P05023_N_F_J_001",
-      "size_MB_catalog": null,
-      "h5_url": "https://nisar.asf.earthdatacloud.nasa.gov/NISAR/NISAR_L2_GCOV_PROVISIONAL_V1/NISAR_L2_PR_GCOV_029_007_D_073_4005_DHDH_A_20260825T164220_20260825T164257_P05023_N_F_J_001/NISAR_L2_PR_GCOV_029_007_D_073_4005_DHDH_A_20260825T164220_20260825T164257_P05023_N_F_J_001.h5",
-      "track": 7,
-      "direction": "DSC",
-      "frame": 73,
-      "pol_code": "DHDH",
-      "date": "2026-08-25 00:00:00"
-    },
-    {
-      "name": "NISAR_L2_PR_GCOV_030_007_D_073_4005_DHDH_A_20260906T164219_20260906T164257_P05023_N_F_J_001",
-      "size_MB_catalog": null,
-      "h5_url": "https://nisar.asf.earthdatacloud.nasa.gov/NISAR/NISAR_L2_GCOV_PROVISIONAL_V1/NISAR_L2_PR_GCOV_030_007_D_073_4005_DHDH_A_20260906T164219_20260906T164257_P05023_N_F_J_001/NISAR_L2_PR_GCOV_030_007_D_073_4005_DHDH_A_20260906T164219_20260906T164257_P05023_N_F_J_001.h5",
-      "track": 7,
-      "direction": "DSC",
-      "frame": 73,
-      "pol_code": "DHDH",
-      "date": "2026-09-06 00:00:00"
-    },
-    {
-      "name": "NISAR_L2_PR_GCOV_031_007_D_073_4005_DHDH_A_20260918T164219_20260918T164257_P05023_F_F_J_001",
-      "size_MB_catalog": null,
-      "h5_url": "https://nisar.asf.earthdatacloud.nasa.gov/NISAR/NISAR_L2_GCOV_PROVISIONAL_V1/NISAR_L2_PR_GCOV_031_007_D_073_4005_DHDH_A_20260918T164219_20260918T164257_P05023_F_F_J_001/NISAR_L2_PR_GCOV_031_007_D_073_4005_DHDH_A_20260918T164219_20260918T164257_P05023_F_F_J_001.h5",
-      "track": 7,
-      "direction": "DSC",
-      "frame": 73,
-      "pol_code": "DHDH",
-      "date": "2026-09-18 00:00:00"
-    },
-    {
-      "name": "NISAR_L2_PR_GCOV_032_007_D_073_4005_DHDH_A_20260930T164220_20260930T164257_P05023_N_F_J_001",
-      "size_MB_catalog": null,
-      "h5_url": "https://nisar.asf.earthdatacloud.nasa.gov/NISAR/NISAR_L2_GCOV_PROVISIONAL_V1/NISAR_L2_PR_GCOV_032_007_D_073_4005_DHDH_A_20260930T164220_20260930T164257_P05023_N_F_J_001/NISAR_L2_PR_GCOV_032_007_D_073_4005_DHDH_A_20260930T164220_20260930T164257_P05023_N_F_J_001.h5",
-      "track": 7,
-      "direction": "DSC",
-      "frame": 73,
-      "pol_code": "DHDH",
-      "date": "2026-09-30 00:00:00"
-    },
-    {
-      "name": "NISAR_L2_PR_GCOV_033_007_D_073_4005_DHDH_A_20261012T164220_20261012T164257_P05023_N_F_J_001",
-      "size_MB_catalog": null,
-      "h5_url": "https://nisar.asf.earthdatacloud.nasa.gov/NISAR/NISAR_L2_GCOV_PROVISIONAL_V1/NISAR_L2_PR_GCOV_033_007_D_073_4005_DHDH_A_20261012T164220_20261012T164257_P05023_N_F_J_001/NISAR_L2_PR_GCOV_033_007_D_073_4005_DHDH_A_20261012T164220_20261012T164257_P05023_N_F_J_001.h5",
-      "track": 7,
-      "direction": "DSC",
-      "frame": 73,
-      "pol_code": "DHDH",
-      "date": "2026-10-12 00:00:00"
-    }
-  ],
-  "dates_used": [
-    "2026-06-26",
-    "2026-07-08",
-    "2026-07-20",
-    "2026-08-13",
-    "2026-08-25",
-    "2026-09-06",
-    "2026-09-18",
-    "2026-09-30",
-    "2026-10-12"
-  ],
-  "skipped": [],
-  "indicators": [
-    {
-      "label": "2026-06-26",
-      "date": "2026-06-26",
-      "HH_median": -11.14,
-      "HV_median": -18.281,
-      "open_water_pct": 0.0,
-      "flooded_veg_pct": 2.42,
-      "other_pct": 97.58,
-      "coverage_pct": 100.0
-    },
-    {
-      "label": "2026-07-08",
-      "date": "2026-07-08",
-      "HH_median": -11.679,
-      "HV_median": -18.512,
-      "open_water_pct": 0.0,
-      "flooded_veg_pct": 2.289,
-      "other_pct": 97.711,
-      "coverage_pct": 100.0
-    },
-    {
-      "label": "2026-07-20",
-      "date": "2026-07-20",
-      "HH_median": -11.109,
-      "HV_median": -18.073,
-      "open_water_pct": 0.0,
-      "flooded_veg_pct": 2.315,
-      "other_pct": 97.685,
-      "coverage_pct": 100.0
-    },
-    {
-      "label": "2026-08-13",
-      "date": "2026-08-13",
-      "HH_median": -10.354,
-      "HV_median": -18.195,
-      "open_water_pct": 0.0,
-      "flooded_veg_pct": 3.169,
-      "other_pct": 96.831,
-      "coverage_pct": 100.0
-    },
-    {
-      "label": "2026-08-25",
-      "date": "2026-08-25",
-      "HH_median": -13.078,
-      "HV_median": -19.307,
-      "open_water_pct": 0.051,
-      "flooded_veg_pct": 2.523,
-      "other_pct": 97.426,
-      "coverage_pct": 100.0
-    },
-    {
-      "label": "2026-09-06",
-      "date": "2026-09-06",
-      "HH_median": -11.582,
-      "HV_median": -18.579,
-      "open_water_pct": 0.0,
-      "flooded_veg_pct": 2.825,
-      "other_pct": 97.175,
-      "coverage_pct": 100.0
-    },
-    {
-      "label": "2026-09-18",
-      "date": "2026-09-18",
-      "HH_median": -9.994,
-      "HV_median": -17.9,
-      "open_water_pct": 0.0,
-      "flooded_veg_pct": 3.388,
-      "other_pct": 96.612,
-      "coverage_pct": 100.0
-    },
-    {
-      "label": "2026-09-30",
-      "date": "2026-09-30",
-      "HH_median": -10.106,
-      "HV_median": -18.425,
-      "open_water_pct": 0.0,
-      "flooded_veg_pct": 3.215,
-      "other_pct": 96.785,
-      "coverage_pct": 100.0
-    },
-    {
-      "label": "2026-10-12",
-      "date": "2026-10-12",
-      "HH_median": -12.015,
-      "HV_median": -19.522,
-      "open_water_pct": 0.005,
-      "flooded_veg_pct": 2.593,
-      "other_pct": 97.402,
-      "coverage_pct": 100.0
-    }
-  ],
-  "months": {
-    "2026-06": {
-      "dates": [
-        "2026-06-26"
+  "presets": {
+    "everglades": {
+      "exported_at": "2026-11-14T01:37:36+02:00",
+      "exporter": "naba_data 0.1.0",
+      "source": {
+        "mission": "NASA-ISRO NISAR",
+        "product": "GCOV",
+        "maturity": "PROVISIONAL",
+        "frequency": "A",
+        "collection_search": "NASA CMR via earthaccess"
+      },
+      "preset": {
+        "key": "everglades",
+        "name": "Everglades drought fires, Florida",
+        "theme": "fires",
+        "bbox": [
+          -80.95,
+          25.25,
+          -80.55,
+          25.65
+        ],
+        "search_start": "2026-07-01",
+        "search_end": "2026-09-30",
+        "event_start": "2026-08-01",
+        "event_end": "2026-08-24"
+      },
+      "reported": {
+        "area_km2": 97.1,
+        "note": "nearly 24,000 acres across four fires in the park, 26 August 2026",
+        "source": "https://www.wlrn.org/environment/2026-08-26/drought-fire-everglades-peat-national-park"
+      },
+      "method": {
+        "grid_res_deg": 0.0002,
+        "smooth_px": 5,
+        "smoothing": "NaN-aware boxcar on linear power before converting to dB",
+        "thresholds_db": {
+          "likely_db": -3.0,
+          "possible_db": -2.0
+        },
+        "change": "HV(pass) - HV(before), dB; every pass compared with the before pass",
+        "class_values": {
+          "no_data": 0,
+          "unburned": 1,
+          "possible": 2,
+          "likely": 3
+        },
+        "before": "2026-07-20",
+        "after": "2026-08-25",
+        "geometry": {
+          "track": 170,
+          "direction": "DSC",
+          "frame": 76
+        },
+        "areas": "series and headline: pixel count x cell area (as in the notebook); extents: vectorized and measured geodesically",
+        "vectorize": {
+          "min_area_km2": 0.02,
+          "simplify_m": 40.0,
+          "majority_filter": 3,
+          "story_envelope_close_m": 150.0
+        },
+        "notebook_reference": "NABA_NISAR_Explorer.ipynb Section 12"
+      },
+      "granules": [
+        {
+          "name": "NISAR_L2_PR_GCOV_025_170_D_076_4005_DHDH_A_20260720T000515_20260720T000549_P05023_N_F_J_001",
+          "size_MB_catalog": 4286.1,
+          "h5_url": "https://nisar.asf.earthdatacloud.nasa.gov/NISAR/NISAR_L2_GCOV_PROVISIONAL_V1/NISAR_L2_PR_GCOV_025_170_D_076_4005_DHDH_A_20260720T000515_20260720T000549_P05023_N_F_J_001/NISAR_L2_PR_GCOV_025_170_D_076_4005_DHDH_A_20260720T000515_20260720T000549_P05023_N_F_J_001.h5",
+          "track": 170,
+          "direction": "DSC",
+          "frame": 76,
+          "pol_code": "DHDH",
+          "date": "2026-07-20 00:00:00"
+        },
+        {
+          "name": "NISAR_L2_PR_GCOV_027_170_D_076_4005_DHDH_A_20260813T000513_20260813T000548_P05023_N_F_J_001",
+          "size_MB_catalog": 4418.1,
+          "h5_url": "https://nisar.asf.earthdatacloud.nasa.gov/NISAR/NISAR_L2_GCOV_PROVISIONAL_V1/NISAR_L2_PR_GCOV_027_170_D_076_4005_DHDH_A_20260813T000513_20260813T000548_P05023_N_F_J_001/NISAR_L2_PR_GCOV_027_170_D_076_4005_DHDH_A_20260813T000513_20260813T000548_P05023_N_F_J_001.h5",
+          "track": 170,
+          "direction": "DSC",
+          "frame": 76,
+          "pol_code": "DHDH",
+          "date": "2026-08-13 00:00:00"
+        },
+        {
+          "name": "NISAR_L2_PR_GCOV_028_170_D_076_4005_DHDH_A_20260825T000513_20260825T000547_P05023_N_F_J_001",
+          "size_MB_catalog": 4305.5,
+          "h5_url": "https://nisar.asf.earthdatacloud.nasa.gov/NISAR/NISAR_L2_GCOV_PROVISIONAL_V1/NISAR_L2_PR_GCOV_028_170_D_076_4005_DHDH_A_20260825T000513_20260825T000547_P05023_N_F_J_001/NISAR_L2_PR_GCOV_028_170_D_076_4005_DHDH_A_20260825T000513_20260825T000547_P05023_N_F_J_001.h5",
+          "track": 170,
+          "direction": "DSC",
+          "frame": 76,
+          "pol_code": "DHDH",
+          "date": "2026-08-25 00:00:00"
+        },
+        {
+          "name": "NISAR_L2_PR_GCOV_029_170_D_076_4005_DHDH_A_20260906T000513_20260906T000547_P05023_N_F_J_002",
+          "size_MB_catalog": 4301.5,
+          "h5_url": "https://nisar.asf.earthdatacloud.nasa.gov/NISAR/NISAR_L2_GCOV_PROVISIONAL_V1/NISAR_L2_PR_GCOV_029_170_D_076_4005_DHDH_A_20260906T000513_20260906T000547_P05023_N_F_J_002/NISAR_L2_PR_GCOV_029_170_D_076_4005_DHDH_A_20260906T000513_20260906T000547_P05023_N_F_J_002.h5",
+          "track": 170,
+          "direction": "DSC",
+          "frame": 76,
+          "pol_code": "DHDH",
+          "date": "2026-09-06 00:00:00"
+        },
+        {
+          "name": "NISAR_L2_PR_GCOV_030_170_D_076_4005_DHDH_A_20260918T000512_20260918T000547_P05023_F_F_J_001",
+          "size_MB_catalog": 4439.0,
+          "h5_url": "https://nisar.asf.earthdatacloud.nasa.gov/NISAR/NISAR_L2_GCOV_PROVISIONAL_V1/NISAR_L2_PR_GCOV_030_170_D_076_4005_DHDH_A_20260918T000512_20260918T000547_P05023_F_F_J_001/NISAR_L2_PR_GCOV_030_170_D_076_4005_DHDH_A_20260918T000512_20260918T000547_P05023_F_F_J_001.h5",
+          "track": 170,
+          "direction": "DSC",
+          "frame": 76,
+          "pol_code": "DHDH",
+          "date": "2026-09-18 00:00:00"
+        },
+        {
+          "name": "NISAR_L2_PR_GCOV_031_170_D_076_4005_DHDH_A_20260930T000512_20260930T000547_P05023_N_F_J_001",
+          "size_MB_catalog": 4438.8,
+          "h5_url": "https://nisar.asf.earthdatacloud.nasa.gov/NISAR/NISAR_L2_GCOV_PROVISIONAL_V1/NISAR_L2_PR_GCOV_031_170_D_076_4005_DHDH_A_20260930T000512_20260930T000547_P05023_N_F_J_001/NISAR_L2_PR_GCOV_031_170_D_076_4005_DHDH_A_20260930T000512_20260930T000547_P05023_N_F_J_001.h5",
+          "track": 170,
+          "direction": "DSC",
+          "frame": 76,
+          "pol_code": "DHDH",
+          "date": "2026-09-30 00:00:00"
+        }
       ],
-      "analysed_km2": 657.5,
-      "open_water_km2": 0.0,
-      "flooded_vegetation_km2": 7.49
-    },
-    "2026-07": {
-      "dates": [
-        "2026-07-08",
-        "2026-07-20"
-      ],
-      "analysed_km2": 657.5,
-      "open_water_km2": 0.0,
-      "flooded_vegetation_km2": 7.02
-    },
-    "2026-08": {
-      "dates": [
+      "dates_used": [
+        "2026-07-20",
         "2026-08-13",
-        "2026-08-25"
-      ],
-      "analysed_km2": 657.5,
-      "open_water_km2": 0.0,
-      "flooded_vegetation_km2": 7.99
-    },
-    "2026-09": {
-      "dates": [
+        "2026-08-25",
         "2026-09-06",
         "2026-09-18",
         "2026-09-30"
       ],
-      "analysed_km2": 657.5,
-      "open_water_km2": 0.0,
-      "flooded_vegetation_km2": 9.16
+      "skipped": [],
+      "indicators": [
+        {
+          "label": "2026-07-20",
+          "role": "before",
+          "likely_km2": 0.0,
+          "possible_km2": 0.0,
+          "burned_km2": 0.0,
+          "likely_pct": 0.0,
+          "coverage_pct": 100.0,
+          "HV_median": -16.476,
+          "dHV_median": 0.0,
+          "dCO_median": 0.0
+        },
+        {
+          "label": "2026-08-13",
+          "role": "during",
+          "likely_km2": 39.316,
+          "possible_km2": 57.613,
+          "burned_km2": 96.929,
+          "likely_pct": 2.211,
+          "coverage_pct": 100.0,
+          "HV_median": -16.11,
+          "dHV_median": 0.234,
+          "dCO_median": 0.472
+        },
+        {
+          "label": "2026-08-25",
+          "role": "after",
+          "likely_km2": 18.832,
+          "possible_km2": 30.403,
+          "burned_km2": 49.236,
+          "likely_pct": 1.059,
+          "coverage_pct": 100.0,
+          "HV_median": -15.63,
+          "dHV_median": 0.488,
+          "dCO_median": 0.213
+        },
+        {
+          "label": "2026-09-06",
+          "role": "after",
+          "likely_km2": 250.784,
+          "possible_km2": 132.492,
+          "burned_km2": 383.276,
+          "likely_pct": 14.103,
+          "coverage_pct": 100.0,
+          "HV_median": -17.535,
+          "dHV_median": -0.023,
+          "dCO_median": 0.449
+        },
+        {
+          "label": "2026-09-18",
+          "role": "after",
+          "likely_km2": 537.731,
+          "possible_km2": 190.926,
+          "burned_km2": 728.657,
+          "likely_pct": 30.239,
+          "coverage_pct": 100.0,
+          "HV_median": -20.07,
+          "dHV_median": -1.275,
+          "dCO_median": -1.194
+        },
+        {
+          "label": "2026-09-30",
+          "role": "after",
+          "likely_km2": 411.16,
+          "possible_km2": 192.663,
+          "burned_km2": 603.823,
+          "likely_pct": 23.121,
+          "coverage_pct": 100.0,
+          "HV_median": -19.027,
+          "dHV_median": -0.892,
+          "dCO_median": -0.608
+        }
+      ],
+      "extent_km2": {
+        "likely": 15.59,
+        "possible": 24.46,
+        "burned_patches": 41.39,
+        "story_envelope": 50.6
+      },
+      "vertices": {
+        "burned_patches": 3945,
+        "story_envelope": 2109
+      },
+      "passes": {
+        "2026-07-20": {
+          "likely_km2": 0.0,
+          "possible_km2": 0.0,
+          "vertices": 0
+        },
+        "2026-08-13": {
+          "likely_km2": 34.53,
+          "possible_km2": 53.62,
+          "vertices": 6937
+        },
+        "2026-08-25": {
+          "likely_km2": 15.59,
+          "possible_km2": 24.46,
+          "vertices": 3945
+        },
+        "2026-09-06": {
+          "likely_km2": 240.31,
+          "possible_km2": 125.52,
+          "vertices": 22030
+        },
+        "2026-09-18": {
+          "likely_km2": 530.36,
+          "possible_km2": 178.98,
+          "vertices": 32397
+        },
+        "2026-09-30": {
+          "likely_km2": 400.07,
+          "possible_km2": 182.99,
+          "vertices": 31821
+        }
+      },
+      "network_MB": 0.0,
+      "ledger_totals": {
+        "1-METADATA": {
+          "MB": 0.0,
+          "seconds": 1.97,
+          "operations": 1
+        },
+        "cache/local": {
+          "MB": 173.418,
+          "seconds": 1.64,
+          "operations": 12
+        }
+      },
+      "output_bytes": {
+        "changes.geojson": 382572,
+        "fires.geojson": 4450840,
+        "layers.json": 4869,
+        "frames/everglades/*": 3489173
+      },
+      "stories": [
+        "everglades-burn-scar"
+      ],
+      "sample_stories_kept": 0
     },
-    "2026-10": {
-      "dates": [
+    "manzala": {
+      "exported_at": "2026-11-14T00:31:22+02:00",
+      "exporter": "naba_data 0.1.0",
+      "source": {
+        "mission": "NASA-ISRO NISAR",
+        "product": "GCOV",
+        "maturity": "PROVISIONAL",
+        "frequency": "A",
+        "collection_search": "NASA CMR via earthaccess"
+      },
+      "preset": {
+        "key": "manzala",
+        "name": "Lake Manzala wetlands, Nile Delta, Egypt",
+        "theme": "wetlands",
+        "bbox": [
+          31.95,
+          31.15,
+          32.2,
+          31.4
+        ],
+        "search_start": "2026-06-17",
+        "search_end": "2026-11-13"
+      },
+      "method": {
+        "grid_res_deg": 0.0002,
+        "thresholds_db": {
+          "water_hh_max": -15.0,
+          "water_hv_max": -22.0,
+          "flooded_hh_min": -5.0,
+          "flooded_ratio_min": 7.0
+        },
+        "class_values": {
+          "no_data": 0,
+          "open_water": 1,
+          "flooded_vegetation": 2,
+          "other": 3
+        },
+        "monthly_composite": "per-pixel median of that month's acquisitions, in dB",
+        "vectorize": {
+          "min_area_km2": 0.02,
+          "simplify_m": 40.0,
+          "majority_filter": 3
+        },
+        "notebook_reference": "NABA_NISAR_Explorer.ipynb Section 14"
+      },
+      "granules": [
+        {
+          "name": "NISAR_L2_PR_GCOV_024_007_D_073_4005_DHDH_A_20260626T164222_20260626T164300_P05023_N_F_J_001",
+          "size_MB_catalog": 6210.1,
+          "h5_url": "https://nisar.asf.earthdatacloud.nasa.gov/NISAR/NISAR_L2_GCOV_PROVISIONAL_V1/NISAR_L2_PR_GCOV_024_007_D_073_4005_DHDH_A_20260626T164222_20260626T164300_P05023_N_F_J_001/NISAR_L2_PR_GCOV_024_007_D_073_4005_DHDH_A_20260626T164222_20260626T164300_P05023_N_F_J_001.h5",
+          "track": 7,
+          "direction": "DSC",
+          "frame": 73,
+          "pol_code": "DHDH",
+          "date": "2026-06-26 00:00:00"
+        },
+        {
+          "name": "NISAR_L2_PR_GCOV_025_007_D_073_4005_DHDH_A_20260708T164225_20260708T164259_P05023_N_F_J_001",
+          "size_MB_catalog": 5749.0,
+          "h5_url": "https://nisar.asf.earthdatacloud.nasa.gov/NISAR/NISAR_L2_GCOV_PROVISIONAL_V1/NISAR_L2_PR_GCOV_025_007_D_073_4005_DHDH_A_20260708T164225_20260708T164259_P05023_N_F_J_001/NISAR_L2_PR_GCOV_025_007_D_073_4005_DHDH_A_20260708T164225_20260708T164259_P05023_N_F_J_001.h5",
+          "track": 7,
+          "direction": "DSC",
+          "frame": 73,
+          "pol_code": "DHDH",
+          "date": "2026-07-08 00:00:00"
+        },
+        {
+          "name": "NISAR_L2_PR_GCOV_026_007_D_073_4005_DHDH_A_20260720T164221_20260720T164258_P05023_N_F_J_001",
+          "size_MB_catalog": 6053.7,
+          "h5_url": "https://nisar.asf.earthdatacloud.nasa.gov/NISAR/NISAR_L2_GCOV_PROVISIONAL_V1/NISAR_L2_PR_GCOV_026_007_D_073_4005_DHDH_A_20260720T164221_20260720T164258_P05023_N_F_J_001/NISAR_L2_PR_GCOV_026_007_D_073_4005_DHDH_A_20260720T164221_20260720T164258_P05023_N_F_J_001.h5",
+          "track": 7,
+          "direction": "DSC",
+          "frame": 73,
+          "pol_code": "DHDH",
+          "date": "2026-07-20 00:00:00"
+        },
+        {
+          "name": "NISAR_L2_PR_GCOV_028_007_D_073_4005_DHDH_A_20260813T164220_20260813T164257_P05023_N_F_J_001",
+          "size_MB_catalog": 6065.5,
+          "h5_url": "https://nisar.asf.earthdatacloud.nasa.gov/NISAR/NISAR_L2_GCOV_PROVISIONAL_V1/NISAR_L2_PR_GCOV_028_007_D_073_4005_DHDH_A_20260813T164220_20260813T164257_P05023_N_F_J_001/NISAR_L2_PR_GCOV_028_007_D_073_4005_DHDH_A_20260813T164220_20260813T164257_P05023_N_F_J_001.h5",
+          "track": 7,
+          "direction": "DSC",
+          "frame": 73,
+          "pol_code": "DHDH",
+          "date": "2026-08-13 00:00:00"
+        },
+        {
+          "name": "NISAR_L2_PR_GCOV_029_007_D_073_4005_DHDH_A_20260825T164220_20260825T164257_P05023_N_F_J_001",
+          "size_MB_catalog": 6097.5,
+          "h5_url": "https://nisar.asf.earthdatacloud.nasa.gov/NISAR/NISAR_L2_GCOV_PROVISIONAL_V1/NISAR_L2_PR_GCOV_029_007_D_073_4005_DHDH_A_20260825T164220_20260825T164257_P05023_N_F_J_001/NISAR_L2_PR_GCOV_029_007_D_073_4005_DHDH_A_20260825T164220_20260825T164257_P05023_N_F_J_001.h5",
+          "track": 7,
+          "direction": "DSC",
+          "frame": 73,
+          "pol_code": "DHDH",
+          "date": "2026-08-25 00:00:00"
+        },
+        {
+          "name": "NISAR_L2_PR_GCOV_030_007_D_073_4005_DHDH_A_20260906T164219_20260906T164257_P05023_N_F_J_001",
+          "size_MB_catalog": 6202.0,
+          "h5_url": "https://nisar.asf.earthdatacloud.nasa.gov/NISAR/NISAR_L2_GCOV_PROVISIONAL_V1/NISAR_L2_PR_GCOV_030_007_D_073_4005_DHDH_A_20260906T164219_20260906T164257_P05023_N_F_J_001/NISAR_L2_PR_GCOV_030_007_D_073_4005_DHDH_A_20260906T164219_20260906T164257_P05023_N_F_J_001.h5",
+          "track": 7,
+          "direction": "DSC",
+          "frame": 73,
+          "pol_code": "DHDH",
+          "date": "2026-09-06 00:00:00"
+        },
+        {
+          "name": "NISAR_L2_PR_GCOV_031_007_D_073_4005_DHDH_A_20260918T164219_20260918T164257_P05023_F_F_J_001",
+          "size_MB_catalog": 6194.1,
+          "h5_url": "https://nisar.asf.earthdatacloud.nasa.gov/NISAR/NISAR_L2_GCOV_PROVISIONAL_V1/NISAR_L2_PR_GCOV_031_007_D_073_4005_DHDH_A_20260918T164219_20260918T164257_P05023_F_F_J_001/NISAR_L2_PR_GCOV_031_007_D_073_4005_DHDH_A_20260918T164219_20260918T164257_P05023_F_F_J_001.h5",
+          "track": 7,
+          "direction": "DSC",
+          "frame": 73,
+          "pol_code": "DHDH",
+          "date": "2026-09-18 00:00:00"
+        },
+        {
+          "name": "NISAR_L2_PR_GCOV_032_007_D_073_4005_DHDH_A_20260930T164220_20260930T164257_P05023_N_F_J_001",
+          "size_MB_catalog": 6085.9,
+          "h5_url": "https://nisar.asf.earthdatacloud.nasa.gov/NISAR/NISAR_L2_GCOV_PROVISIONAL_V1/NISAR_L2_PR_GCOV_032_007_D_073_4005_DHDH_A_20260930T164220_20260930T164257_P05023_N_F_J_001/NISAR_L2_PR_GCOV_032_007_D_073_4005_DHDH_A_20260930T164220_20260930T164257_P05023_N_F_J_001.h5",
+          "track": 7,
+          "direction": "DSC",
+          "frame": 73,
+          "pol_code": "DHDH",
+          "date": "2026-09-30 00:00:00"
+        },
+        {
+          "name": "NISAR_L2_PR_GCOV_033_007_D_073_4005_DHDH_A_20261012T164220_20261012T164257_P05023_N_F_J_001",
+          "size_MB_catalog": 6085.8,
+          "h5_url": "https://nisar.asf.earthdatacloud.nasa.gov/NISAR/NISAR_L2_GCOV_PROVISIONAL_V1/NISAR_L2_PR_GCOV_033_007_D_073_4005_DHDH_A_20261012T164220_20261012T164257_P05023_N_F_J_001/NISAR_L2_PR_GCOV_033_007_D_073_4005_DHDH_A_20261012T164220_20261012T164257_P05023_N_F_J_001.h5",
+          "track": 7,
+          "direction": "DSC",
+          "frame": 73,
+          "pol_code": "DHDH",
+          "date": "2026-10-12 00:00:00"
+        }
+      ],
+      "dates_used": [
+        "2026-06-26",
+        "2026-07-08",
+        "2026-07-20",
+        "2026-08-13",
+        "2026-08-25",
+        "2026-09-06",
+        "2026-09-18",
+        "2026-09-30",
         "2026-10-12"
       ],
-      "analysed_km2": 657.5,
-      "open_water_km2": 0.0,
-      "flooded_vegetation_km2": 8.33
-    }
-  },
-  "envelope_km2": {
-    "open_water": 0.0,
-    "flooded_vegetation": 11.44
-  },
-  "vertices": {
-    "open_water": 0,
-    "flooded_vegetation": 3781
-  },
-  "network_MB": 0.0,
-  "ledger_totals": {
-    "1-METADATA": {
-      "MB": 0.0,
-      "seconds": 7.87,
-      "operations": 1
+      "skipped": [],
+      "indicators": [
+        {
+          "label": "2026-06-26",
+          "date": "2026-06-26",
+          "HH_median": -11.14,
+          "HV_median": -18.281,
+          "open_water_pct": 0.0,
+          "flooded_veg_pct": 2.42,
+          "other_pct": 97.58,
+          "coverage_pct": 100.0
+        },
+        {
+          "label": "2026-07-08",
+          "date": "2026-07-08",
+          "HH_median": -11.679,
+          "HV_median": -18.512,
+          "open_water_pct": 0.0,
+          "flooded_veg_pct": 2.289,
+          "other_pct": 97.711,
+          "coverage_pct": 100.0
+        },
+        {
+          "label": "2026-07-20",
+          "date": "2026-07-20",
+          "HH_median": -11.109,
+          "HV_median": -18.073,
+          "open_water_pct": 0.0,
+          "flooded_veg_pct": 2.315,
+          "other_pct": 97.685,
+          "coverage_pct": 100.0
+        },
+        {
+          "label": "2026-08-13",
+          "date": "2026-08-13",
+          "HH_median": -10.354,
+          "HV_median": -18.195,
+          "open_water_pct": 0.0,
+          "flooded_veg_pct": 3.169,
+          "other_pct": 96.831,
+          "coverage_pct": 100.0
+        },
+        {
+          "label": "2026-08-25",
+          "date": "2026-08-25",
+          "HH_median": -13.078,
+          "HV_median": -19.307,
+          "open_water_pct": 0.051,
+          "flooded_veg_pct": 2.523,
+          "other_pct": 97.426,
+          "coverage_pct": 100.0
+        },
+        {
+          "label": "2026-09-06",
+          "date": "2026-09-06",
+          "HH_median": -11.582,
+          "HV_median": -18.579,
+          "open_water_pct": 0.0,
+          "flooded_veg_pct": 2.825,
+          "other_pct": 97.175,
+          "coverage_pct": 100.0
+        },
+        {
+          "label": "2026-09-18",
+          "date": "2026-09-18",
+          "HH_median": -9.994,
+          "HV_median": -17.9,
+          "open_water_pct": 0.0,
+          "flooded_veg_pct": 3.388,
+          "other_pct": 96.612,
+          "coverage_pct": 100.0
+        },
+        {
+          "label": "2026-09-30",
+          "date": "2026-09-30",
+          "HH_median": -10.106,
+          "HV_median": -18.425,
+          "open_water_pct": 0.0,
+          "flooded_veg_pct": 3.215,
+          "other_pct": 96.785,
+          "coverage_pct": 100.0
+        },
+        {
+          "label": "2026-10-12",
+          "date": "2026-10-12",
+          "HH_median": -12.015,
+          "HV_median": -19.522,
+          "open_water_pct": 0.005,
+          "flooded_veg_pct": 2.593,
+          "other_pct": 97.402,
+          "coverage_pct": 100.0
+        }
+      ],
+      "months": {
+        "2026-06": {
+          "dates": [
+            "2026-06-26"
+          ],
+          "analysed_km2": 657.5,
+          "open_water_km2": 0.0,
+          "flooded_vegetation_km2": 7.49
+        },
+        "2026-07": {
+          "dates": [
+            "2026-07-08",
+            "2026-07-20"
+          ],
+          "analysed_km2": 657.5,
+          "open_water_km2": 0.0,
+          "flooded_vegetation_km2": 7.02
+        },
+        "2026-08": {
+          "dates": [
+            "2026-08-13",
+            "2026-08-25"
+          ],
+          "analysed_km2": 657.5,
+          "open_water_km2": 0.0,
+          "flooded_vegetation_km2": 7.99
+        },
+        "2026-09": {
+          "dates": [
+            "2026-09-06",
+            "2026-09-18",
+            "2026-09-30"
+          ],
+          "analysed_km2": 657.5,
+          "open_water_km2": 0.0,
+          "flooded_vegetation_km2": 9.16
+        },
+        "2026-10": {
+          "dates": [
+            "2026-10-12"
+          ],
+          "analysed_km2": 657.5,
+          "open_water_km2": 0.0,
+          "flooded_vegetation_km2": 8.33
+        }
+      },
+      "envelope_km2": {
+        "open_water": 0.0,
+        "flooded_vegetation": 11.44
+      },
+      "vertices": {
+        "open_water": 0,
+        "flooded_vegetation": 3783
+      },
+      "network_MB": 0.0,
+      "ledger_totals": {
+        "1-METADATA": {
+          "MB": 0.0,
+          "seconds": 1.92,
+          "operations": 1
+        },
+        "cache/local": {
+          "MB": 98.723,
+          "seconds": 1.09,
+          "operations": 18
+        }
+      },
+      "output_bytes": {
+        "changes.geojson": 357767,
+        "wetlands.geojson": 407452,
+        "layers.json": 2845,
+        "frames/manzala/*": 306007
+      },
+      "stories": [
+        "manzala-flooded-vegetation"
+      ],
+      "sample_stories_kept": 0
     },
-    "cache/local": {
-      "MB": 98.701,
-      "seconds": 3.08,
-      "operations": 18
+    "plaskett": {
+      "exported_at": "2026-11-14T01:37:54+02:00",
+      "exporter": "naba_data 0.1.0",
+      "source": {
+        "mission": "NASA-ISRO NISAR",
+        "product": "GCOV",
+        "maturity": "PROVISIONAL",
+        "frequency": "A",
+        "collection_search": "NASA CMR via earthaccess"
+      },
+      "preset": {
+        "key": "plaskett",
+        "name": "Plaskett Fire, Big Sur, California",
+        "theme": "fires",
+        "bbox": [
+          -121.55,
+          35.78,
+          -121.25,
+          36.02
+        ],
+        "search_start": "2026-08-01",
+        "search_end": "2026-10-15",
+        "event_start": "2026-08-26",
+        "event_end": "2026-09-30"
+      },
+      "reported": {
+        "area_km2": 120.8,
+        "note": "29,862 acres on 8 September 2026, 47% contained",
+        "source": "https://bigsurkate.blog/2026/09/08/"
+      },
+      "method": {
+        "grid_res_deg": 0.0002,
+        "smooth_px": 5,
+        "smoothing": "NaN-aware boxcar on linear power before converting to dB",
+        "thresholds_db": {
+          "likely_db": -3.0,
+          "possible_db": -2.0
+        },
+        "change": "HV(pass) - HV(before), dB; every pass compared with the before pass",
+        "class_values": {
+          "no_data": 0,
+          "unburned": 1,
+          "possible": 2,
+          "likely": 3
+        },
+        "before": "2026-08-16",
+        "after": "2026-10-03",
+        "geometry": {
+          "track": 42,
+          "direction": "DSC",
+          "frame": 70
+        },
+        "areas": "series and headline: pixel count x cell area (as in the notebook); extents: vectorized and measured geodesically",
+        "vectorize": {
+          "min_area_km2": 0.02,
+          "simplify_m": 40.0,
+          "majority_filter": 3,
+          "story_envelope_close_m": 150.0
+        },
+        "notebook_reference": "NABA_NISAR_Explorer.ipynb Section 12"
+      },
+      "granules": [
+        {
+          "name": "NISAR_L2_PR_GCOV_028_042_D_070_4005_DHDH_A_20260816T025639_20260816T025713_P05023_N_F_J_001",
+          "size_MB_catalog": 5985.7,
+          "h5_url": "https://nisar.asf.earthdatacloud.nasa.gov/NISAR/NISAR_L2_GCOV_PROVISIONAL_V1/NISAR_L2_PR_GCOV_028_042_D_070_4005_DHDH_A_20260816T025639_20260816T025713_P05023_N_F_J_001/NISAR_L2_PR_GCOV_028_042_D_070_4005_DHDH_A_20260816T025639_20260816T025713_P05023_N_F_J_001.h5",
+          "track": 42,
+          "direction": "DSC",
+          "frame": 70,
+          "pol_code": "DHDH",
+          "date": "2026-08-16 00:00:00"
+        },
+        {
+          "name": "NISAR_L2_PR_GCOV_029_042_D_070_4005_DHDH_A_20260828T025638_20260828T025713_P05023_N_F_J_001",
+          "size_MB_catalog": 6150.0,
+          "h5_url": "https://nisar.asf.earthdatacloud.nasa.gov/NISAR/NISAR_L2_GCOV_PROVISIONAL_V1/NISAR_L2_PR_GCOV_029_042_D_070_4005_DHDH_A_20260828T025638_20260828T025713_P05023_N_F_J_001/NISAR_L2_PR_GCOV_029_042_D_070_4005_DHDH_A_20260828T025638_20260828T025713_P05023_N_F_J_001.h5",
+          "track": 42,
+          "direction": "DSC",
+          "frame": 70,
+          "pol_code": "DHDH",
+          "date": "2026-08-28 00:00:00"
+        },
+        {
+          "name": "NISAR_L2_PR_GCOV_030_042_D_070_4005_DHDH_A_20260909T025638_20260909T025713_P05023_N_F_J_001",
+          "size_MB_catalog": 6141.5,
+          "h5_url": "https://nisar.asf.earthdatacloud.nasa.gov/NISAR/NISAR_L2_GCOV_PROVISIONAL_V1/NISAR_L2_PR_GCOV_030_042_D_070_4005_DHDH_A_20260909T025638_20260909T025713_P05023_N_F_J_001/NISAR_L2_PR_GCOV_030_042_D_070_4005_DHDH_A_20260909T025638_20260909T025713_P05023_N_F_J_001.h5",
+          "track": 42,
+          "direction": "DSC",
+          "frame": 70,
+          "pol_code": "DHDH",
+          "date": "2026-09-09 00:00:00"
+        },
+        {
+          "name": "NISAR_L2_PR_GCOV_031_042_D_070_4005_DHDH_A_20260921T025638_20260921T025713_P05023_N_F_J_001",
+          "size_MB_catalog": 6146.0,
+          "h5_url": "https://nisar.asf.earthdatacloud.nasa.gov/NISAR/NISAR_L2_GCOV_PROVISIONAL_V1/NISAR_L2_PR_GCOV_031_042_D_070_4005_DHDH_A_20260921T025638_20260921T025713_P05023_N_F_J_001/NISAR_L2_PR_GCOV_031_042_D_070_4005_DHDH_A_20260921T025638_20260921T025713_P05023_N_F_J_001.h5",
+          "track": 42,
+          "direction": "DSC",
+          "frame": 70,
+          "pol_code": "DHDH",
+          "date": "2026-09-21 00:00:00"
+        },
+        {
+          "name": "NISAR_L2_PR_GCOV_032_042_D_070_4005_DHDH_A_20261003T025638_20261003T025713_P05023_N_F_J_001",
+          "size_MB_catalog": 6153.9,
+          "h5_url": "https://nisar.asf.earthdatacloud.nasa.gov/NISAR/NISAR_L2_GCOV_PROVISIONAL_V1/NISAR_L2_PR_GCOV_032_042_D_070_4005_DHDH_A_20261003T025638_20261003T025713_P05023_N_F_J_001/NISAR_L2_PR_GCOV_032_042_D_070_4005_DHDH_A_20261003T025638_20261003T025713_P05023_N_F_J_001.h5",
+          "track": 42,
+          "direction": "DSC",
+          "frame": 70,
+          "pol_code": "DHDH",
+          "date": "2026-10-03 00:00:00"
+        },
+        {
+          "name": "NISAR_L2_PR_GCOV_033_042_D_070_4005_DHDH_A_20261015T025639_20261015T025713_P05023_N_F_J_001",
+          "size_MB_catalog": 5985.6,
+          "h5_url": "https://nisar.asf.earthdatacloud.nasa.gov/NISAR/NISAR_L2_GCOV_PROVISIONAL_V1/NISAR_L2_PR_GCOV_033_042_D_070_4005_DHDH_A_20261015T025639_20261015T025713_P05023_N_F_J_001/NISAR_L2_PR_GCOV_033_042_D_070_4005_DHDH_A_20261015T025639_20261015T025713_P05023_N_F_J_001.h5",
+          "track": 42,
+          "direction": "DSC",
+          "frame": 70,
+          "pol_code": "DHDH",
+          "date": "2026-10-15 00:00:00"
+        }
+      ],
+      "dates_used": [
+        "2026-08-16",
+        "2026-08-28",
+        "2026-09-09",
+        "2026-09-21",
+        "2026-10-03",
+        "2026-10-15"
+      ],
+      "skipped": [],
+      "indicators": [
+        {
+          "label": "2026-08-16",
+          "role": "before",
+          "likely_km2": 0.0,
+          "possible_km2": 0.0,
+          "burned_km2": 0.0,
+          "likely_pct": 0.0,
+          "coverage_pct": 100.0,
+          "HV_median": -14.998,
+          "dHV_median": 0.0,
+          "dCO_median": 0.0
+        },
+        {
+          "label": "2026-08-28",
+          "role": "during",
+          "likely_km2": 0.282,
+          "possible_km2": 0.491,
+          "burned_km2": 0.773,
+          "likely_pct": 0.039,
+          "coverage_pct": 100.0,
+          "HV_median": -14.815,
+          "dHV_median": 0.125,
+          "dCO_median": 0.042
+        },
+        {
+          "label": "2026-09-09",
+          "role": "during",
+          "likely_km2": 19.125,
+          "possible_km2": 14.328,
+          "burned_km2": 33.453,
+          "likely_pct": 2.664,
+          "coverage_pct": 100.0,
+          "HV_median": -15.575,
+          "dHV_median": -0.137,
+          "dCO_median": -0.152
+        },
+        {
+          "label": "2026-09-21",
+          "role": "during",
+          "likely_km2": 24.943,
+          "possible_km2": 15.328,
+          "burned_km2": 40.271,
+          "likely_pct": 3.474,
+          "coverage_pct": 100.0,
+          "HV_median": -15.705,
+          "dHV_median": -0.179,
+          "dCO_median": -0.106
+        },
+        {
+          "label": "2026-10-03",
+          "role": "after",
+          "likely_km2": 31.302,
+          "possible_km2": 15.141,
+          "burned_km2": 46.443,
+          "likely_pct": 4.36,
+          "coverage_pct": 100.0,
+          "HV_median": -15.854,
+          "dHV_median": -0.158,
+          "dCO_median": -0.171
+        },
+        {
+          "label": "2026-10-15",
+          "role": "after",
+          "likely_km2": 40.529,
+          "possible_km2": 15.39,
+          "burned_km2": 55.919,
+          "likely_pct": 5.646,
+          "coverage_pct": 100.0,
+          "HV_median": -16.124,
+          "dHV_median": -0.344,
+          "dCO_median": -0.142
+        }
+      ],
+      "extent_km2": {
+        "likely": 30.14,
+        "possible": 14.7,
+        "burned_patches": 45.91,
+        "story_envelope": 54.42
+      },
+      "vertices": {
+        "burned_patches": 2658,
+        "story_envelope": 905
+      },
+      "passes": {
+        "2026-08-16": {
+          "likely_km2": 0.0,
+          "possible_km2": 0.0,
+          "vertices": 0
+        },
+        "2026-08-28": {
+          "likely_km2": 0.15,
+          "possible_km2": 0.42,
+          "vertices": 92
+        },
+        "2026-09-09": {
+          "likely_km2": 17.62,
+          "possible_km2": 14.04,
+          "vertices": 2446
+        },
+        "2026-09-21": {
+          "likely_km2": 23.48,
+          "possible_km2": 15.25,
+          "vertices": 2726
+        },
+        "2026-10-03": {
+          "likely_km2": 30.14,
+          "possible_km2": 14.7,
+          "vertices": 2658
+        },
+        "2026-10-15": {
+          "likely_km2": 39.84,
+          "possible_km2": 14.26,
+          "vertices": 2777
+        }
+      },
+      "network_MB": 0.0,
+      "ledger_totals": {
+        "1-METADATA": {
+          "MB": 0.0,
+          "seconds": 1.49,
+          "operations": 1
+        },
+        "cache/local": {
+          "MB": 78.222,
+          "seconds": 1.48,
+          "operations": 12
+        }
+      },
+      "output_bytes": {
+        "changes.geojson": 382624,
+        "fires.geojson": 4450840,
+        "layers.json": 4869,
+        "frames/plaskett/*": 978779
+      },
+      "stories": [
+        "plaskett-burn-scar"
+      ],
+      "sample_stories_kept": 0
     }
-  },
-  "output_bytes": {
-    "changes.geojson": 221963,
-    "wetlands.geojson": 439903,
-    "layers.json": 765,
-    "frames/*.png": 291142
-  },
-  "stories": [
-    "manzala-flooded-vegetation"
-  ],
-  "sample_stories_kept": 0
+  }
 }

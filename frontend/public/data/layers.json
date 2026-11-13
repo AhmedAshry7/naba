@@ -1,8 +1,13 @@
 {
  "layers": [
   {
-   "id": "wetland-classes",
+   "id": "manzala-wetland-classes",
+   "preset": "manzala",
+   "story_ids": [
+    "manzala-flooded-vegetation"
+   ],
    "label": "Wetland classes · Lake Manzala",
+   "short_label": "Wetland classes",
    "bounds": [
     [
      31.95,
@@ -24,23 +29,235 @@
    "frames": [
     {
      "date": "2026-06-01",
-     "url": "/data/frames/wetland_2026-06.png"
+     "url": "/data/frames/manzala/wetland_2026-06.png"
     },
     {
      "date": "2026-07-01",
-     "url": "/data/frames/wetland_2026-07.png"
+     "url": "/data/frames/manzala/wetland_2026-07.png"
     },
     {
      "date": "2026-08-01",
-     "url": "/data/frames/wetland_2026-08.png"
+     "url": "/data/frames/manzala/wetland_2026-08.png"
     },
     {
      "date": "2026-09-01",
-     "url": "/data/frames/wetland_2026-09.png"
+     "url": "/data/frames/manzala/wetland_2026-09.png"
     },
     {
      "date": "2026-10-01",
-     "url": "/data/frames/wetland_2026-10.png"
+     "url": "/data/frames/manzala/wetland_2026-10.png"
+    }
+   ]
+  },
+  {
+   "id": "everglades-false-colour",
+   "preset": "everglades",
+   "story_ids": [
+    "everglades-burn-scar"
+   ],
+   "bounds": [
+    [
+     -80.95,
+     25.65
+    ],
+    [
+     -80.55,
+     25.65
+    ],
+    [
+     -80.55,
+     25.25
+    ],
+    [
+     -80.95,
+     25.25
+    ]
+   ],
+   "short_label": "False colour",
+   "label": "Radar false colour (R = HH, G = HV, B = HH−HV) · Everglades National Park",
+   "frames": [
+    {
+     "date": "2026-07-20",
+     "url": "/data/frames/everglades/rgb_2026-07-20.webp"
+    },
+    {
+     "date": "2026-08-13",
+     "url": "/data/frames/everglades/rgb_2026-08-13.webp"
+    },
+    {
+     "date": "2026-08-25",
+     "url": "/data/frames/everglades/rgb_2026-08-25.webp"
+    },
+    {
+     "date": "2026-09-06",
+     "url": "/data/frames/everglades/rgb_2026-09-06.webp"
+    },
+    {
+     "date": "2026-09-18",
+     "url": "/data/frames/everglades/rgb_2026-09-18.webp"
+    },
+    {
+     "date": "2026-09-30",
+     "url": "/data/frames/everglades/rgb_2026-09-30.webp"
+    }
+   ]
+  },
+  {
+   "id": "everglades-burn",
+   "preset": "everglades",
+   "story_ids": [
+    "everglades-burn-scar"
+   ],
+   "bounds": [
+    [
+     -80.95,
+     25.65
+    ],
+    [
+     -80.55,
+     25.65
+    ],
+    [
+     -80.55,
+     25.25
+    ],
+    [
+     -80.95,
+     25.25
+    ]
+   ],
+   "short_label": "Burn mask",
+   "label": "Burn mask: HV drop since 2026-07-20 · Everglades National Park",
+   "frames": [
+    {
+     "date": "2026-07-20",
+     "url": "/data/frames/everglades/burn_2026-07-20.png"
+    },
+    {
+     "date": "2026-08-13",
+     "url": "/data/frames/everglades/burn_2026-08-13.png"
+    },
+    {
+     "date": "2026-08-25",
+     "url": "/data/frames/everglades/burn_2026-08-25.png"
+    },
+    {
+     "date": "2026-09-06",
+     "url": "/data/frames/everglades/burn_2026-09-06.png"
+    },
+    {
+     "date": "2026-09-18",
+     "url": "/data/frames/everglades/burn_2026-09-18.png"
+    },
+    {
+     "date": "2026-09-30",
+     "url": "/data/frames/everglades/burn_2026-09-30.png"
+    }
+   ]
+  },
+  {
+   "id": "plaskett-false-colour",
+   "preset": "plaskett",
+   "story_ids": [
+    "plaskett-burn-scar"
+   ],
+   "bounds": [
+    [
+     -121.55,
+     36.02
+    ],
+    [
+     -121.25,
+     36.02
+    ],
+    [
+     -121.25,
+     35.78
+    ],
+    [
+     -121.55,
+     35.78
+    ]
+   ],
+   "short_label": "False colour",
+   "label": "Radar false colour (R = HH, G = HV, B = HH−HV) · Big Sur",
+   "frames": [
+    {
+     "date": "2026-08-16",
+     "url": "/data/frames/plaskett/rgb_2026-08-16.webp"
+    },
+    {
+     "date": "2026-08-28",
+     "url": "/data/frames/plaskett/rgb_2026-08-28.webp"
+    },
+    {
+     "date": "2026-09-09",
+     "url": "/data/frames/plaskett/rgb_2026-09-09.webp"
+    },
+    {
+     "date": "2026-09-21",
+     "url": "/data/frames/plaskett/rgb_2026-09-21.webp"
+    },
+    {
+     "date": "2026-10-03",
+     "url": "/data/frames/plaskett/rgb_2026-10-03.webp"
+    },
+    {
+     "date": "2026-10-15",
+     "url": "/data/frames/plaskett/rgb_2026-10-15.webp"
+    }
+   ]
+  },
+  {
+   "id": "plaskett-burn",
+   "preset": "plaskett",
+   "story_ids": [
+    "plaskett-burn-scar"
+   ],
+   "bounds": [
+    [
+     -121.55,
+     36.02
+    ],
+    [
+     -121.25,
+     36.02
+    ],
+    [
+     -121.25,
+     35.78
+    ],
+    [
+     -121.55,
+     35.78
+    ]
+   ],
+   "short_label": "Burn mask",
+   "label": "Burn mask: HV drop since 2026-08-16 · Big Sur",
+   "frames": [
+    {
+     "date": "2026-08-16",
+     "url": "/data/frames/plaskett/burn_2026-08-16.png"
+    },
+    {
+     "date": "2026-08-28",
+     "url": "/data/frames/plaskett/burn_2026-08-28.png"
+    },
+    {
+     "date": "2026-09-09",
+     "url": "/data/frames/plaskett/burn_2026-09-09.png"
+    },
+    {
+     "date": "2026-09-21",
+     "url": "/data/frames/plaskett/burn_2026-09-21.png"
+    },
+    {
+     "date": "2026-10-03",
+     "url": "/data/frames/plaskett/burn_2026-10-03.png"
+    },
+    {
+     "date": "2026-10-15",
+     "url": "/data/frames/plaskett/burn_2026-10-15.png"
     }
    ]
   }
