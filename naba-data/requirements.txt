@@ -1,0 +1,33 @@
+numpy
+scipy
+pandas
+h5py
+xarray
+dask[array]
+netCDF4
+rasterio
+rio-cogeo
+rio-tiler
+pyproj
+shapely
+geopandas
+pyarrow
+scikit-image
+scikit-learn
+matplotlib
+Pillow
+pmtiles
+asf_search
+earthaccess
+requests
+pyyaml
+tqdm
+fastapi
+uvicorn[standard]
+pydantic
+sqlalchemy
+geoalchemy2
+psycopg[binary]
+pytest
+#pip install -r requirements.txt
+#pip download -r requirements.txt -d wheels      # offline backup of every whee
