@@ -66,7 +66,8 @@ def test_story_has_exactly_the_fields_the_frontend_expects():
     """Parsed straight out of src/types.ts, so a UI field rename fails here."""
     src = TYPES_TS.read_text()
     block = re.search(r"export interface ChangeStory \{(.*?)\n\}", src, re.S).group(1)
-    expected = {m.group(1) for m in re.finditer(r"^\s{2}(\w+)[?]?:", block, re.M)}
+    # optional fields (`name?:`) belong to some themes only, e.g. `event_date` on earthquakes
+    expected = {m.group(1) for m in re.finditer(r"^\s{2}(\w+):", block, re.M)}
     expected.discard("geometry")        # the loader attaches it from the GeoJSON feature
     ts = _indicators([10.0, 12.0, 14.0, 16.0, 18.0, 20.0])
     story = build_story(get_preset("manzala"), OPEN_WATER, ts, 42.0, lat=31.3, lon=32.05)

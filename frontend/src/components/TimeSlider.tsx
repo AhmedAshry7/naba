@@ -1,7 +1,7 @@
 import { useEffect } from 'react'
 import { Clock, Pause, Play } from 'lucide-react'
 import { useStore } from '../store'
-import { prefersReducedMotion } from '../lib'
+import { formatDate, formatDateShort, prefersReducedMotion } from '../lib'
 
 const STEP_MS = 1200
 const STEP_MS_REDUCED = 2200   // the user asked for motion, so still play - just slower
@@ -18,6 +18,11 @@ export default function TimeSlider() {
   const setMonth = useStore((s) => s.setMonth)
   const setPlaying = useStore((s) => s.setPlaying)
   const selectedId = useStore((s) => s.selectedId)
+  // The slider only drives the wetland layer; a single event such as an earthquake has no months.
+  const quake = useStore((s) => s.stories.find((x) => x.id === s.selectedId && x.change_type === 'earthquake'))
+  const quakeStep = useStore((s) => s.quakeStep)
+  const setQuakeStep = useStore((s) => s.setQuakeStep)
+  const isOneOff = !!quake
 
   // advance while playing, wrapping back to the first month
   useEffect(() => {
@@ -48,6 +53,37 @@ export default function TimeSlider() {
       }`}
     >
       <div className="w-full max-w-[560px] rounded-card border border-line bg-bg/90 px-4 py-3 shadow-card backdrop-blur">
+        {quake && (
+          <div className="mb-3 border-b border-line pb-3">
+            <div className="mb-1 flex items-baseline gap-2">
+              <span className="section-label !text-[11px]">Earthquake · before and after</span>
+              <span className="ml-auto font-display text-[17px] font-semibold tabular-nums text-gold">
+                {formatDate(quakeStep >= 1 ? quake.period.end : quake.period.start)}
+              </span>
+            </div>
+            <input
+              type="range"
+              min={0}
+              max={1}
+              step={1}
+              value={quakeStep}
+              onChange={(e) => setQuakeStep(Number(e.target.value))}
+              className="naba-months w-full"
+              aria-label="Radar pass date: before or after the earthquake"
+              aria-valuetext={quakeStep >= 1 ? 'After the earthquake' : 'Before the earthquake'}
+            />
+            <div className="mt-0.5 flex justify-between text-[11px] text-sub">
+              <span>{formatDateShort(quake.period.start)} · before</span>
+              {quake.event_date && <span className="font-semibold text-text">{formatDateShort(quake.event_date)} · earthquake</span>}
+              <span>{formatDateShort(quake.period.end)} · after</span>
+            </div>
+            <p className="mt-1.5 text-[12px] leading-snug text-sub">
+              {quakeStep >= 1
+                ? 'The ground moved suddenly during the earthquake. Blue and red show how far, in opposite directions.'
+                : 'First radar pass: nothing has moved yet. Slide right to the second pass.'}
+            </p>
+          </div>
+        )}
         <div className="flex items-center gap-3">
           <button
             onClick={() => setPlaying(!isPlaying)}
@@ -86,7 +122,15 @@ export default function TimeSlider() {
           </div>
         </div>
         <p className="mt-2 border-t border-line pt-2 text-[11px] leading-snug text-sub">
-          The filled areas show what NISAR measured in that month (several radar passes combined). Data: NASA–ISRO NISAR.
+          {isOneOff ? (
+            <>
+              <span className="font-semibold text-text">The month slider does not change the earthquake.</span> It only
+              steps through the Lake Manzala wetlands. The earthquake happened in one moment, so use the
+              before / after slider above.
+            </>
+          ) : (
+            'The filled areas show what NISAR measured in that month (several radar passes combined). Data: NASA–ISRO NISAR.'
+          )}
         </p>
       </div>
     </div>

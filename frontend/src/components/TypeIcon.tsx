@@ -1,4 +1,4 @@
-import { Building2, Droplets, Sprout, TrendingDown, TrendingUp, Waves, type LucideProps } from 'lucide-react'
+import { Activity, Building2, Droplets, Sprout, TrendingDown, TrendingUp, Waves, type LucideProps } from 'lucide-react'
 import type { ChangeType } from '../types'
 
 const ICONS: Record<ChangeType, React.ComponentType<LucideProps>> = {
@@ -8,6 +8,7 @@ const ICONS: Record<ChangeType, React.ComponentType<LucideProps>> = {
   water: Waves,
   vegetation: Sprout,
   construction: Building2,
+  earthquake: Activity,
 }
 
 export default function TypeIcon({ type, ...p }: { type: ChangeType } & LucideProps) {

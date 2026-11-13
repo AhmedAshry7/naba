@@ -3,6 +3,11 @@
     search    what NISAR data exists over the AOI            (metadata only, no login needed)
     estimate  what one AOI window read would cost            (metadata only, login needed)
     export    stream, classify, vectorize and write the app's dataset
+
+Earthquakes (GUNW interferograms) have their own pair of commands:
+
+    quake-search   the interferograms that exist over the earthquake's AOI (metadata only)
+    quake-export   download the pair's layers, make the ground-motion story + frames
 """
 from __future__ import annotations
 
@@ -10,8 +15,8 @@ import argparse
 import logging
 import sys
 
-from .config import (FREQUENCY, GCOV_RES_DEG, MAJORITY_FILTER, MATURITY, MIN_AREA_KM2, PRESETS,
-                     PUBLIC_DATA, SIMPLIFY_M, get_preset)
+from .config import (EQ_PRESETS, FREQUENCY, GCOV_RES_DEG, GUNW_RES_DEG, MAJORITY_FILTER, MATURITY,
+                     MIN_AREA_KM2, PRESETS, PUBLIC_DATA, SIMPLIFY_M, get_eq_preset, get_preset)
 
 
 def _common(p: argparse.ArgumentParser) -> None:
@@ -61,7 +66,59 @@ def build_parser() -> argparse.ArgumentParser:
                    help=f"simplify tolerance in metres (default: {SIMPLIFY_M})")
     x.add_argument("--majority", type=int, default=MAJORITY_FILTER,
                    help=f"majority filter size, 0 to disable (default: {MAJORITY_FILTER})")
+    qs = sub.add_parser("quake-search", help="list GUNW interferograms over an earthquake's AOI")
+    qs.add_argument("--preset", default="panama", choices=sorted(EQ_PRESETS))
+    qs.add_argument("--maturity", default=MATURITY, choices=["PROVISIONAL", "BETA", "VALIDATED"])
+    qs.add_argument("-v", "--verbose", action="store_true")
+
+    qx = sub.add_parser("quake-export", help="download the earthquake's interferogram and write "
+                                             "its story + frames into frontend/public/data")
+    qx.add_argument("--preset", default="panama", choices=sorted(EQ_PRESETS))
+    qx.add_argument("--maturity", default=MATURITY, choices=["PROVISIONAL", "BETA", "VALIDATED"])
+    qx.add_argument("--out", default=str(PUBLIC_DATA), help="output directory")
+    qx.add_argument("--offline", action="store_true",
+                    help="use the downloaded subsets in cache/ only; never touch the network")
+    qx.add_argument("--no-frames", action="store_true", help="skip the two PNG frames")
+    qx.add_argument("--res-deg", type=float, default=GUNW_RES_DEG,
+                    help=f"output grid in degrees (default: {GUNW_RES_DEG}, about 90 m)")
+    qx.add_argument("-v", "--verbose", action="store_true")
     return ap
+
+
+def _cmd_quake_search(args) -> int:
+    from .search import search_nisar
+
+    p = get_eq_preset(args.preset)
+    print(f"{p.name}\n  bbox {list(p.bbox)}  {p.search_start} -> {p.search_end}  GUNW {args.maturity}\n")
+    df = search_nisar("GUNW", p.bbox, p.search_start, p.search_end, args.maturity)
+    if df.empty:
+        print("No granules found.")
+        return 1
+    df["chosen"] = df["name"].map(lambda n: "<- used" if n == p.granule
+                                  else ("alternate" if n in p.alt_granules else ""))
+    cols = [c for c in ("date", "track", "direction", "frame", "chosen", "name") if c in df]
+    print(df[cols].to_string(index=False))
+    return 0
+
+
+def _cmd_quake_export(args) -> int:
+    from pathlib import Path
+
+    from .quakes import run_quake_export
+
+    p = get_eq_preset(args.preset)
+    r = run_quake_export(p, public_data=Path(args.out), res_deg=args.res_deg,
+                         maturity=args.maturity, offline=args.offline,
+                         write_frames=not args.no_frames)
+    s = r["stats"]
+    print(f"\nWrote the {p.region} story ({p.story_id}) -> {args.out}")
+    print(f"  peak line-of-sight motion  up to {s['peak_los_m']} m  (~{s['fringes']} fringes of "
+          f"{s['fringe_cm']} cm)")
+    print(f"  usable area                {r['footprint_km2']:.0f} km2, mean coherence "
+          f"{s['mean_coherence']}")
+    print(f"  frames                     {r['frame_bytes'] / 1e3:.0f} kB")
+    print(f"  network moved              {r['network_MB']:.3f} MB")
+    return 0
 
 
 def _cmd_search(args) -> int:
@@ -134,7 +191,8 @@ def main(argv: list[str] | None = None) -> int:
     args = build_parser().parse_args(argv)
     logging.basicConfig(level=logging.DEBUG if args.verbose else logging.INFO,
                         format="%(message)s", stream=sys.stdout)
-    handler = {"search": _cmd_search, "estimate": _cmd_estimate, "export": _cmd_export}[args.command]
+    handler = {"search": _cmd_search, "estimate": _cmd_estimate, "export": _cmd_export,
+               "quake-search": _cmd_quake_search, "quake-export": _cmd_quake_export}[args.command]
     return handler(args)
 
 

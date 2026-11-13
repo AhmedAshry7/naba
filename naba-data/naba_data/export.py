@@ -76,6 +76,21 @@ def _compose_changes(sample_features: list[dict], real_features: list[dict]) -> 
     return {"type": "FeatureCollection", "features": real_features + sample_features}
 
 
+def _other_theme_features(public_data: Path) -> list[dict]:
+    """Real stories this exporter does not own (earthquakes, from `quake-export`): kept as is."""
+    return [f for f in _real_features(public_data)
+            if f.get("properties", {}).get("change_type") == "earthquake"]
+
+
+def _other_theme_layers(public_data: Path) -> list[dict]:
+    """Layers this exporter does not own: anything but the wetland class maps."""
+    path = public_data / "layers.json"
+    if not path.exists():
+        return []
+    return [l for l in json.loads(path.read_text(encoding="utf-8")).get("layers", [])
+            if l.get("id") != "wetland-classes"]
+
+
 # ---------------------------------------------------------------- the pipeline
 def run_export(preset: Preset, max_dates: int = 10, maturity: str = MATURITY,
                frequency: str = FREQUENCY, res_deg: float = GCOV_RES_DEG,
@@ -165,13 +180,14 @@ def run_export(preset: Preset, max_dates: int = 10, maturity: str = MATURITY,
         "label": f"Wetland classes · {preset.region}",
         "bounds": [[west, north], [east, north], [east, south], [west, south]],
         "frames": frame_entries,
-    }]}
+    }] + _other_theme_layers(public_data)}
 
     # 7 - write everything
     samples = load_sample_features(public_data, set(preset.supersedes)) if with_samples else []
     sizes = {
         "changes.geojson": _write_json(public_data / "changes.geojson",
-                                       _compose_changes(samples, story_features)),
+                                       _compose_changes(samples, story_features
+                                                                        + _other_theme_features(public_data))),
         "wetlands.geojson": _write_json(public_data / "wetlands.geojson",
                                         {"type": "FeatureCollection", "features": wetland_features}),
         "layers.json": _write_json(public_data / "layers.json", layers),

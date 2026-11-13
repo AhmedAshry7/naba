@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { ArrowDown, ArrowRight, ArrowUp, Check, Columns2, Link2, Sparkles, X } from 'lucide-react'
 import { useStore } from '../store'
-import { CLASS_META, formatCoords, formatDate, formatDateShort, formatValue } from '../lib'
+import { CLASS_META, formatCoords, formatDate, formatDateShort, formatValue, layerFor } from '../lib'
 import type { ChangeStory } from '../types'
 import ConfidenceBar from './ConfidenceBar'
 import SeriesChart from './SeriesChart'
@@ -21,7 +21,9 @@ function Stat({ label, value }: { label: string; value: string }) {
 function Body({ s }: { s: ChangeStory }) {
   const meta = CLASS_META[s.change_class]
   const Arrow = ARROWS[s.metric.direction] ?? ArrowRight
-  const hasFrames = useStore((st) => st.layers.length > 0)
+  const layer = useStore((st) => layerFor(st.layers, s))
+  const hasFrames = !!layer
+  const isViews = layer?.kind === 'views'
   const set = useStore((st) => st.set)
   const [copied, setCopied] = useState(false)
 
@@ -90,9 +92,11 @@ function Body({ s }: { s: ChangeStory }) {
           <Stat label="Area" value={`${s.area_km2} km²`} />
         </div>
 
-        <section className="rounded-card border border-line bg-card p-4">
-          <SeriesChart series={s.series} color={meta.color} label={s.metric.label} unit={s.metric.unit} />
-        </section>
+        {s.series.length >= 2 && (
+          <section className="rounded-card border border-line bg-card p-4">
+            <SeriesChart series={s.series} color={meta.color} label={s.metric.label} unit={s.metric.unit} />
+          </section>
+        )}
 
         <section>
           <h3 className="section-label mb-2">What's happening</h3>
@@ -134,7 +138,7 @@ function Body({ s }: { s: ChangeStory }) {
             className="btn flex-1 border border-line bg-card hover:bg-line disabled:cursor-not-allowed disabled:opacity-40"
             title={hasFrames ? undefined : 'No change images available yet'}
           >
-            <Columns2 size={16} aria-hidden /> Compare dates
+            <Columns2 size={16} aria-hidden /> {isViews ? 'See ground motion' : 'Compare dates'}
           </button>
         </div>
 

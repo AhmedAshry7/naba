@@ -1,5 +1,5 @@
 {
-  "exported_at": "2026-11-13T23:24:26+02:00",
+  "exported_at": "2026-11-14T00:33:24+02:00",
   "exporter": "naba_data 0.1.0",
   "source": {
     "mission": "NASA-ISRO NISAR",
@@ -296,19 +296,19 @@
   "ledger_totals": {
     "1-METADATA": {
       "MB": 0.0,
-      "seconds": 7.87,
+      "seconds": 3.79,
       "operations": 1
     },
     "cache/local": {
       "MB": 98.701,
-      "seconds": 3.08,
+      "seconds": 1.87,
       "operations": 18
     }
   },
   "output_bytes": {
-    "changes.geojson": 221963,
+    "changes.geojson": 253109,
     "wetlands.geojson": 439903,
-    "layers.json": 765,
+    "layers.json": 1503,
     "frames/*.png": 291142
   },
   "stories": [

@@ -1,4 +1,4 @@
-import type { ChangeClass, ChangeStory, Confidence, Filter, WetlandClass } from './types'
+import type { ChangeClass, ChangeStory, Confidence, Filter, Layer, WetlandClass } from './types'
 
 export const CLASS_META: Record<ChangeClass, { label: string; chip: string; color: string; tag: 'BREAKING' | 'UPDATE' }> = {
   significant: { label: 'Significant change', chip: 'SIGNIFICANT CHANGE', color: '#F0484D', tag: 'BREAKING' },
@@ -44,3 +44,12 @@ export const prefersReducedMotion = () =>
 export const EGYPT_VIEW = { center: [30.8, 26.8] as [number, number], zoom: 5 }
 export const GLOBE_VIEW = { center: [30.8, 26.8] as [number, number], zoom: 2.3 }
 export const DELTA_VIEW = { center: [31.1, 30.9] as [number, number], zoom: 7.4 }
+
+const covers = (l: Layer, s: ChangeStory) => {
+  const [[w, n], [e], [, so]] = l.bounds
+  return s.lon >= w && s.lon <= e && s.lat >= so && s.lat <= n
+}
+
+/** The image layer that belongs to this story: its own layer if it has one, else one covering it. */
+export const layerFor = (layers: Layer[], s: ChangeStory | undefined): Layer | undefined =>
+  !s ? undefined : layers.find((l) => l.story_id === s.id) ?? layers.find((l) => !l.story_id && covers(l, s))

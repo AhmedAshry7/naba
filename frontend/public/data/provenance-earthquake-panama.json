@@ -1,0 +1,80 @@
+{
+  "exported_at": "2026-11-14T00:55:15+02:00",
+  "exporter": "naba_data 0.1.0",
+  "source": {
+    "mission": "NASA-ISRO NISAR",
+    "product": "GUNW",
+    "maturity": "PROVISIONAL",
+    "frequency": "A",
+    "polarization": "HH"
+  },
+  "event": {
+    "magnitude": 7.7,
+    "time_utc": "2026-10-09T17:56:05Z",
+    "lat": 7.6069,
+    "lon": -80.7566,
+    "depth_km": 10.0,
+    "place": "Azuero peninsula, Panama",
+    "aftershocks": [
+      "M6.6 on 9 October (20:25 UTC)",
+      "M6.0 on 10 October",
+      "M6.1 on 12 October"
+    ],
+    "source": "USGS, as listed in the NISAR demo-sites file"
+  },
+  "granule": {
+    "name": "NISAR_L2_PR_GUNW_032_040_D_085_033_4000_SH_20261002T234516_20261002T234533_20261014T234516_20261014T234533_P05023_N_P_J_001",
+    "reference_date": "2026-10-02",
+    "secondary_date": "2026-10-14",
+    "h5_url": null
+  },
+  "alternates": [
+    "NISAR_L2_PR_GUNW_032_076_A_005_033_4000_SH_20261005T105604_20261005T105616_20261017T105604_20261017T105616_P05023_N_P_J_001",
+    "NISAR_L2_PR_GUNW_031_141_D_085_032_4000_SH_20260927T235335_20260927T235344_20261009T235335_20261009T235345_P05023_N_P_J_001"
+  ],
+  "preset": {
+    "key": "panama",
+    "bbox": [
+      -81.1,
+      7.2,
+      -80.3,
+      7.9
+    ]
+  },
+  "method": {
+    "grid_res_deg": 0.0008,
+    "wavelength_m": 0.242,
+    "los_m": "unwrappedPhase * wavelength / (4 pi)",
+    "reference": "median of 176001 far-field pixels",
+    "reference_min_km": 35.0,
+    "reference_m": 0.3375,
+    "min_coherence": 0.3,
+    "mask": "coherenceMagnitude >= min_coherence and connectedComponents > 0",
+    "layers": [
+      "unwrappedInterferogram/HH/unwrappedPhase",
+      "unwrappedInterferogram/HH/coherenceMagnitude",
+      "unwrappedInterferogram/HH/connectedComponents"
+    ],
+    "cache": "naba-data/cache/subsets (GeoTIFF, gitignored)"
+  },
+  "stats": {
+    "peak_los_m": 1.16,
+    "p01_m": -1.16,
+    "p99_m": 0.22,
+    "fringes": 11.4,
+    "fringe_cm": 12.1,
+    "mean_coherence": 0.54,
+    "valid_pct": 45.1,
+    "valid_km2": 3079.0
+  },
+  "footprint_km2": 3638.4,
+  "network_MB": 0,
+  "ledger_totals": {
+    "cache/local": {
+      "MB": 4.202,
+      "seconds": 0.12,
+      "operations": 3
+    }
+  },
+  "story": "panama-azuero-m77"
+}

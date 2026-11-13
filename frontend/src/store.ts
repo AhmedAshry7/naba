@@ -16,6 +16,8 @@ interface State {
   filter: Filter
   /** Index into `months`: which month the globe is showing. */
   monthIndex: number
+  /** One-off events: 0 = the 'before' date (nothing yet), 1 = the 'after' date (the change). */
+  quakeStep: number
   isPlaying: boolean
   explainOpen: boolean
   compareOpen: boolean
@@ -29,6 +31,7 @@ interface State {
   select: (id: string | null) => void
   setFilter: (f: Filter) => void
   setMonth: (i: number) => void
+  setQuakeStep: (n: number) => void
   setPlaying: (p: boolean) => void
   set: (p: Partial<State>) => void
   moveCamera: (target: CameraTarget) => void
@@ -62,6 +65,7 @@ export const useStore = create<State>((set, get) => ({
   selectedId: null,
   filter: 'all',
   monthIndex: 0,
+  quakeStep: 0,
   isPlaying: false,
   explainOpen: false,
   compareOpen: false,
@@ -87,7 +91,7 @@ export const useStore = create<State>((set, get) => ({
     }
   },
   select: (id) => {
-    set({ selectedId: id, explainOpen: false, feedOpenMobile: false })
+    set({ selectedId: id, explainOpen: false, feedOpenMobile: false, quakeStep: 0 })
     syncUrl(id)
   },
   setFilter: (filter) => {
@@ -97,6 +101,7 @@ export const useStore = create<State>((set, get) => ({
     if (sel && filter !== 'all' && sel.change_class !== filter) get().select(null)
   },
   setMonth: (monthIndex) => set({ monthIndex }),
+  setQuakeStep: (quakeStep) => set({ quakeStep }),
   setPlaying: (isPlaying) => set({ isPlaying }),
   set: (p) => set(p),
   moveCamera: (target) => set((s) => ({ camera: { target, n: (s.camera?.n ?? 0) + 1 } })),
