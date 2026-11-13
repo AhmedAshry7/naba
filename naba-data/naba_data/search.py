@@ -52,8 +52,12 @@ def parse_nisar_name(name: str) -> dict:
     dates = sorted({t[:8] for t in times})
     info["first_date"] = pd.to_datetime(dates[0]) if dates else pd.NaT
     info["start_time"] = pd.to_datetime(times[0]) if times else pd.NaT
-    crid = [t for t in tok if re.fullmatch(r"[A-Z]\d{5}", t)]
-    info["crid"] = crid[0] if crid else None
+    crid = [i for i, t in enumerate(tok) if re.fullmatch(r"[A-Z]\d{5}", t)]
+    info["crid"] = tok[crid[0]] if crid else None
+    # after the CRID: ..._<processing>_<frame coverage F|P>_<...>_<product counter>, e.g. _N_F_J_001
+    tail = tok[crid[0] + 1:] if crid else []
+    info["frame_coverage"] = tail[1] if len(tail) > 1 and tail[1] in ("F", "P") else None
+    info["product_version"] = int(tail[3]) if len(tail) > 3 and tail[3].isdigit() else None
     return info
 
 
@@ -168,6 +172,23 @@ def select_acquisitions(preset: Preset, max_dates: int = 10, maturity: str = MAT
     if lock_geometry:
         sel = single_geometry(sel)
     return spread_dates(sel, max_dates)
+
+
+def best_per_date(df: pd.DataFrame) -> pd.DataFrame:
+    """One granule per acquisition date and geometry: a full frame beats a partial-frame duplicate,
+    and the newest product version beats an older reprocessing of the same pass."""
+    if df.empty:
+        return df
+    d = df.copy()
+    d["_full"] = (d.get("frame_coverage") == "F").astype(int) if "frame_coverage" in d else 0
+    d["_ver"] = d["product_version"].fillna(0) if "product_version" in d else 0
+    keys = ["date"] + [k for k in ("track", "direction", "frame") if k in d]
+    d = d.sort_values(keys + ["_full", "_ver"])
+    dropped = len(d) - len(d.drop_duplicates(subset=keys, keep="last"))
+    if dropped:
+        log.info("Dropped %d duplicate granule(s) (partial frame or older product version)", dropped)
+    return d.drop_duplicates(subset=keys, keep="last").drop(columns=["_full", "_ver"]) \
+            .sort_values("date").reset_index(drop=True)
 
 
 def summarize(df: pd.DataFrame) -> str:

@@ -44,13 +44,14 @@ The shape of all this is one TypeScript interface, `ChangeStory` in
          ▼                                 ▼
   ┌──────────────────────────────────────────────────────────────────┐
   │  naba-data/  (Python exporter)                                   │
-  │  search → stream HH/HV windows → dB → classify → monthly         │
-  │  composites → vectorize → stories → write the dataset            │
+  │  search → stream HH/HV windows → dB → wetlands: classify +       │
+  │  monthly composites · fires: HV drop vs the pre-fire pass →      │
+  │  vectorize → stories → merge this preset into the dataset        │
   │  cache/  every AOI subset kept as GeoTIFF: a re-run moves 0 MB   │
   └──────────────────────────────────────────────────────────────────┘
          │ writes
          ▼
-  frontend/public/data/                     ← the dataset: 3 JSON shapes + PNG frames
+  frontend/public/data/                     ← the dataset: 4 JSON shapes + image frames
          │ fetch
          ▼
   frontend/src/data/loadData.ts             ← the ONE place the UI talks to a data source
@@ -62,11 +63,12 @@ The shape of all this is one TypeScript interface, `ChangeStory` in
 Two rules hold this together:
 
 1. **One data boundary.** Only `loadData.ts` knows where data comes from. With `VITE_API_URL`
-   unset it reads static files; set, it calls `GET {API}/changes`, `/wetlands`, `/layers`. A backend
+   unset it reads static files; set, it calls `GET {API}/changes`, `/wetlands`, `/fires`, `/layers`. A backend
    therefore only has to serve the same JSON — no component changes. (See §7.)
 2. **One writer per file.** The Python exporter owns `changes.geojson`, `wetlands.geojson`,
-   `layers.json` and `frames/`. The sample generator writes only `sample-stories.json`, which the
-   exporter folds in. A sample run can never overwrite real measurements.
+   `fires.geojson`, `layers.json` and `frames/`. The sample generator writes only
+   `sample-stories.json`, which the exporter folds in. A sample run can never overwrite real
+   measurements, and each `export --preset X` replaces only X's part of the dataset.
 
 ---
 
@@ -83,12 +85,14 @@ naba/
 │   │   ├── search.py            CMR search, granule-name parsing, dual-pol + one-geometry selection
 │   │   ├── remote.py            HDF5 over HTTPS: AOI window reads, reprojection, GeoTIFF cache
 │   │   ├── wetlands.py          dB, pixel classes, per-date indicators, monthly composites
+│   │   ├── fires.py             before/after pair, HV drop, burn tiers, burned area per pass
 │   │   ├── vectorize.py         class rasters → MultiPolygons + geodesic areas
-│   │   ├── frames.py            monthly class maps as transparent PNGs
+│   │   ├── frames.py            Compare-dates images: class maps, false colour, burn masks
 │   │   ├── stories.py           measured numbers → ChangeStory text (templated, no LLM)
-│   │   ├── export.py            the single writer of the dataset
+│   │   ├── export.py            the single writer of the dataset, merged per preset
 │   │   └── cli.py               python -m naba_data search | estimate | export
-│   ├── tests/                   thresholds, vectorization areas, story-shape contract
+│   ├── tests/                   thresholds, burn tiers, vectorization areas, story-shape
+│   │                            contract, per-preset merging
 │   ├── requirements.txt
 │   └── .env.example             EARTHDATA_USERNAME / EARTHDATA_PASSWORD
 └── frontend/                  React 18 + Vite + TypeScript + Tailwind + MapLibre GL v5 + Zustand
@@ -100,9 +104,9 @@ naba/
 The exploration notebook that this pipeline is a port of lives next to the repo, at
 `../notebooks/NABA_NISAR_Explorer*.ipynb`. It is the **method's source of truth**: it searches NISAR,
 previews it, reads it five different ways with a byte ledger, and works through three themes (fires,
-earthquakes, wetlands). `naba-data` is the production port of its Section 14 (wetlands), using the
-same thresholds and the same dB convention, so any number in the app can be reproduced cell by cell
-in Colab.
+earthquakes, wetlands). `naba-data` is the production port of its Section 14 (wetlands) and Section 12
+(fires), using the same thresholds and the same dB convention, so any number in the app can be
+reproduced cell by cell in Colab.
 
 `token.txt` at the repo root is gitignored and is not read by any code in this repo; credentials for
 the exporter come from `naba-data/.env` (see §5).
@@ -115,9 +119,10 @@ the exporter come from `naba-data/.env` (see §5).
 |---|---|---|
 | `changes.geojson` | the feed: one Feature per story, `ChangeStory` in `properties` | exporter |
 | `wetlands.geojson` | measured wetland extents, one Feature per class per month | exporter |
-| `layers.json` | the monthly class-map frames used by Compare-dates | exporter |
-| `frames/wetland_YYYY-MM.png` | those frames: transparent RGBA class maps at the ~20 m grid | exporter |
-| `provenance.json` | every granule, threshold, date and byte count behind the above | exporter |
+| `fires.geojson` | measured burn scars, one Feature per burn tier (likely / possible) | exporter |
+| `layers.json` | the image layers used by Compare-dates, each naming its preset and stories | exporter |
+| `frames/<preset>/…` | those images at the ~20 m grid: `wetland_YYYY-MM.png` class maps; for fires `rgb_YYYY-MM-DD.webp` false colour and `burn_YYYY-MM-DD.png` burn masks | exporter |
+| `provenance.json` | per preset: every granule, threshold, date and byte count behind the above | exporter |
 | `sample-stories.json` | the illustrative stories (all `is_sample: true`) | `npm run sample-data` |
 
 `frontend/src/types.ts` is authoritative for the field names and the allowed values;
@@ -130,6 +135,13 @@ the exporter come from `naba-data/.env` (see §5).
 - **A wetland feature** carries `class` (`open_water` / `flooded_vegetation`), `month` (`"2026-06"`),
   `month_label`, `area_km2` and the acquisition `dates` behind that month's composite. The distinct
   months become the steps on the globe's month slider.
+- **A fire feature** carries `tier` (`likely` / `possible`), `story_id`, `date` (its radar pass),
+  `role`, `headline` (the pass the story quotes), `area_km2` (the drawn polygons), `pixel_km2` (the
+  pixel count the story quotes) and the `before` pass it is compared with. There is one feature per
+  tier per pass: with a fire story selected, the globe's slider steps through that story's passes
+  (each fire story keeps its own position).
+- Every wetland feature, fire feature and layer also carries `preset`, which is how an export knows
+  which part of the dataset is its own.
 
 ### How the wetland data is produced
 
@@ -150,6 +162,26 @@ the exporter come from `naba-data/.env` (see §5).
    drop speckle-sized parts → simplify → union), with areas measured geodesically on WGS84.
 7. **Write** two stories (open water, flooded vegetation) whose outline is the "ever this class"
    envelope across all months, plus the monthly extents, the PNG frames and the provenance record.
+
+### How the fire data is produced (notebook Section 12)
+
+1. **Search** NISAR GCOV over the AOI and keep dual-polarization acquisitions.
+2. **Pair** the last pass before the event with the first pass after it, from the same track /
+   direction / frame (the geometry with the shortest gap wins, unless the preset pins one), then
+   take every pass of that geometry from the before date to the end of the search window, one
+   granule per date (full frame over partial, newest product version).
+3. **Stream** HH and HV for the AOI only, as for wetlands (cached as GeoTIFF).
+4. **Compare** each pass with the before pass: smooth speckle with a 5 × 5 boxcar (~100 m) on linear
+   power, then take the HV change in dB. HV comes from the canopy's volume scattering, so it falls
+   when fire removes leaves and branches.
+5. **Classify** each pixel: *likely burned* where HV fell by more than 3 dB (the notebook's rule),
+   *possibly burned* where it fell by 2–3 dB.
+6. **Measure** the burned area per pass (the story's chart) and take the headline from the first pass
+   after the event. Areas are pixel counts as in the notebook, so they reproduce in Colab.
+7. **Vectorize** both tiers at every pass (the burn slider's steps), and write one story (outline =
+   an envelope around both tiers at the headline pass), the burn extents, a false-colour and a
+   burn-mask frame per pass, and the provenance record, which includes the officially reported fire
+   size for comparison.
 
 ---
 
@@ -179,9 +211,14 @@ cp .env.example .env          # then fill in EARTHDATA_USERNAME / EARTHDATA_PASS
 python -m naba_data search   --preset manzala     # what NISAR data exists (metadata only, no login)
 python -m naba_data estimate --preset manzala     # MB one AOI window read would move
 python -m naba_data export   --preset manzala     # the real thing: writes frontend/public/data
+python -m naba_data export   --preset plaskett    # the Plaskett Fire; merges in next to manzala
 ```
 
-Useful flags: `--max-dates N` (how many acquisitions to stream, default 10), `--offline` (use the
+Each export replaces only its own preset's stories, extents, layers, frames and provenance block,
+so presets can be exported in any order.
+
+Useful flags: `--max-dates N` (wetlands: how many acquisitions to stream, default 10; fires use
+every pass from the before date on), `--offline` (use the
 GeoTIFF cache only, never the network), `--samples-only` (rebuild the feed from existing files; no
 credentials, no scientific dependencies needed), `--no-samples` (real stories only),
 `--min-area-km2` / `--simplify-m` (how much detail the vector extents keep),
@@ -205,13 +242,19 @@ cd naba-data && . ~/.venvs/naba/bin/activate && pytest        # unit tests
 
 ### Presets
 
-| Preset | Area | Bounding box | Period |
-|---|---|---|---|
-| `manzala` | Lake Manzala wetlands, Nile Delta, Egypt | 31.95, 31.15 → 32.20, 31.40 | 2026-06-17 → 2026-11-13 |
-| `okavango` | Okavango Delta (central delta), Botswana | 22.55, −19.55 → 22.90, −19.20 | 2026-06-17 → 2026-11-13 |
+| Preset | Theme | Area | Bounding box | Period |
+|---|---|---|---|---|
+| `manzala` | wetlands | Lake Manzala wetlands, Nile Delta, Egypt | 31.95, 31.15 → 32.20, 31.40 | 2026-06-17 → 2026-11-13 |
+| `okavango` | wetlands | Okavango Delta (central delta), Botswana | 22.55, −19.55 → 22.90, −19.20 | 2026-06-17 → 2026-11-13 |
+| `plaskett` | fires | Plaskett Fire, Big Sur, California (event 26 Aug → 30 Sep 2026) | −121.55, 35.78 → −121.25, 36.02 | 2026-08-01 → 2026-10-15 |
+| `everglades` | fires | Everglades drought fires, Florida (event 1 → 24 Aug 2026; 170 D frame 76 pinned) | −80.95, 25.25 → −80.55, 25.65 | 2026-07-01 → 2026-09-30 |
 
-`manzala` is the shipped dataset. Both come straight from the notebook's wetland presets; add more
-in `naba_data/config.py`.
+`manzala`, `plaskett` and `everglades` are the shipped dataset. The wetland presets come straight
+from the notebook; the fire presets come from `NISAR_demo_sites.md` (Fires #1 and #4). Add more in
+`naba_data/config.py`: a fire preset needs `theme="fires"`, `event_start` / `event_end` and a
+`burn_scar` story id, and can pin a viewing geometry (`geometry=(track, "ASC"|"DSC", frame)`) when
+several tie, plus its own wording (`fire_vegetation`, `fire_caveat`). Where a pass has duplicate
+granules, a full frame beats a partial frame and the newest product version wins.
 
 ---
 
@@ -222,14 +265,16 @@ These are product rules, not nice-to-haves. Breaking one is a bug.
 - **Sample data is always labelled.** Any loaded story with `is_sample: true` turns on the gold
   "Sample data · concept preview" badge in the top bar, plus "sample values for preview" in the
   story panel and the explain dialog. The feed is deliberately mixed today: the Lake Manzala wetland
-  stories are measured, the rest are illustrative.
+  stories and the Plaskett Fire story are measured, the rest are illustrative.
 - **Measurements are traceable.** `provenance.json` lists every granule used (name, date, track,
   frame, polarization, URL), the thresholds and grid resolution applied, the dates that were skipped
   and why, the per-date indicator table, and how many megabytes moved.
 - **No overclaiming.** The wetland classes are exploratory dB thresholds on L-band backscatter, not
   a validated flood map: wind on water, wet soil and a different look angle move the same numbers.
   Confidence is never reported as `high` for them, and the limits are stated in the legend, the
-  story's confidence note and the explanation itself.
+  story's confidence note and the explanation itself. The same holds for the burn tiers: they are
+  exploratory thresholds on the HV drop, not a burn-severity map, and the fire story quotes the
+  officially reported fire size, with its source, next to the radar's number.
 - **Causes are possibilities.** `causes` is phrased as what the pattern is consistent with, with
   `next_step` naming the independent data a reader would need to be sure.
 - **Generated text is labelled.** `explanation_ai_generated: true` shows "AI-assisted explanation,
@@ -247,6 +292,9 @@ These are product rules, not nice-to-haves. Breaking one is a bug.
 
 - Lake Manzala wetlands from NISAR GCOV (Jun–Oct 2026): two stories, monthly vector extents on the
   globe with a month slider, monthly class maps in Compare-dates, full provenance.
+- Plaskett Fire, Big Sur, from NISAR GCOV (16 Aug → 15 Oct 2026, 42 D frame 70): one burn-scar story
+  with burned area per pass, likely / possibly burned extents on the globe with a slider that steps
+  through the six radar passes, false-colour and burn-mask frames in Compare-dates, full provenance.
 
 **Still illustrative**
 
@@ -257,10 +305,9 @@ These are product rules, not nice-to-haves. Breaking one is a bug.
 
 1. **More AOIs through the same exporter** — each is a `Preset` plus story copy; the globe, slider
    and legend already handle several layers of months.
-2. **The notebook's other two themes.** Section 12 (fires: cross-pol drop before/after an event) and
-   Section 13 (earthquakes: GUNW interferograms, fringes to centimetres of line-of-sight motion) are
-   working analyses waiting for the same treatment — `change_class` and `change_type` already have
-   values for them.
+2. **The notebook's earthquake theme.** Section 13 (GUNW interferograms, fringes to centimetres of
+   line-of-sight motion) is a working analysis waiting for the same treatment that Section 12
+   (fires) now has.
 3. **FastAPI serving the same shapes.** `GET /changes`, `/wetlands`, `/layers` returning the
    exporter's output verbatim; the frontend needs only `VITE_API_URL`. `requirements.txt` already
    carries FastAPI, Uvicorn and Pydantic.

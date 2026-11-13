@@ -167,3 +167,133 @@ def build_story(preset: Preset, class_value: int, ts: pd.DataFrame, envelope_are
         published=published or dt.date.today().isoformat(),
         is_sample=False,
     )
+
+
+# ---------------------------------------------------------------- fire stories
+FIRE_CONFIDENCE_NOTE = ("Exploratory thresholds on the drop in L-band cross-polarised radar, not a "
+                        "validated burn map")
+
+
+def _fire_physics_sentence(preset: Preset) -> str:
+    return (f"Healthy vegetation returns a strong cross-polarised (HV) radar signal from "
+            f"{preset.fire_vegetation}; when fire removes them, the signal drops by several "
+            f"decibels.")
+
+
+def _fire_threshold_sentence(th: dict) -> str:
+    return (f"Pixels whose HV fell by more than {-th['likely_db']:.0f} dB are counted as likely "
+            f"burned, and by {-th['possible_db']:.0f}–{-th['likely_db']:.0f} dB as possibly burned.")
+
+
+def _km2(v: float) -> str:
+    return f"{v:.0f} km²" if v >= 10 else f"{v:.1f} km²"
+
+
+def _reported_sentence(preset: Preset, likely: float, burned: float) -> str:
+    if not preset.reported_area_km2:
+        return ""
+    rep = preset.reported_area_km2
+    note = f" ({preset.reported_note})" if preset.reported_note else ""
+    src = f" Source: {preset.reported_source}." if preset.reported_source else ""
+    return (f"Fire reports put the fire at about {_km2(rep)}{note}. The radar's likely-burned area "
+            f"is {100 * likely / rep:.0f}% of that, and {100 * burned / rep:.0f}% with the possibly "
+            f"burned pixels added. A reported fire area is the whole perimeter: it includes unburned "
+            f"islands and ground fire under a canopy that survived, where the radar signal barely "
+            f"changes, so the radar is expected to flag less than the reported area.{src}")
+
+
+def build_fire_story(preset: Preset, ind: pd.DataFrame, pre_label: str, post_label: str,
+                     outline_area_km2: float, lat: float, lon: float,
+                     published: str | None = None, th: dict | None = None) -> dict:
+    """One fire ChangeStory dict (without geometry, which the exporter attaches as the Feature).
+
+    `ind` is `fires.burn_indicators`' table; `pre_label` the before pass every other pass is
+    compared with; `post_label` the first pass after the event window, which gives the headline.
+    """
+    from .config import BURN_THRESHOLDS
+
+    th = th or BURN_THRESHOLDS
+    ind = ind.sort_values("date").reset_index(drop=True)
+    by = ind.set_index("label")
+    post, pre = by.loc[post_label], by.loc[pre_label]
+    likely, possible = float(post["likely_km2"]), float(post["possible_km2"])
+    burned = likely + possible
+    series = [dict(date=r.label, value=round(float(r.likely_km2), 2)) for r in ind.itertuples()]
+    passes = len(ind)
+    confidence = "moderate" if passes >= 2 and float(post["coverage_pct"]) >= 80 else "low"
+    pre_d, post_d = _fmt_date(pre_label), _fmt_date(post_label)
+
+    summary = (f"Comparing NISAR's radar pass on {post_d} with {pre_d}, before the fire, about "
+               f"{_km2(likely)} lost so much cross-polarised signal that it is likely burned, and "
+               f"another {_km2(possible)} is possibly burned. {_fire_physics_sentence(preset)}")
+
+    during = ind[ind["role"] == "during"]
+    p1 = (f"NISAR passed over {preset.region} {passes} times between {pre_d} and "
+          f"{_fmt_date(ind['label'].iloc[-1])}, all from the same track and look direction so the "
+          f"passes can be compared. Each pass was compared with {pre_d}, the last pass before "
+          f"the fire started. {_fire_physics_sentence(preset)} Before comparing, the radar brightness "
+          f"was averaged over about 100 m to reduce speckle. {_fire_threshold_sentence(th)}")
+
+    if len(during):
+        parts = [f"{_km2(r.likely_km2)} on {_fmt_date(r.label)}" for r in during.itertuples()]
+        steps = parts[0] if len(parts) == 1 else ", ".join(parts[:-1]) + " and " + parts[-1]
+        p2 = (f"While the fire was burning, the likely-burned area read {steps}. On {post_d}, the "
+              f"first pass after the fire period, it was {_km2(likely)}, with {_km2(possible)} more "
+              f"possibly burned.")
+    else:
+        p2 = (f"On {post_d}, the first pass after the fire period, the likely-burned area was "
+              f"{_km2(likely)}, with {_km2(possible)} more possibly burned.")
+    later = ind[ind["date"] > pd.Timestamp(post_label)]
+    if len(later):
+        last = later.iloc[-1]
+        later_km2 = float(last["likely_km2"])
+        if later_km2 > 1.15 * likely:
+            trend = ("so the area kept growing after the fire period. That can mean the fire was "
+                     "still spreading at its edges, or that scorched vegetation kept drying out and "
+                     "losing its leaves")
+        elif later_km2 >= 0.7 * likely:
+            trend = "so the drop persists after the fire"
+        else:
+            trend = ("so the drop partly fades after the fire, which can happen when rain wets the "
+                     "ground or vegetation starts to recover")
+        p2 += f" The last pass, on {_fmt_date(last['label'])}, read {_km2(later_km2)}, {trend}."
+    p2 += (f" On the map, the burned patches are filled in two colours, likely and possibly burned; "
+           f"together they cover about {outline_area_km2:.0f} km². The story outline is drawn around "
+           f"them.")
+
+    p3 = _reported_sentence(preset, likely, burned)
+
+    p4 = ("What this does not say: these are threshold rules on radar brightness, not a verified "
+          "burn-severity map. Drying vegetation, a change in soil moisture after rain and wind in "
+          "the vegetation can also lower the signal."
+          + (f" {preset.fire_caveat}" if preset.fire_caveat else "")
+          + " Treat the outline as where to look first, not as the official burn scar.")
+
+    p5 = f"Why it matters: {preset.why_it_matters} {preset.next_step}"
+
+    return dict(
+        id=preset.story_ids["burn_scar"],
+        headline=f"Radar maps a burn scar of about {_km2(likely)} in {preset.region}",
+        region=preset.region,
+        subtitle=preset.subtitle,
+        lat=round(float(lat), 4),
+        lon=round(float(lon), 4),
+        change_class="significant",
+        change_type="fire",
+        metric=dict(label="Likely burned area", value=round(likely, 1),
+                    unit="km² likely burned", direction="upward"),
+        period=dict(start=series[0]["date"], end=series[-1]["date"]),
+        passes=passes,
+        area_km2=round(float(outline_area_km2), 1),
+        confidence=confidence,
+        confidence_note=FIRE_CONFIDENCE_NOTE,
+        summary=summary,
+        causes=list(preset.causes),
+        why_it_matters=preset.why_it_matters,
+        next_step=preset.next_step,
+        series=series,
+        explanation="\n\n".join(p for p in (p1, p2, p3, p4, p5) if p),
+        explanation_ai_generated=False,
+        published=published or dt.date.today().isoformat(),
+        is_sample=False,
+    )
