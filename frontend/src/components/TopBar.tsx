@@ -23,7 +23,6 @@ export default function TopBar() {
   const set = useStore((s) => s.set)
   return (
     <header className="relative z-20 flex h-[68px] shrink-0 items-center gap-3 border-b border-line bg-bg px-3 sm:px-5">
-      <div className="absolute inset-x-0 top-0 h-[3px] bg-gradient-to-r from-brand-blue via-sky to-gold" aria-hidden />
       <Logo width={128} />
       <span className="ml-1 hidden border-l border-line pl-4 text-[14px] text-sub md:block">Earth's news, before it breaks</span>
       <div className="ml-auto flex items-center gap-2 sm:gap-3">
