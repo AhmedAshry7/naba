@@ -26,7 +26,10 @@ export default function IntroScreen() {
           <Landing active={open} onStart={() => setStoryStarted(true)} />
         </>
       ) : (
-        <StoryIntro open={open} onDone={() => set({ introOpen: false })} />
+        <StoryIntro open={open} onDone={() => {
+          useStore.getState().select(null)
+          set({ introOpen: false, tourStep: 0 })
+        }} />
       )}
     </div>
   )

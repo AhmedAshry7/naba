@@ -29,6 +29,14 @@ interface State {
   compareOpen: boolean
   aboutOpen: boolean
   introOpen: boolean
+  /** The guided tour that runs once the intro ends: which step it is on (null = not running). */
+  tourStep: number | null
+  /** The story whose map layers the tour is showing (so its before/after image can appear without opening the panel). */
+  tourStory: string | null
+  /** Camera moves the tour asks MapView for. */
+  tourCam: TourCam | null
+  /** True once a tour scene has finished explaining: the map is handed back to the visitor. */
+  tourReady: boolean
   feedOpenMobile: boolean
   sidebarCollapsed: boolean
   camera: { target: CameraTarget; n: number } | null
@@ -47,6 +55,8 @@ interface State {
 const params = typeof window !== 'undefined' ? new URLSearchParams(window.location.search) : new URLSearchParams()
 export const isDemo = params.get('demo') === '1'
 const initialStory = params.get('story')
+/** ?tour=1 jumps straight into the guided tour (skips the intro). */
+const startTour = params.get('tour') === '1'
 
 /** The distinct months present in the wetland features, oldest first. */
 function monthsOf(wetlands: WetlandData | null): MonthStep[] {
@@ -54,6 +64,14 @@ function monthsOf(wetlands: WetlandData | null): MonthStep[] {
   const byMonth = new Map<string, string>()
   for (const f of wetlands.features) byMonth.set(f.properties.month, f.properties.month_label)
   return [...byMonth.entries()].sort(([a], [b]) => a.localeCompare(b)).map(([month, label]) => ({ month, label }))
+}
+
+export interface TourCam {
+  center: [number, number]
+  zoom: number
+  duration: number
+  pitch?: number
+  n: number
 }
 
 export interface FireTimeline {
@@ -101,7 +119,11 @@ export const useStore = create<State>((set, get) => ({
   explainOpen: false,
   compareOpen: false,
   aboutOpen: false,
-  introOpen: !isDemo && !initialStory,
+  introOpen: !isDemo && !initialStory && !startTour,
+  tourStep: startTour ? 0 : null,
+  tourStory: null,
+  tourCam: null,
+  tourReady: false,
   feedOpenMobile: false,
   sidebarCollapsed: typeof window !== 'undefined' && window.innerWidth >= 1024 && window.innerWidth < 1440,
   camera: null,

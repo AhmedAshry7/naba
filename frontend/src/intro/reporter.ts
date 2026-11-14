@@ -21,10 +21,11 @@ interface Viseme { t0: number; t1: number; o: number; w: number }
 const VOWEL_OPEN: Record<string, number> = { a: 1, e: 0.6, i: 0.5, o: 0.85, u: 0.7, y: 0.5 }
 const VOWEL_WIDE: Record<string, number> = { a: 0.9, e: 1, i: 1, o: 0.1, u: 0, y: 1 }
 
-function buildVisemes(): Viseme[] {
+/** Mouth shapes for one spoken line that starts at `start` and takes `say` seconds. */
+export function visemesFor(text: string, start: number, say: number): Viseme[] {
   const out: Viseme[] = []
-  for (const cue of CUES) {
-    const say = cue.say ?? Math.min(cue.end - cue.start, 3)
+  {
+    const cue = { text, start }
     const tokens = cue.text.replace(/[–—-]/g, ' ').split(/\s+/).filter(Boolean)
     const info = tokens.map((tk) => {
       const letters = tk.replace(/[^a-z]/gi, '').length || 1
@@ -48,12 +49,13 @@ function buildVisemes(): Viseme[] {
   }
   return out
 }
-const VISEMES = buildVisemes()
+export type { Viseme }
+const VISEMES: Viseme[] = CUES.flatMap((c) => visemesFor(c.text, c.start, c.say ?? Math.min(c.end - c.start, 3)))
 
 /** Mouth openness (0..1) and width (0 = round "oo", 1 = wide "ee") at time t. */
-export function mouthAt(t: number): { o: number; w: number } {
+export function mouthAt(t: number, list: Viseme[] = VISEMES): { o: number; w: number } {
   let o = 0, w = 0.6
-  for (const v of VISEMES) {
+  for (const v of list) {
     if (t <= v.t0 || t >= v.t1) continue
     const env = Math.pow(Math.sin((Math.PI * (t - v.t0)) / (v.t1 - v.t0)), 2) * v.o
     if (env > o) { o = env; w = v.w }
@@ -79,18 +81,44 @@ export function drawReporter(ctx: CanvasRenderingContext2D, L: Layout, t: number
   const pr = presence(t, portrait)
   if (pr.rise >= 1.2) return
   const H = portrait ? clamp(h * 0.24, 130, 200) : clamp(h * 0.4, 210, 370) // whole-body height in px
+  renderReporter(ctx, w, h, t, { side: pr.side, rise: pr.rise, H, mouth: mouthAt(t), calm: CALM, edge: portrait ? 10 : 40 })
+}
+
+/** How much her free hand moves while she talks: small, so she stays calm and the words do the work. */
+export const CALM = 0.1
+
+export interface ReporterOpts {
+  side: 'left' | 'right'
+  /** 0 = standing on the bottom edge, 1 = ducked below it */
+  rise: number
+  /** whole-body height in px */
+  H: number
+  mouth: { o: number; w: number }
+  /** 1 = the intro's lively gestures, smaller = calmer hands */
+  calm: number
+  edge: number
+  /** the mouth shape a moment ago, to work out how animated she is */
+  energyAt?: (dt: number) => number
+}
+
+/** Draws the reporter standing on the bottom edge of a w x h canvas. */
+export function renderReporter(ctx: CanvasRenderingContext2D, w: number, h: number, t: number, o: ReporterOpts) {
+  const pr = { side: o.side, rise: o.rise }
+  const H = o.H
   const s = H / 3.2 // 1 unit = 1/3.2 of her height
   const figW = s * 1.4
-  const bx = pr.side === 'right' ? w - figW / 2 - (portrait ? 10 : 40) : figW / 2 + 40
+  const bx = pr.side === 'right' ? w - figW / 2 - o.edge : figW / 2 + o.edge
   const by = h - 6 + pr.rise * (H * 1.12) // feet rest on the bottom edge; rise pushes her below the screen
 
-  const m = mouthAt(t)
-  const energy = clamp((m.o + mouthAt(t - 0.1).o + mouthAt(t - 0.2).o + mouthAt(t - 0.3).o) / 2) // how animated she is right now
+  const m = o.mouth
+  const past = o.energyAt ?? ((dt: number) => mouthAt(t - dt).o)
+  const energy = clamp((m.o + past(0.1) + past(0.2) + past(0.3)) / 2) // how animated she is right now
   const pose: Pose = {
-    o: m.o, wide: m.w, energy,
+    o: m.o, wide: m.w, energy, calm: o.calm,
     blink: (t * 0.33 + 0.1) % 1 < 0.045 ? 0.12 : 1,
-    sway: Math.sin(t * 1.5) * 0.02,
-    breathe: Math.sin(t * 2.2) * 0.012 + m.o * 0.01,
+    // she stands almost still: a slow, tiny sway and breath, nothing that follows the syllables
+    sway: Math.sin(t * 0.7) * 0.006,
+    breathe: Math.sin(t * 1.1) * 0.004,
   }
 
   // soft floor glow (stays on the screen edge even while she ducks)
@@ -111,7 +139,7 @@ export function drawReporter(ctx: CanvasRenderingContext2D, L: Layout, t: number
   ctx.restore()
 }
 
-interface Pose { o: number; wide: number; energy: number; blink: number; sway: number; breathe: number }
+interface Pose { o: number; wide: number; energy: number; calm: number; blink: number; sway: number; breathe: number }
 
 const SKIN = '#E9AE83', SKIN_SHADE = '#D2976C', HAIR = '#2A1A17', HAIR_LIGHT = '#4A2E27', BLAZER = '#0B4BAA', TROUSER = '#17264A', GOLD = '#E8B84A'
 
@@ -133,7 +161,7 @@ function drawBody(ctx: CanvasRenderingContext2D, t: number, p: Pose) {
   ctx.translate(0, p.breathe) // everything above the hips breathes a little
 
   // ----- free arm (left of screen), gestures while she talks -----
-  const gesture = 0.22 + p.energy * (0.95 + 0.3 * Math.sin(t * 4.6))
+  const gesture = 0.22 + (0.02 + 0.2 * p.calm * p.energy) * Math.sin(t * 0.8) + 0.03 * p.calm * p.energy
   const shL = { x: -0.5, y: -1.97 }
   const elL = { x: -0.62, y: -1.55 }
   const handL = { x: elL.x - 0.44 * Math.sin(gesture), y: elL.y + 0.44 * Math.cos(gesture) }
@@ -164,7 +192,7 @@ function drawBody(ctx: CanvasRenderingContext2D, t: number, p: Pose) {
   ctx.restore()
 
   // ----- mic arm (right of screen), mic held up to her mouth -----
-  const wob = Math.sin(t * 2.4) * 0.012 * (0.4 + p.energy)
+  const wob = 0
   const shR = { x: 0.5, y: -1.97 }
   const elR = { x: 0.74, y: -1.5 }
   const handR = { x: 0.5 + wob, y: -1.98 + wob }
@@ -190,7 +218,7 @@ function drawBody(ctx: CanvasRenderingContext2D, t: number, p: Pose) {
 function drawHead(ctx: CanvasRenderingContext2D, t: number, p: Pose) {
   // ponytail + hair behind the head
   ctx.save()
-  ctx.translate(0.3, -0.34); ctx.rotate(0.5 + p.sway * 4 + Math.sin(t * 2.2) * 0.06)
+  ctx.translate(0.3, -0.34); ctx.rotate(0.5 + p.sway * 4 + Math.sin(t * 0.9) * 0.02)
   ctx.fillStyle = HAIR
   ctx.beginPath(); ctx.moveTo(0, 0); ctx.bezierCurveTo(0.34, -0.02, 0.5, 0.3, 0.3, 0.55); ctx.bezierCurveTo(0.26, 0.28, 0.12, 0.12, 0, 0.1); ctx.closePath(); ctx.fill()
   ctx.restore()

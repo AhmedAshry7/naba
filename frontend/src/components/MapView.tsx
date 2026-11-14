@@ -3,7 +3,7 @@ import maplibregl, { type GeoJSONSource } from 'maplibre-gl'
 import 'maplibre-gl/dist/maplibre-gl.css'
 import type { Feature, FeatureCollection } from 'geojson'
 import { useStore, type FireTimeline } from '../store'
-import { DELTA_VIEW, EGYPT_VIEW, FIRE_META, GLOBE_VIEW, WETLAND_META, fitZoom, formatDateShort, layerFor, storyMeta } from '../lib'
+import { DELTA_VIEW, EGYPT_VIEW, FIRE_META, GLOBE_VIEW, WETLAND_META, fitZoom, formatDateShort, layerFor, prefersReducedMotion, storyMeta } from '../lib'
 
 export const BASEMAP = 'https://basemaps.cartocdn.com/gl/dark-matter-gl-style/style.json'
 
@@ -74,6 +74,8 @@ export default function MapView() {
   const quakeStep = useStore((s) => s.quakeStep)
   const camera = useStore((s) => s.camera)
   const projection = useStore((s) => s.projection)
+  const tourCam = useStore((s) => s.tourCam)
+  const tourStory = useStore((s) => s.tourStory)
 
   // ---- create the map once ----
   useEffect(() => {
@@ -90,7 +92,6 @@ export default function MapView() {
     mapRef.current = map
     if (import.meta.env.DEV) (window as unknown as { __map: maplibregl.Map }).__map = map
     map.addControl(new maplibregl.NavigationControl({ showCompass: false }), 'top-left')
-    map.addControl(new maplibregl.AttributionControl({ compact: false }), 'bottom-right')
 
     const popup = new maplibregl.Popup({ closeButton: false, closeOnClick: false, offset: 12 })
 
@@ -392,7 +393,7 @@ export default function MapView() {
   useEffect(() => {
     const map = mapRef.current
     if (!ready || !map) return
-    const story = stories.find((s) => s.id === selectedId)
+    const story = stories.find((s) => s.id === (selectedId ?? tourStory))
     const layer = story && layerFor(layers, story)?.kind === 'views' ? layerFor(layers, story) : undefined
     const frame = layer?.frames[0]
     if (!layer || !frame) {
@@ -410,7 +411,61 @@ export default function MapView() {
     }
     // before the change: nothing; after it: the measured motion appears at once
     map.setPaintProperty('event-frame', 'raster-opacity', quakeStep >= 1 ? 0.9 : 0)
-  }, [ready, selectedId, stories, layers, quakeStep])
+  }, [ready, selectedId, tourStory, stories, layers, quakeStep])
+
+  // ---- the shake: when the earthquake flips to 'after', the map jolts and the new ground settles
+  // into place, so the land is seen to move (a small, damped shudder, not a measurement) ----
+  const prevQuake = useRef(0)
+  useEffect(() => {
+    const map = mapRef.current
+    const was = prevQuake.current
+    prevQuake.current = quakeStep
+    if (!ready || !map || !(was < 1 && quakeStep >= 1)) return
+    const story = stories.find((s) => s.id === (selectedId ?? tourStory))
+    const layer = story && layerFor(layers, story)
+    const src = map.getSource('event-frame') as maplibregl.ImageSource | undefined
+    if (!layer || layer.kind !== 'views' || !src) return
+    const el = map.getContainer()
+    const amp = prefersReducedMotion() ? 0.5 : 1
+    const size = Math.abs(layer.bounds[1][0] - layer.bounds[0][0])
+    const DUR = 1500
+    const t0 = performance.now()
+    let raf = 0
+    const tick = (now: number) => {
+      const p = Math.min(1, (now - t0) / DUR)
+      const k = Math.exp(-3.4 * p) * Math.sin(p * Math.PI * 2 * 4.5) // damped wobble, settles at 0
+      const dx = size * 0.03 * k * amp
+      const dy = size * 0.018 * Math.sin(p * Math.PI * 2 * 3.5 + 1) * Math.exp(-3.4 * p) * amp
+      src.setCoordinates(layer.bounds.map(([x, y]) => [x + dx, y + dy]) as typeof layer.bounds)
+      el.style.transform = `translate(${(k * 7 * amp).toFixed(2)}px, ${(Math.sin(p * 40) * Math.exp(-4 * p) * 4 * amp).toFixed(2)}px)`
+      if (p < 1) raf = requestAnimationFrame(tick)
+      else {
+        src.setCoordinates(layer.bounds)
+        el.style.transform = ''
+      }
+    }
+    raf = requestAnimationFrame(tick)
+    return () => {
+      cancelAnimationFrame(raf)
+      el.style.transform = ''
+      src.setCoordinates(layer.bounds)
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [ready, quakeStep])
+
+  // ---- the guided tour's camera moves ----
+  useEffect(() => {
+    const map = mapRef.current
+    if (!ready || !map || !tourCam) return
+    map.flyTo({
+      center: tourCam.center,
+      zoom: tourCam.zoom,
+      pitch: tourCam.pitch ?? 0,
+      duration: tourCam.duration,
+      essential: true,
+      padding: { top: 0, bottom: 0, left: 0, right: 0 },
+    })
+  }, [ready, tourCam])
 
   // ---- camera commands (demo mode / reset) ----
   useEffect(() => {

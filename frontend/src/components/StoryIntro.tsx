@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { ArrowRight, Pause, Play, RotateCcw, SkipForward, Volume2, VolumeX } from 'lucide-react'
 import { draw } from '../intro/scene'
+import { pickKidVoice } from '../intro/voice'
 import { CHAPTERS, CUES, DURATION, cueIndexAt } from '../intro/script'
 
 const fmt = (s: number) => {
@@ -13,13 +14,6 @@ const startAt = (() => {
   const v = parseFloat(new URLSearchParams(window.location.search).get('t') ?? '')
   return Number.isFinite(v) ? v : 0
 })()
-/** Prefer a child-sounding voice (e.g. Microsoft Ana), then bright young-sounding English voices. */
-function pickKidVoice(): SpeechSynthesisVoice | null {
-  const vs = window.speechSynthesis.getVoices().filter((v) => /^en/i.test(v.lang))
-  const prefs = [/ana/i, /jenny/i, /aria/i, /michelle|sonia|natasha/i, /google us english/i, /samantha|zira|female/i]
-  for (const re of prefs) { const m = vs.find((v) => re.test(v.name)); if (m) return m }
-  return vs[0] ?? null
-}
 const reducedMotion = typeof window !== 'undefined' && window.matchMedia?.('(prefers-reduced-motion: reduce)').matches
 
 export default function StoryIntro({ open, onDone }: { open: boolean; onDone: () => void }) {
@@ -333,7 +327,7 @@ function Caption({ t }: { t: number }) {
       <span className="sr-only">{cue.text}</span>
       <p
         aria-hidden
-        className="max-w-[860px] rounded-2xl bg-bg/55 px-6 py-4 text-center font-display text-[clamp(20px,3.1vw,36px)] font-medium leading-[1.3] tracking-wide text-text backdrop-blur-sm"
+        className="max-w-[860px] rounded-2xl bg-bg/55 px-6 py-4 text-center font-display text-[clamp(18px,2.5vw,32px)] font-medium leading-[1.3] tracking-wide text-text backdrop-blur-sm"
         style={{ opacity: fadeOut }}
       >
         {words.map((wd, i) => {

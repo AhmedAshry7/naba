@@ -3,6 +3,7 @@ import { X } from 'lucide-react'
 import { useStore } from '../store'
 import { describeStory, formatCoords, formatDateShort, layersForStory, metricLine, storyMeta } from '../lib'
 import type { ChangeStory } from '../types'
+import StoryTime from './TimeSlider'
 
 function Stat({ label, value }: { label: string; value: string }) {
   return (
@@ -57,6 +58,15 @@ function Body({ s }: { s: ChangeStory }) {
           </p>
         </section>
 
+        <div className="grid grid-cols-3 gap-2.5">
+          <Stat label="Observed" value={`${formatDateShort(s.period.start)} – ${formatDateShort(s.period.end)}`} />
+          <Stat label="Radar passes" value={String(s.passes)} />
+          <Stat label="Area" value={`${s.area_km2} km²`} />
+        </div>
+      </div>
+
+      <div className="shrink-0 space-y-3 border-t border-line px-5 pb-5 pt-4">
+        <StoryTime story={s} />
         <button
           onClick={() => set({ compareOpen: true })}
           disabled={!hasFrames}
@@ -65,12 +75,6 @@ function Body({ s }: { s: ChangeStory }) {
         >
           {isViews ? 'See ground motion' : 'Compare dates'}
         </button>
-
-        <div className="grid grid-cols-3 gap-2.5">
-          <Stat label="Observed" value={`${formatDateShort(s.period.start)} – ${formatDateShort(s.period.end)}`} />
-          <Stat label="Radar passes" value={String(s.passes)} />
-          <Stat label="Area" value={`${s.area_km2} km²`} />
-        </div>
       </div>
     </>
   )

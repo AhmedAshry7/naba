@@ -7,15 +7,16 @@ import MapView from './components/MapView'
 import StoryPanel from './components/StoryPanel'
 import ExplainSection from './components/ExplainSection'
 import Legend from './components/Legend'
-import TimeSlider from './components/TimeSlider'
 import ProjectionToggle from './components/ProjectionToggle'
 import CompareModal from './components/CompareModal'
 import AboutModal from './components/AboutModal'
 import IntroScreen from './components/IntroScreen'
+import Tour from './components/Tour'
 
 export default function App() {
   const load = useStore((s) => s.load)
   const status = useStore((s) => s.status)
+  const touring = useStore((s) => s.tourStep !== null)
 
   useEffect(() => {
     load()
@@ -28,7 +29,8 @@ export default function App() {
     const onKey = (e: KeyboardEvent) => {
       if (e.key !== 'Escape') return
       const s = useStore.getState()
-      if (s.explainOpen) s.set({ explainOpen: false })
+      if (s.tourStep !== null) s.set({ tourStep: null, tourStory: null, tourReady: false })
+      else if (s.explainOpen) s.set({ explainOpen: false })
       else if (s.compareOpen) s.set({ compareOpen: false })
       else if (s.aboutOpen) s.set({ aboutOpen: false })
       else if (s.selectedId) s.select(null)
@@ -43,9 +45,8 @@ export default function App() {
 
       <main className="relative min-h-0 flex-1 overflow-hidden">
         <MapView />
-        <ProjectionToggle />
-        <Legend />
-        <TimeSlider />
+        {!touring && <ProjectionToggle />}
+        {!touring && <Legend />}
         <StoryPanel />
 
         {status === 'error' && (
@@ -65,6 +66,7 @@ export default function App() {
       <ExplainSection />
       <CompareModal />
       <AboutModal />
+      <Tour />
       <IntroScreen />
     </div>
   )
