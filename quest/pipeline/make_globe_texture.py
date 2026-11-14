@@ -64,11 +64,18 @@ def main():
     fig.patch.set_facecolor(OCEAN)
     ax.set_facecolor(OCEAN)
 
-    countries.plot(ax=ax, color=LAND, edgecolor="none")
-    countries.boundary.plot(ax=ax, color=COAST, linewidth=3.0 * px)  # soft coast halo
-    countries.plot(ax=ax, color=LAND, edgecolor=BORDER, linewidth=1.6 * px)
-    lakes.plot(ax=ax, color=OCEAN, edgecolor=COAST, linewidth=1.0 * px)
-    rivers.plot(ax=ax, color=RIVER, linewidth=1.4 * px)
+    # aspect=None: geopandas would otherwise squeeze the map ~0.16% horizontally and shift every coastline
+    countries.plot(ax=ax, color=LAND, edgecolor="none", aspect=None)
+    countries.boundary.plot(ax=ax, color=COAST, linewidth=3.0 * px, aspect=None)  # soft coast halo
+    countries.plot(ax=ax, color=LAND, edgecolor=BORDER, linewidth=1.6 * px, aspect=None)
+    lakes.plot(ax=ax, color=OCEAN, edgecolor=COAST, linewidth=1.0 * px, aspect=None)
+    rivers.plot(ax=ax, color=RIVER, linewidth=1.4 * px, aspect=None)
+    # pin the map to the exact image edges (lon -180..180, lat 90..-90)
+    ax.set_aspect("auto")
+    ax.set_position([0, 0, 1, 1])
+    ax.set_xlim(-180, 180)
+    ax.set_ylim(-90, 90)
+    assert ax.get_position().bounds == (0.0, 0.0, 1.0, 1.0), ax.get_position().bounds
 
     OUT.mkdir(parents=True, exist_ok=True)
     tex = OUT / "globe_dark.png"

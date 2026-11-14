@@ -996,64 +996,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6672ca92d627dd541ade65f25aa7bb49, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Nisar.Globe.GlobeSites
-  sites:
-  - id: nile_delta
-    name: Nile Delta farmland
-    lat: 30.8
-    lon: 31
-    type: 0
-    story: Crop growth raises HV backscatter (volume scattering from leaves); harvest
-      drops it again.
-  - id: alexandria
-    name: Alexandria coast
-    lat: 31.2
-    lon: 29.9
-    type: 3
-    story: Interferograms reveal millimetres of coastal subsidence per year.
-  - id: toshka
-    name: Toshka Lakes
-    lat: 23
-    lon: 30.8
-    type: 1
-    story: 'Open water is radar-dark in HH: lakes grow and shrink with Lake Nasser
-      spillover.'
-  - id: lake_chad
-    name: Lake Chad
-    lat: 13.3
-    lon: 14.1
-    type: 1
-    story: A shallow lake and wetland whose flooded area swings between seasons.
-  - id: mesopotamian_marshes
-    name: Mesopotamian Marshes
-    lat: 31
-    lon: 47
-    type: 1
-    story: Flooded vegetation gives bright double-bounce returns in HH.
-  - id: aral_sea
-    name: Aral Sea
-    lat: 45
-    lon: 59.8
-    type: 1
-    story: 'A shrinking inland sea: shorelines move kilometres between acquisitions.'
-  - id: sundarbans
-    name: Sundarbans
-    lat: 21.9
-    lon: 89.2
-    type: 1
-    story: Mangrove wetlands and monsoon flooding in the Ganges delta.
-  - id: evros_fire
-    name: Evros wildfire
-    lat: 41
-    lon: 26
-    type: 2
-    story: Burned forest loses canopy, so HV backscatter drops sharply after the
-      fire.
-  - id: reykjanes
-    name: Reykjanes volcano
-    lat: 63.88
-    lon: -22.45
-    type: 3
-    story: Magma intrusion uplifts and cracks the ground before eruptions.
   loadStories: 1
   selectRadiusKm: 400
   pinSize: 0.035

@@ -15,13 +15,17 @@ quest/
 ## What it does
 
 1. **Intro**: the NABA logo sweeps in, the satellite flies in and lands on the last letter, then press **Let's start**.
-2. **Globe**: rotate it, zoom it, point at pins. Pins are the real stories from `frontend/public/data/changes.geojson`,
-   coloured like the web legend (red significant, amber moderate, green stable, blue water).
-3. **Story**: tap a pin and the globe unrolls into a flat map of that area, with a detailed OpenStreetMap basemap in the
-   web map's colours and the radar layer (burn mask, false colour, wetland classes or interferogram) on top.
-   The panel on the right shows the headline, metric, observed period, radar passes, area, the radar image with a date
-   stepper, the over-time chart, measurements, causes, why it matters, next step, the full explanation, confidence and
-   data sources.
+2. **Globe**: rotate it, zoom it, point at pins. Pins are the stories in `frontend/public/data/changes.geojson`, at their
+   exact coordinates, coloured like the web map's guide: green earthquake, turquoise flooding (water rising),
+   blue water shrinking, red forest fire. A **GUIDE** legend floats next to the globe.
+3. **Story**: tap a pin and the globe unrolls into a flat map of that area (a detailed OpenStreetMap basemap in the
+   web map's colours) with the story's area highlighted. A panel opens on the right, laid out like the web panel:
+   the badge, headline, the web app's plain-language paragraphs, the metric line, Observed / Radar passes / Area,
+   and a **time slider** at the bottom. Moving the slider (or pressing play) changes what the map shows:
+   - fires: the likely / possibly burned areas of each radar pass (`fires.geojson`)
+   - floods and wetlands: open water and flooded vegetation for each month (`wetlands.geojson`)
+   - the earthquake: first pass, M7.7 mainshock, aftershocks, second pass (`provenance-earthquake-panama.json`)
+   Steps where the event is not happening yet (before the fire or the earthquake) are shown in grey.
 
 ## Controls (Quest controllers)
 
@@ -31,7 +35,7 @@ quest/
 | Right trigger hold + move | Rotate the globe / pan the map |
 | Right thumbstick left/right | Spin the globe / pan the map |
 | Right thumbstick up/down, left thumbstick, or both grips pulled apart | Zoom |
-| Point at the panel + trigger | Press its buttons; trigger-drag or thumbstick scrolls it |
+| Point at the panel + trigger | Press its buttons or drag the time slider; thumbstick up/down scrolls, left/right steps the slider |
 | A | Map: back to the globe. Globe: bring it in front of you |
 | B | Switch between the starfield and passthrough (your room) |
 
@@ -49,13 +53,14 @@ The **NISAR** menu in Unity can rebuild the scene objects (globe, intro, space b
 
 ## Updating the data
 
-The headset copy of the stories lives in `unity/Assets/Globe/Resources/Stories/`. When `frontend/public/data`
-changes, regenerate it:
+The headset copy of the stories lives in `unity/Assets/Globe/Resources/Stories/`. It is built from
+`frontend/public/data/`: `changes.geojson` (stories and panel text), plus `fires.geojson`, `wetlands.geojson` and
+`provenance-earthquake-panama.json` (the time sliders). When those change, regenerate it:
 
 ```bash
 cd quest/pipeline
 pip install -r requirements.txt
-python make_story_data.py          # stories, radar frames and detailed basemaps
+python make_story_data.py          # stories, panel text, detailed basemaps and per-step highlights
 ```
 
 Other scripts (only needed to restyle):
@@ -66,4 +71,5 @@ Other scripts (only needed to restyle):
 ## Credits
 
 NASA-ISRO NISAR data as processed by `naba-data`. Basemaps: (c) OpenStreetMap contributors, (c) CARTO.
+Oswald font (`unity/Assets/Globe/Resources/Fonts`): SIL Open Font License 1.1.
 Globe: Natural Earth (public domain).

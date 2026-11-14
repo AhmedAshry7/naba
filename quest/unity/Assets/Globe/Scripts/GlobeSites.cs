@@ -29,35 +29,12 @@ namespace Nisar.Globe
     [Serializable] public class SiteEvent : UnityEvent<SiteInfo> { }
     [Serializable] public class LocationEvent : UnityEvent<float, float> { }
 
-    /// Study-site pins on the globe, hover/selection highlighting and picking.
-    /// Uses the NABA stories (Resources/Stories/stories.json) when present, else the placeholder list below.
+    /// Story pins on the globe, hover/selection highlighting and picking.
+    /// Pins come only from the NABA stories (Resources/Stories/stories.json), each at the story's exact lat/lon
+    /// (the same point the web map uses); there are no placeholder sites.
     [RequireComponent(typeof(GlobeView))]
     public class GlobeSites : MonoBehaviour
     {
-        public List<SiteInfo> sites = new List<SiteInfo>
-        {
-            new SiteInfo { id = "nile_delta", name = "Nile Delta farmland", lat = 30.8f, lon = 31.0f, type = ChangeType.Agriculture,
-                story = "Crop growth raises HV backscatter (volume scattering from leaves); harvest drops it again." },
-            new SiteInfo { id = "alexandria", name = "Alexandria coast", lat = 31.2f, lon = 29.9f, type = ChangeType.Deformation,
-                story = "Interferograms reveal millimetres of coastal subsidence per year." },
-            new SiteInfo { id = "toshka", name = "Toshka Lakes", lat = 23.0f, lon = 30.8f, type = ChangeType.Water,
-                story = "Open water is radar-dark in HH: lakes grow and shrink with Lake Nasser spillover." },
-            new SiteInfo { id = "lake_chad", name = "Lake Chad", lat = 13.3f, lon = 14.1f, type = ChangeType.Water,
-                story = "A shallow lake and wetland whose flooded area swings between seasons." },
-            new SiteInfo { id = "mesopotamian_marshes", name = "Mesopotamian Marshes", lat = 31.0f, lon = 47.0f, type = ChangeType.Water,
-                story = "Flooded vegetation gives bright double-bounce returns in HH." },
-            new SiteInfo { id = "aral_sea", name = "Aral Sea", lat = 45.0f, lon = 59.8f, type = ChangeType.Water,
-                story = "A shrinking inland sea: shorelines move kilometres between acquisitions." },
-            new SiteInfo { id = "sundarbans", name = "Sundarbans", lat = 21.9f, lon = 89.2f, type = ChangeType.Water,
-                story = "Mangrove wetlands and monsoon flooding in the Ganges delta." },
-            new SiteInfo { id = "evros_fire", name = "Evros wildfire", lat = 41.0f, lon = 26.0f, type = ChangeType.Fire,
-                story = "Burned forest loses canopy, so HV backscatter drops sharply after the fire." },
-            new SiteInfo { id = "reykjanes", name = "Reykjanes volcano", lat = 63.88f, lon = -22.45f, type = ChangeType.Deformation,
-                story = "Magma intrusion uplifts and cracks the ground before eruptions." },
-        };
-
-        [Tooltip("Use the NABA stories from Resources/Stories/stories.json instead of the list above.")]
-        public bool loadStories = true;
         [Tooltip("A tap within this distance of a site selects it (on the flat map: within ~5 cm of the pin).")]
         public float selectRadiusKm = 400f;
         [Tooltip("Pin radius as a fraction of the globe radius.")]
@@ -78,11 +55,11 @@ namespace Nisar.Globe
         }
 
         readonly List<Pin> pins = new List<Pin>();
+        readonly List<SiteInfo> sites = new List<SiteInfo>();
+        public IReadOnlyList<SiteInfo> Sites => sites;
         GlobeView globe;
         Mesh disc;
         Material ringMat, innerMat, haloMat;
-        Transform probe;
-        float probeLat, probeLon;
         bool wasFlat;
         static readonly Quaternion FlatPinRotation = Quaternion.FromToRotation(Vector3.up, Vector3.back); // disc faces the viewer
         static readonly int ColorId = Shader.PropertyToID("_Color");
@@ -113,21 +90,13 @@ namespace Nisar.Globe
             innerMat = MakeMat(Color.white, 3002);
             haloMat = MakeMat(Color.white, 3000);
 
-            if (loadStories)
-            {
-                // Only the stories in the data: never fall back to the placeholder list.
-                sites = new List<SiteInfo>();
-                foreach (var st in StoryDatabase.All)
-                    sites.Add(new SiteInfo
-                    {
-                        id = st.id, name = st.region, lat = st.lat, lon = st.lon, story = st.summary,
-                        data = st, color = StoryDatabase.ClassColor(st.changeClass), label = st.kindLabel,
-                    });
-            }
+            foreach (var st in StoryDatabase.All)
+                sites.Add(new SiteInfo
+                {
+                    id = st.id, name = st.region, lat = st.lat, lon = st.lon, story = st.summary,
+                    data = st, color = st.ThemeColor, label = string.IsNullOrEmpty(st.themeLabel) ? st.kindLabel : st.themeLabel,
+                });
             foreach (var s in sites) pins.Add(CreatePin(s));
-
-            probe = CreateDisc("Probe", globe.Spin, ringMat).transform;
-            probe.gameObject.SetActive(false);
         }
 
         Material MakeMat(Color c, int queue)
@@ -188,7 +157,6 @@ namespace Nisar.Globe
                     PlaceOnSurface(p.root, p.site.lat, p.site.lon, 0.003f);
                     p.root.gameObject.SetActive(globe.Flatten < 0.5f || globe.InMapWindow(p.site.lat, p.site.lon, 0.01f));
                 }
-                PlaceOnSurface(probe, probeLat, probeLon, 0.003f);
             }
             wasFlat = flat;
 
@@ -233,7 +201,7 @@ namespace Nisar.Globe
 
         public void SetHover(SiteInfo s) => Hovered = s;
 
-        /// Selects the site near (lat, lon), or drops a probe marker if there is none.
+        /// Selects the story near (lat, lon); if there is none, nothing is marked.
         public void PickLocation(float lat, float lon)
         {
             var s = SiteNear(lat, lon);
@@ -243,17 +211,6 @@ namespace Nisar.Globe
                 return;
             }
             Select(null);
-            if (loadStories)
-            {
-                // no story here: nothing to mark
-                onLocationPicked.Invoke(lat, lon);
-                return;
-            }
-            probeLat = lat;
-            probeLon = lon;
-            PlaceOnSurface(probe, lat, lon, 0.003f);
-            probe.localScale = Vector3.one * globe.radius * pinSize * 0.5f;
-            probe.gameObject.SetActive(true);
             onLocationPicked.Invoke(lat, lon);
         }
 
@@ -262,7 +219,6 @@ namespace Nisar.Globe
             Selected = s;
             globe.HoldIdle = s != null;
             if (s == null) return;
-            probe.gameObject.SetActive(false);
             globe.FocusOn(s.lat, s.lon);
             onSiteSelected.Invoke(s);
         }

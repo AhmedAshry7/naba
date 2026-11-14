@@ -10,6 +10,7 @@ namespace Nisar.Globe
     public class StoryPresenter : MonoBehaviour
     {
         public StoryPanel Panel { get; private set; }
+        MapGuide guide;
 
         GlobeView globe;
         GlobeSites sites;
@@ -23,11 +24,15 @@ namespace Nisar.Globe
 
             Panel = new GameObject("StoryPanel", typeof(RectTransform)).AddComponent<StoryPanel>();
             Panel.Build();
+            guide = new GameObject("MapGuide", typeof(RectTransform)).AddComponent<MapGuide>();
+            guide.Build();
             Panel.Closed += () => { sites.Select(null); overlay.Hide(); basemap.Hide(); };
 
             basemap = gameObject.AddComponent<MapOverlay>();
             overlay = gameObject.AddComponent<MapOverlay>();
-            Panel.FrameChanged += (layer, frame) => overlay.Show(layer, frame);
+            // The map shows the measured areas (like the web map) for the panel's time step;
+            // the zone turns grey at steps where the event is not happening.
+            Panel.StepChanged += ShowStep;
         }
 
         void Start()
@@ -49,12 +54,19 @@ namespace Nisar.Globe
             if (!globe.IsMap) globe.EnterMap(s.lat, s.lon);
             s.GetBounds(out float minLat, out float minLon, out float maxLat, out float maxLon);
             globe.FitMapTo(minLat, minLon, maxLat, maxLon);
-            if (!s.HasLayers) overlay.Hide();
             if (s.basemap != null && !string.IsNullOrEmpty(s.basemap.resource))
                 basemap.ShowImage(s.basemap.bounds, Resources.Load<Texture2D>(s.basemap.resource));
             else
                 basemap.Hide();
-            Panel.Show(s); // also reports its first radar frame to the overlay
+            Panel.Show(s); // raises StepChanged with the story's opening step
+        }
+
+        void ShowStep(StoryFrame step)
+        {
+            var s = Panel.Story;
+            string res = step != null ? step.resource : s?.highlights?.zone;
+            if (s?.highlights == null || string.IsNullOrEmpty(res)) { overlay.Hide(); return; }
+            overlay.ShowImage(s.highlights.bounds, Resources.Load<Texture2D>(res));
         }
 
         void CloseStory()
@@ -69,11 +81,14 @@ namespace Nisar.Globe
             if (wasMap && !globe.IsMap) CloseStory(); // back to the globe
             wasMap = globe.IsMap;
             Panel.SetAnchor(globe.PanelAnchor(StoryPanel.WidthMetres), globe.transform.rotation);
+            guide.SetAnchor(globe.LowerLeftAnchor(MapGuide.WidthPx * MapGuide.MetresPerPx, MapGuide.HeightPx * MapGuide.MetresPerPx),
+                            globe.transform.rotation);
         }
 
         void OnDestroy()
         {
             if (Panel != null) Destroy(Panel.gameObject);
+            if (guide != null) Destroy(guide.gameObject);
         }
     }
 }

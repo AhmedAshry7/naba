@@ -8,17 +8,18 @@
    "lat": 7.6069,
    "lon": -80.7566,
    "changeClass": "significant",
-   "changeClassLabel": "Significant change",
    "changeType": "earthquake",
    "category": "earthquake",
    "kindLabel": "EARTHQUAKE",
+   "theme": "earthquake",
+   "themeLabel": "Earthquake",
+   "themeColor": "#3DD68C",
    "metricLabel": "Ground motion along the satellite's line of sight",
    "metricValue": 1.16,
    "metricUnit": "metres, up to",
    "metricDirection": "upward",
    "periodStart": "2026-10-02",
    "periodEnd": "2026-10-14",
-   "periodLabel": "2 Oct 2026 – 14 Oct 2026",
    "passes": 2,
    "areaKm2": 3638.4,
    "confidence": "moderate",
@@ -37,116 +38,93 @@
    "published": "2026-11-14",
    "isSample": false,
    "series": [],
-   "seriesLabel": "GROUND MOTION ALONG THE SATELLITE'S LINE OF SIGHT OVER TIME",
-   "measurements": [
-    {
-     "label": "Magnitude",
-     "value": "M7.7"
-    },
-    {
-     "label": "Depth",
-     "value": "10.0 km"
-    },
-    {
-     "label": "Peak line-of-sight motion",
-     "value": "1.16 m"
-    },
-    {
-     "label": "Fringes",
-     "value": "11.4 × 12.1 cm"
-    },
-    {
-     "label": "Mean coherence",
-     "value": "0.54"
-    },
-    {
-     "label": "Valid area",
-     "value": "3079.0 km² (45.1%)"
-    },
-    {
-     "label": "Aftershock",
-     "value": "M6.6 on 9 October (20:25 UTC)"
-    },
-    {
-     "label": "Aftershock",
-     "value": "M6.0 on 10 October"
-    },
-    {
-     "label": "Aftershock",
-     "value": "M6.1 on 12 October"
-    }
+   "paragraphs": [
+    "A magnitude 7.7 earthquake struck here on 9 Oct 2026. NISAR flew over twice, on 2 Oct and 14 Oct, so the two passes sit either side of the shock.",
+    "Putting them together shows the ground moved by up to 1.2 m along the satellite's line of sight. Across the map the two extremes are about 1.4 m apart.",
+    "That is a lot. Radar can pick up movements of a few centimetres: each of the 11 colour cycles on the picture is only about 12 cm, so a metre or more is large. The picture covers about 3,638 km² around the earthquake, measured from space.",
+    "Aftershocks of magnitude 6.6, 6.0 and 6.1 fell in the same 12 days, so the map shows all of them together."
    ],
-   "layers": [
-    {
-     "label": "Ground motion · Azuero peninsula, Panama",
-     "shortLabel": "Radar",
-     "bounds": [
-      -81.1,
-      7.9,
-      -80.3,
-      7.9,
-      -80.3,
-      7.2,
-      -81.1,
-      7.2
-     ],
-     "frames": [
-      {
-       "date": "2026-10-14",
-       "label": "14 Oct 2026",
-       "resource": "Stories/frames/panama/quake_panama_los"
-      },
-      {
-       "date": "2026-10-14",
-       "label": "14 Oct 2026",
-       "resource": "Stories/frames/panama/quake_panama_fringes"
-      }
-     ]
-    },
-    {
-     "label": "Interferogram · Azuero peninsula",
-     "shortLabel": "Interferogram",
-     "bounds": [
-      -81.1,
-      7.9,
-      -80.3,
-      7.9,
-      -80.3,
-      7.2,
-      -81.1,
-      7.2
-     ],
-     "frames": [
-      {
-       "date": "2026-10-14",
-       "label": "Fringes",
-       "resource": "Stories/frames/panama/quake_panama_fringes"
-      },
-      {
-       "date": "2026-10-14",
-       "label": "Line-of-sight motion",
-       "resource": "Stories/frames/panama/quake_panama_los"
-      }
-     ]
-    }
-   ],
-   "dataSource": [
-    "NASA-ISRO NISAR · GUNW (provisional), HH interferogram",
-    "Pair: 2 Oct 2026 and 14 Oct 2026",
-    "Earthquake details: USGS, as listed in the NISAR demo-sites file"
+   "metricLine": "Up to 1.2 m of ground motion · 2 Oct – 14 Oct 2026",
+   "observedLabel": "2 Oct – 14 Oct",
+   "areaLabel": "3638.4 km²",
+   "bbox": [
+    -80.9312,
+    7.2048,
+    -80.3032,
+    7.8968
    ],
    "basemap": {
     "resource": "Stories/basemaps/panama-azuero-m77",
     "bounds": [
-     -82.09672417551474,
-     8.450000000000001,
-     -79.30327582448524,
-     8.450000000000001,
-     -79.30327582448524,
-     6.65,
-     -82.09672417551474,
-     6.65
+     -81.99796416890352,
+     8.440514285714286,
+     -79.23643583109647,
+     8.440514285714286,
+     -79.23643583109647,
+     6.661085714285714,
+     -81.99796416890352,
+     6.661085714285714
     ]
+   },
+   "highlights": {
+    "bounds": [
+     -81.99796416890352,
+     8.440514285714286,
+     -79.23643583109647,
+     8.440514285714286,
+     -79.23643583109647,
+     6.661085714285714,
+     -81.99796416890352,
+     6.661085714285714
+    ],
+    "zone": "Stories/highlights/panama-azuero-m77/zone",
+    "frames": [
+     {
+      "date": "2026-10-02",
+      "label": "2 Oct",
+      "detail": "First radar pass · 2 Oct 2026 · before the earthquake",
+      "resource": "Stories/highlights/panama-azuero-m77/before",
+      "active": false
+     },
+     {
+      "date": "2026-10-09",
+      "label": "9 Oct",
+      "detail": "M7.7 mainshock at 17:56 UTC · 10 km deep · Azuero peninsula, Panama",
+      "resource": "Stories/highlights/panama-azuero-m77/mainshock",
+      "active": true
+     },
+     {
+      "date": "2026-10-09",
+      "label": "9 Oct",
+      "detail": "M6.6 aftershock at 20:25 UTC",
+      "resource": "Stories/highlights/panama-azuero-m77/aftershock_0",
+      "active": true
+     },
+     {
+      "date": "2026-10-10",
+      "label": "10 Oct",
+      "detail": "M6.0 aftershock",
+      "resource": "Stories/highlights/panama-azuero-m77/aftershock_1",
+      "active": true
+     },
+     {
+      "date": "2026-10-12",
+      "label": "12 Oct",
+      "detail": "M6.1 aftershock",
+      "resource": "Stories/highlights/panama-azuero-m77/aftershock_2",
+      "active": true
+     },
+     {
+      "date": "2026-10-14",
+      "label": "14 Oct",
+      "detail": "Second radar pass · up to 1.16 m of motion · 11.4 fringes of 12.1 cm",
+      "resource": "Stories/highlights/panama-azuero-m77/after",
+      "active": true
+     }
+    ],
+    "kind": "pass",
+    "title": "EARTHQUAKE TIMELINE",
+    "defaultIndex": 5
    }
   },
   {
@@ -157,17 +135,18 @@
    "lat": 25.4257,
    "lon": -80.6186,
    "changeClass": "water",
-   "changeClassLabel": "Water-related story",
    "changeType": "water",
    "category": "water",
-   "kindLabel": "WATER-RELATED STORY",
+   "kindLabel": "FLOODING",
+   "theme": "flood",
+   "themeLabel": "Flooding (water rising)",
+   "themeColor": "#00CED1",
    "metricLabel": "Open water",
    "metricValue": 12.5,
    "metricUnit": "% of area under open water",
    "metricDirection": "upward",
    "periodStart": "2026-06-17",
    "periodEnd": "2026-10-15",
-   "periodLabel": "17 Jun 2026 – 15 Oct 2026",
    "passes": 10,
    "areaKm2": 390.2,
    "confidence": "moderate",
@@ -227,90 +206,86 @@
      "value": 12.54
     }
    ],
-   "seriesLabel": "OPEN WATER OVER TIME",
-   "measurements": [
-    {
-     "label": "Jun 2026 · open water",
-     "value": "5.6 km²"
-    },
-    {
-     "label": "Jul 2026 · open water",
-     "value": "5.8 km²"
-    },
-    {
-     "label": "Aug 2026 · open water",
-     "value": "5.6 km²"
-    },
-    {
-     "label": "Sep 2026 · open water",
-     "value": "319.5 km²"
-    },
-    {
-     "label": "Oct 2026 · open water",
-     "value": "198.2 km²"
-    }
+   "paragraphs": [
+    "More of this area is under open water. It grew from 4.2% of the area on 17 Jun to 12.5% on 15 Oct.",
+    "It peaked at 27.0% on 3 Oct, about 6 times the 17 Jun level, then fell back to 12.5%.",
+    "The biggest single change came between 28 Aug and 9 Sep, when it went from 4.1% to 23.3%.",
+    "NISAR looked 10 times from the same angle, so the passes can be compared. Calm water is smooth, so it bounces the radar signal away and shows up dark."
    ],
-   "layers": [
-    {
-     "label": "Wetland classes · Everglades",
-     "shortLabel": "Wetland classes",
-     "bounds": [
-      -80.95,
-      25.65,
-      -80.55,
-      25.65,
-      -80.55,
-      25.25,
-      -80.95,
-      25.25
-     ],
-     "frames": [
-      {
-       "date": "2026-06-01",
-       "label": "1 Jun 2026",
-       "resource": "Stories/frames/everglades-wetlands/wetland_2026-06"
-      },
-      {
-       "date": "2026-07-01",
-       "label": "1 Jul 2026",
-       "resource": "Stories/frames/everglades-wetlands/wetland_2026-07"
-      },
-      {
-       "date": "2026-08-01",
-       "label": "1 Aug 2026",
-       "resource": "Stories/frames/everglades-wetlands/wetland_2026-08"
-      },
-      {
-       "date": "2026-09-01",
-       "label": "1 Sep 2026",
-       "resource": "Stories/frames/everglades-wetlands/wetland_2026-09"
-      },
-      {
-       "date": "2026-10-01",
-       "label": "1 Oct 2026",
-       "resource": "Stories/frames/everglades-wetlands/wetland_2026-10"
-      }
-     ]
-    }
-   ],
-   "dataSource": [
-    "NASA-ISRO NISAR · GCOV (provisional), 10 radar granules",
-    "Study area: Everglades, Florida, USA",
-    "Thresholds: water hh max -15.0 dB, water hv max -22.0 dB, flooded hh min -5.0 dB, flooded ratio min 7.0 dB",
-    "Method: NABA_NISAR_Explorer.ipynb Section 14"
+   "metricLine": "12.5 % of area under open water · 17 Jun – 15 Oct 2026",
+   "observedLabel": "17 Jun – 15 Oct",
+   "areaLabel": "390.2 km²",
+   "bbox": [
+    -80.95,
+    25.25,
+    -80.5668,
+    25.65
    ],
    "basemap": {
     "resource": "Stories/basemaps/everglades-open-water",
     "bounds": [
-     -81.62623841261038,
+     -81.63463841261037,
      25.96428571428571,
-     -79.87376158738962,
+     -79.88216158738962,
      25.96428571428571,
-     -79.87376158738962,
+     -79.88216158738962,
      24.935714285714287,
-     -81.62623841261038,
+     -81.63463841261037,
      24.935714285714287
     ]
+   },
+   "highlights": {
+    "bounds": [
+     -81.63463841261037,
+     25.96428571428571,
+     -79.88216158738962,
+     25.96428571428571,
+     -79.88216158738962,
+     24.935714285714287,
+     -81.63463841261037,
+     24.935714285714287
+    ],
+    "zone": "Stories/highlights/everglades-open-water/zone",
+    "frames": [
+     {
+      "date": "2026-06",
+      "label": "Jun 2026",
+      "detail": "Flooded vegetation 3.0 km² · Open water 5.6 km²",
+      "resource": "Stories/highlights/everglades-open-water/wetland_2026-06",
+      "active": true
+     },
+     {
+      "date": "2026-07",
+      "label": "Jul 2026",
+      "detail": "Flooded vegetation 19.4 km² · Open water 5.8 km²",
+      "resource": "Stories/highlights/everglades-open-water/wetland_2026-07",
+      "active": true
+     },
+     {
+      "date": "2026-08",
+      "label": "Aug 2026",
+      "detail": "Flooded vegetation 22.1 km² · Open water 5.6 km²",
+      "resource": "Stories/highlights/everglades-open-water/wetland_2026-08",
+      "active": true
+     },
+     {
+      "date": "2026-09",
+      "label": "Sep 2026",
+      "detail": "Flooded vegetation 60.5 km² · Open water 319.5 km²",
+      "resource": "Stories/highlights/everglades-open-water/wetland_2026-09",
+      "active": true
+     },
+     {
+      "date": "2026-10",
+      "label": "Oct 2026",
+      "detail": "Flooded vegetation 29.3 km² · Open water 198.2 km²",
+      "resource": "Stories/highlights/everglades-open-water/wetland_2026-10",
+      "active": true
+     }
+    ],
+    "kind": "pass",
+    "title": "MONTH SHOWN ON THE MAP",
+    "defaultIndex": 4
    }
   },
   {
@@ -321,17 +296,18 @@
    "lat": 25.4079,
    "lon": -80.7812,
    "changeClass": "water",
-   "changeClassLabel": "Water-related story",
    "changeType": "vegetation",
    "category": "water",
-   "kindLabel": "WATER-RELATED STORY",
+   "kindLabel": "FLOODING",
+   "theme": "flood",
+   "themeLabel": "Flooding (water rising)",
+   "themeColor": "#00CED1",
    "metricLabel": "Flooded vegetation",
    "metricValue": 8.4,
    "metricUnit": "% of area flooded vegetation",
    "metricDirection": "upward",
    "periodStart": "2026-06-17",
    "periodEnd": "2026-10-15",
-   "periodLabel": "17 Jun 2026 – 15 Oct 2026",
    "passes": 10,
    "areaKm2": 72.5,
    "confidence": "moderate",
@@ -391,90 +367,86 @@
      "value": 8.42
     }
    ],
-   "seriesLabel": "FLOODED VEGETATION OVER TIME",
-   "measurements": [
-    {
-     "label": "Jun 2026 · flooded vegetation",
-     "value": "3.0 km²"
-    },
-    {
-     "label": "Jul 2026 · flooded vegetation",
-     "value": "19.4 km²"
-    },
-    {
-     "label": "Aug 2026 · flooded vegetation",
-     "value": "22.1 km²"
-    },
-    {
-     "label": "Sep 2026 · flooded vegetation",
-     "value": "60.5 km²"
-    },
-    {
-     "label": "Oct 2026 · flooded vegetation",
-     "value": "29.3 km²"
-    }
+   "paragraphs": [
+    "More of the marsh here is flooded under the plants. It grew from 4.4% of the area on 17 Jun to 8.4% on 15 Oct.",
+    "It peaked at 10.4% on 11 Jul, about 2 times the 17 Jun level, then fell back to 8.4%.",
+    "The biggest single change came between 29 Jun and 11 Jul, when it went from 4.8% to 10.4%.",
+    "NISAR looked 10 times from the same angle, so the passes can be compared. Water standing among plants makes a corner that sends the signal straight back, so it shows up very bright. A normal camera from space cannot see water hidden under plants."
    ],
-   "layers": [
-    {
-     "label": "Wetland classes · Everglades",
-     "shortLabel": "Wetland classes",
-     "bounds": [
-      -80.95,
-      25.65,
-      -80.55,
-      25.65,
-      -80.55,
-      25.25,
-      -80.95,
-      25.25
-     ],
-     "frames": [
-      {
-       "date": "2026-06-01",
-       "label": "1 Jun 2026",
-       "resource": "Stories/frames/everglades-wetlands/wetland_2026-06"
-      },
-      {
-       "date": "2026-07-01",
-       "label": "1 Jul 2026",
-       "resource": "Stories/frames/everglades-wetlands/wetland_2026-07"
-      },
-      {
-       "date": "2026-08-01",
-       "label": "1 Aug 2026",
-       "resource": "Stories/frames/everglades-wetlands/wetland_2026-08"
-      },
-      {
-       "date": "2026-09-01",
-       "label": "1 Sep 2026",
-       "resource": "Stories/frames/everglades-wetlands/wetland_2026-09"
-      },
-      {
-       "date": "2026-10-01",
-       "label": "1 Oct 2026",
-       "resource": "Stories/frames/everglades-wetlands/wetland_2026-10"
-      }
-     ]
-    }
-   ],
-   "dataSource": [
-    "NASA-ISRO NISAR · GCOV (provisional), 10 radar granules",
-    "Study area: Everglades, Florida, USA",
-    "Thresholds: water hh max -15.0 dB, water hv max -22.0 dB, flooded hh min -5.0 dB, flooded ratio min 7.0 dB",
-    "Method: NABA_NISAR_Explorer.ipynb Section 14"
+   "metricLine": "8.4 % of area flooded vegetation · 17 Jun – 15 Oct 2026",
+   "observedLabel": "17 Jun – 15 Oct",
+   "areaLabel": "72.5 km²",
+   "bbox": [
+    -80.8142,
+    25.2752,
+    -80.5748,
+    25.4548
    ],
    "basemap": {
     "resource": "Stories/basemaps/everglades-flooded-vegetation",
     "bounds": [
-     -81.62623841261038,
-     25.96428571428571,
-     -79.87376158738962,
-     25.96428571428571,
-     -79.87376158738962,
-     24.935714285714287,
-     -81.62623841261038,
-     24.935714285714287
+     -81.0876539058946,
+     25.595914285714283,
+     -80.30134609410541,
+     25.595914285714283,
+     -80.30134609410541,
+     25.13408571428572,
+     -81.0876539058946,
+     25.13408571428572
     ]
+   },
+   "highlights": {
+    "bounds": [
+     -81.0876539058946,
+     25.595914285714283,
+     -80.30134609410541,
+     25.595914285714283,
+     -80.30134609410541,
+     25.13408571428572,
+     -81.0876539058946,
+     25.13408571428572
+    ],
+    "zone": "Stories/highlights/everglades-flooded-vegetation/zone",
+    "frames": [
+     {
+      "date": "2026-06",
+      "label": "Jun 2026",
+      "detail": "Flooded vegetation 3.0 km² · Open water 5.6 km²",
+      "resource": "Stories/highlights/everglades-flooded-vegetation/wetland_2026-06",
+      "active": true
+     },
+     {
+      "date": "2026-07",
+      "label": "Jul 2026",
+      "detail": "Flooded vegetation 19.4 km² · Open water 5.8 km²",
+      "resource": "Stories/highlights/everglades-flooded-vegetation/wetland_2026-07",
+      "active": true
+     },
+     {
+      "date": "2026-08",
+      "label": "Aug 2026",
+      "detail": "Flooded vegetation 22.1 km² · Open water 5.6 km²",
+      "resource": "Stories/highlights/everglades-flooded-vegetation/wetland_2026-08",
+      "active": true
+     },
+     {
+      "date": "2026-09",
+      "label": "Sep 2026",
+      "detail": "Flooded vegetation 60.5 km² · Open water 319.5 km²",
+      "resource": "Stories/highlights/everglades-flooded-vegetation/wetland_2026-09",
+      "active": true
+     },
+     {
+      "date": "2026-10",
+      "label": "Oct 2026",
+      "detail": "Flooded vegetation 29.3 km² · Open water 198.2 km²",
+      "resource": "Stories/highlights/everglades-flooded-vegetation/wetland_2026-10",
+      "active": true
+     }
+    ],
+    "kind": "pass",
+    "title": "MONTH SHOWN ON THE MAP",
+    "defaultIndex": 4
    }
   },
   {
@@ -485,17 +457,18 @@
    "lat": -19.375,
    "lon": 22.8252,
    "changeClass": "water",
-   "changeClassLabel": "Water-related story",
    "changeType": "water",
    "category": "water",
-   "kindLabel": "WATER-RELATED STORY",
+   "kindLabel": "WATER SHRINKING",
+   "theme": "water",
+   "themeLabel": "Water shrinking",
+   "themeColor": "#4AA8FF",
    "metricLabel": "Open water",
    "metricValue": 14.3,
    "metricUnit": "% of area under open water",
    "metricDirection": "downward",
    "periodStart": "2026-06-26",
    "periodEnd": "2026-10-12",
-   "periodLabel": "26 Jun 2026 – 12 Oct 2026",
    "passes": 9,
    "areaKm2": 802.3,
    "confidence": "moderate",
@@ -550,77 +523,20 @@
      "value": 14.31
     }
    ],
-   "seriesLabel": "OPEN WATER OVER TIME",
-   "measurements": [
-    {
-     "label": "Jun 2026 · open water",
-     "value": "689.7 km²"
-    },
-    {
-     "label": "Jul 2026 · open water",
-     "value": "690.6 km²"
-    },
-    {
-     "label": "Aug 2026 · open water",
-     "value": "378.8 km²"
-    },
-    {
-     "label": "Sep 2026 · open water",
-     "value": "120.6 km²"
-    },
-    {
-     "label": "Oct 2026 · open water",
-     "value": "28.3 km²"
-    }
+   "paragraphs": [
+    "Less of this area is under open water. It fell from 48.0% of the area on 26 Jun to 14.3% on 12 Oct.",
+    "Only about 30% of the 26 Jun amount is left.",
+    "The biggest single change came between 8 Jul and 20 Jul, when it went from 51.1% to 42.5%.",
+    "NISAR looked 9 times from the same angle, so the passes can be compared. Calm water is smooth, so it bounces the radar signal away and shows up dark."
    ],
-   "layers": [
-    {
-     "label": "Wetland classes · Okavango Delta",
-     "shortLabel": "Wetland classes",
-     "bounds": [
-      22.55,
-      -19.2,
-      22.9,
-      -19.2,
-      22.9,
-      -19.55,
-      22.55,
-      -19.55
-     ],
-     "frames": [
-      {
-       "date": "2026-06-01",
-       "label": "1 Jun 2026",
-       "resource": "Stories/frames/okavango/wetland_2026-06"
-      },
-      {
-       "date": "2026-07-01",
-       "label": "1 Jul 2026",
-       "resource": "Stories/frames/okavango/wetland_2026-07"
-      },
-      {
-       "date": "2026-08-01",
-       "label": "1 Aug 2026",
-       "resource": "Stories/frames/okavango/wetland_2026-08"
-      },
-      {
-       "date": "2026-09-01",
-       "label": "1 Sep 2026",
-       "resource": "Stories/frames/okavango/wetland_2026-09"
-      },
-      {
-       "date": "2026-10-01",
-       "label": "1 Oct 2026",
-       "resource": "Stories/frames/okavango/wetland_2026-10"
-      }
-     ]
-    }
-   ],
-   "dataSource": [
-    "NASA-ISRO NISAR · GCOV (provisional), 9 radar granules",
-    "Study area: Okavango Delta (central delta), Botswana",
-    "Thresholds: water hh max -15.0 dB, water hv max -22.0 dB, flooded hh min -5.0 dB, flooded ratio min 7.0 dB",
-    "Method: NABA_NISAR_Explorer.ipynb Section 14"
+   "metricLine": "14.3 % of area under open water · 26 Jun – 12 Oct 2026",
+   "observedLabel": "26 Jun – 12 Oct",
+   "areaLabel": "802.3 km²",
+   "bbox": [
+    22.55,
+    -19.55,
+    22.9,
+    -19.2
    ],
    "basemap": {
     "resource": "Stories/basemaps/okavango-open-water",
@@ -634,6 +550,59 @@
      21.991131500472438,
      -19.825000000000003
     ]
+   },
+   "highlights": {
+    "bounds": [
+     21.991131500472438,
+     -18.924999999999997,
+     23.458868499527565,
+     -18.924999999999997,
+     23.458868499527565,
+     -19.825000000000003,
+     21.991131500472438,
+     -19.825000000000003
+    ],
+    "zone": "Stories/highlights/okavango-open-water/zone",
+    "frames": [
+     {
+      "date": "2026-06",
+      "label": "Jun 2026",
+      "detail": "Open water 689.7 km²",
+      "resource": "Stories/highlights/okavango-open-water/wetland_2026-06",
+      "active": true
+     },
+     {
+      "date": "2026-07",
+      "label": "Jul 2026",
+      "detail": "Open water 690.6 km²",
+      "resource": "Stories/highlights/okavango-open-water/wetland_2026-07",
+      "active": true
+     },
+     {
+      "date": "2026-08",
+      "label": "Aug 2026",
+      "detail": "Open water 378.8 km²",
+      "resource": "Stories/highlights/okavango-open-water/wetland_2026-08",
+      "active": true
+     },
+     {
+      "date": "2026-09",
+      "label": "Sep 2026",
+      "detail": "Open water 120.6 km²",
+      "resource": "Stories/highlights/okavango-open-water/wetland_2026-09",
+      "active": true
+     },
+     {
+      "date": "2026-10",
+      "label": "Oct 2026",
+      "detail": "Open water 28.3 km²",
+      "resource": "Stories/highlights/okavango-open-water/wetland_2026-10",
+      "active": true
+     }
+    ],
+    "kind": "pass",
+    "title": "MONTH SHOWN ON THE MAP",
+    "defaultIndex": 4
    }
   },
   {
@@ -644,17 +613,18 @@
    "lat": 31.1848,
    "lon": 32.0302,
    "changeClass": "water",
-   "changeClassLabel": "Water-related story",
    "changeType": "vegetation",
    "category": "water",
-   "kindLabel": "WATER-RELATED STORY",
+   "kindLabel": "FLOODING",
+   "theme": "flood",
+   "themeLabel": "Flooding (water rising)",
+   "themeColor": "#00CED1",
    "metricLabel": "Flooded vegetation",
    "metricValue": 2.6,
    "metricUnit": "% of area flooded vegetation",
    "metricDirection": "upward",
    "periodStart": "2026-06-26",
    "periodEnd": "2026-10-12",
-   "periodLabel": "26 Jun 2026 – 12 Oct 2026",
    "passes": 9,
    "areaKm2": 11.4,
    "confidence": "moderate",
@@ -710,90 +680,85 @@
      "value": 2.59
     }
    ],
-   "seriesLabel": "FLOODED VEGETATION OVER TIME",
-   "measurements": [
-    {
-     "label": "Jun 2026 · flooded vegetation",
-     "value": "7.5 km²"
-    },
-    {
-     "label": "Jul 2026 · flooded vegetation",
-     "value": "7.0 km²"
-    },
-    {
-     "label": "Aug 2026 · flooded vegetation",
-     "value": "8.0 km²"
-    },
-    {
-     "label": "Sep 2026 · flooded vegetation",
-     "value": "9.2 km²"
-    },
-    {
-     "label": "Oct 2026 · flooded vegetation",
-     "value": "8.3 km²"
-    }
+   "paragraphs": [
+    "More of the marsh here is flooded under the plants. It grew from 2.4% of the area on 26 Jun to 2.6% on 12 Oct.",
+    "The readings moved between 2.3% and 3.4% from pass to pass, so this net change is small and easy to mistake for normal wobble.",
+    "NISAR looked 9 times from the same angle, so the passes can be compared. Water standing among plants makes a corner that sends the signal straight back, so it shows up very bright. A normal camera from space cannot see water hidden under plants."
    ],
-   "layers": [
-    {
-     "label": "Wetland classes · Lake Manzala",
-     "shortLabel": "Wetland classes",
-     "bounds": [
-      31.95,
-      31.4,
-      32.2,
-      31.4,
-      32.2,
-      31.15,
-      31.95,
-      31.15
-     ],
-     "frames": [
-      {
-       "date": "2026-06-01",
-       "label": "1 Jun 2026",
-       "resource": "Stories/frames/manzala/wetland_2026-06"
-      },
-      {
-       "date": "2026-07-01",
-       "label": "1 Jul 2026",
-       "resource": "Stories/frames/manzala/wetland_2026-07"
-      },
-      {
-       "date": "2026-08-01",
-       "label": "1 Aug 2026",
-       "resource": "Stories/frames/manzala/wetland_2026-08"
-      },
-      {
-       "date": "2026-09-01",
-       "label": "1 Sep 2026",
-       "resource": "Stories/frames/manzala/wetland_2026-09"
-      },
-      {
-       "date": "2026-10-01",
-       "label": "1 Oct 2026",
-       "resource": "Stories/frames/manzala/wetland_2026-10"
-      }
-     ]
-    }
-   ],
-   "dataSource": [
-    "NASA-ISRO NISAR · GCOV (provisional), 9 radar granules",
-    "Study area: Lake Manzala wetlands, Nile Delta, Egypt",
-    "Thresholds: water hh max -15.0 dB, water hv max -22.0 dB, flooded hh min -5.0 dB, flooded ratio min 7.0 dB",
-    "Method: NABA_NISAR_Explorer.ipynb Section 14"
+   "metricLine": "2.6 % of area flooded vegetation · 26 Jun – 12 Oct 2026",
+   "observedLabel": "26 Jun – 12 Oct",
+   "areaLabel": "11.4 km²",
+   "bbox": [
+    31.95,
+    31.15,
+    32.172,
+    31.3738
    ],
    "basemap": {
     "resource": "Stories/basemaps/manzala-flooded-vegetation",
     "bounds": [
-     31.49641813101282,
-     31.59642857142857,
-     32.65358186898719,
-     31.59642857142857,
-     32.65358186898719,
-     30.953571428571426,
-     31.49641813101282,
-     30.953571428571426
+     31.54312541850302,
+     31.549642857142857,
+     32.57887458149698,
+     31.549642857142857,
+     32.57887458149698,
+     30.974157142857138,
+     31.54312541850302,
+     30.974157142857138
     ]
+   },
+   "highlights": {
+    "bounds": [
+     31.54312541850302,
+     31.549642857142857,
+     32.57887458149698,
+     31.549642857142857,
+     32.57887458149698,
+     30.974157142857138,
+     31.54312541850302,
+     30.974157142857138
+    ],
+    "zone": "Stories/highlights/manzala-flooded-vegetation/zone",
+    "frames": [
+     {
+      "date": "2026-06",
+      "label": "Jun 2026",
+      "detail": "Flooded vegetation 7.5 km²",
+      "resource": "Stories/highlights/manzala-flooded-vegetation/wetland_2026-06",
+      "active": true
+     },
+     {
+      "date": "2026-07",
+      "label": "Jul 2026",
+      "detail": "Flooded vegetation 7.0 km²",
+      "resource": "Stories/highlights/manzala-flooded-vegetation/wetland_2026-07",
+      "active": true
+     },
+     {
+      "date": "2026-08",
+      "label": "Aug 2026",
+      "detail": "Flooded vegetation 8.0 km²",
+      "resource": "Stories/highlights/manzala-flooded-vegetation/wetland_2026-08",
+      "active": true
+     },
+     {
+      "date": "2026-09",
+      "label": "Sep 2026",
+      "detail": "Flooded vegetation 9.2 km²",
+      "resource": "Stories/highlights/manzala-flooded-vegetation/wetland_2026-09",
+      "active": true
+     },
+     {
+      "date": "2026-10",
+      "label": "Oct 2026",
+      "detail": "Flooded vegetation 8.3 km²",
+      "resource": "Stories/highlights/manzala-flooded-vegetation/wetland_2026-10",
+      "active": true
+     }
+    ],
+    "kind": "pass",
+    "title": "MONTH SHOWN ON THE MAP",
+    "defaultIndex": 4
    }
   },
   {
@@ -804,17 +769,18 @@
    "lat": 35.9413,
    "lon": -121.3976,
    "changeClass": "significant",
-   "changeClassLabel": "Significant change",
    "changeType": "fire",
    "category": "fire",
-   "kindLabel": "FIRE · BURN SCAR",
+   "kindLabel": "FOREST FIRE",
+   "theme": "fire",
+   "themeLabel": "Forest fire",
+   "themeColor": "#F0484D",
    "metricLabel": "Likely burned area",
    "metricValue": 31.3,
    "metricUnit": "km² likely burned",
    "metricDirection": "upward",
    "periodStart": "2026-08-16",
    "periodEnd": "2026-10-15",
-   "periodLabel": "16 Aug 2026 – 15 Oct 2026",
    "passes": 6,
    "areaKm2": 45.9,
    "confidence": "moderate",
@@ -858,162 +824,92 @@
      "value": 40.53
     }
    ],
-   "seriesLabel": "LIKELY BURNED AREA OVER TIME",
-   "measurements": [
-    {
-     "label": "28 Aug · likely burned",
-     "value": "0.1 km²"
-    },
-    {
-     "label": "28 Aug · possible burned",
-     "value": "0.4 km²"
-    },
-    {
-     "label": "9 Sep · likely burned",
-     "value": "17.6 km²"
-    },
-    {
-     "label": "9 Sep · possible burned",
-     "value": "14.0 km²"
-    },
-    {
-     "label": "21 Sep · likely burned",
-     "value": "23.5 km²"
-    },
-    {
-     "label": "21 Sep · possible burned",
-     "value": "15.2 km²"
-    },
-    {
-     "label": "3 Oct · likely burned",
-     "value": "30.1 km²"
-    },
-    {
-     "label": "3 Oct · possible burned",
-     "value": "14.7 km²"
-    },
-    {
-     "label": "15 Oct · likely burned",
-     "value": "39.8 km²"
-    },
-    {
-     "label": "15 Oct · possible burned",
-     "value": "14.3 km²"
-    }
+   "paragraphs": [
+    "A fire burned part of this area. Radar picked up about 31.3 km² of ground that is likely burned, and another 15 km² that is possibly burned, compared with 16 Aug, before the fire.",
+    "The burned area kept growing: 40.5 km² by 15 Oct.",
+    "Fire strips the leaves and branches that bounce part of the radar signal back, so burned ground goes dark. Radar sees through smoke and cloud, day or night, which a normal camera from space cannot."
    ],
-   "layers": [
-    {
-     "label": "Radar false colour (R = HH, G = HV, B = HH−HV) · Big Sur",
-     "shortLabel": "False colour",
-     "bounds": [
-      -121.55,
-      36.02,
-      -121.25,
-      36.02,
-      -121.25,
-      35.78,
-      -121.55,
-      35.78
-     ],
-     "frames": [
-      {
-       "date": "2026-08-16",
-       "label": "16 Aug 2026",
-       "resource": "Stories/frames/plaskett/rgb_2026-08-16"
-      },
-      {
-       "date": "2026-08-28",
-       "label": "28 Aug 2026",
-       "resource": "Stories/frames/plaskett/rgb_2026-08-28"
-      },
-      {
-       "date": "2026-09-09",
-       "label": "9 Sep 2026",
-       "resource": "Stories/frames/plaskett/rgb_2026-09-09"
-      },
-      {
-       "date": "2026-09-21",
-       "label": "21 Sep 2026",
-       "resource": "Stories/frames/plaskett/rgb_2026-09-21"
-      },
-      {
-       "date": "2026-10-03",
-       "label": "3 Oct 2026",
-       "resource": "Stories/frames/plaskett/rgb_2026-10-03"
-      },
-      {
-       "date": "2026-10-15",
-       "label": "15 Oct 2026",
-       "resource": "Stories/frames/plaskett/rgb_2026-10-15"
-      }
-     ]
-    },
-    {
-     "label": "Burn mask: HV drop since 2026-08-16 · Big Sur",
-     "shortLabel": "Burn mask",
-     "bounds": [
-      -121.55,
-      36.02,
-      -121.25,
-      36.02,
-      -121.25,
-      35.78,
-      -121.55,
-      35.78
-     ],
-     "frames": [
-      {
-       "date": "2026-08-16",
-       "label": "16 Aug 2026",
-       "resource": "Stories/frames/plaskett/burn_2026-08-16"
-      },
-      {
-       "date": "2026-08-28",
-       "label": "28 Aug 2026",
-       "resource": "Stories/frames/plaskett/burn_2026-08-28"
-      },
-      {
-       "date": "2026-09-09",
-       "label": "9 Sep 2026",
-       "resource": "Stories/frames/plaskett/burn_2026-09-09"
-      },
-      {
-       "date": "2026-09-21",
-       "label": "21 Sep 2026",
-       "resource": "Stories/frames/plaskett/burn_2026-09-21"
-      },
-      {
-       "date": "2026-10-03",
-       "label": "3 Oct 2026",
-       "resource": "Stories/frames/plaskett/burn_2026-10-03"
-      },
-      {
-       "date": "2026-10-15",
-       "label": "15 Oct 2026",
-       "resource": "Stories/frames/plaskett/burn_2026-10-15"
-      }
-     ]
-    }
-   ],
-   "dataSource": [
-    "NASA-ISRO NISAR · GCOV (provisional), 6 radar granules",
-    "Study area: Plaskett Fire, Big Sur, California",
-    "Reported on the ground: 120.8 km² (29,862 acres on 8 September 2026, 47% contained)",
-    "Thresholds: likely db -3.0 dB, possible db -2.0 dB",
-    "Method: NABA_NISAR_Explorer.ipynb Section 12"
+   "metricLine": "31.3 km² likely burned · 16 Aug – 15 Oct 2026",
+   "observedLabel": "16 Aug – 15 Oct",
+   "areaLabel": "45.9 km²",
+   "bbox": [
+    -121.4666,
+    35.8622,
+    -121.3106,
+    35.9704
    ],
    "basemap": {
     "resource": "Stories/basemaps/plaskett-burn-scar",
     "bounds": [
-     -121.98605045842338,
-     36.20857142857144,
-     -120.81394954157663,
-     36.20857142857144,
-     -120.81394954157663,
-     35.59142857142857,
-     -121.98605045842338,
-     35.59142857142857
+     -121.65286551400368,
+     36.05541428571428,
+     -121.12433448599631,
+     36.05541428571428,
+     -121.12433448599631,
+     35.77718571428572,
+     -121.65286551400368,
+     35.77718571428572
     ]
+   },
+   "highlights": {
+    "bounds": [
+     -121.65286551400368,
+     36.05541428571428,
+     -121.12433448599631,
+     36.05541428571428,
+     -121.12433448599631,
+     35.77718571428572,
+     -121.65286551400368,
+     35.77718571428572
+    ],
+    "zone": "Stories/highlights/plaskett-burn-scar/zone",
+    "frames": [
+     {
+      "date": "2026-08-16",
+      "label": "16 Aug",
+      "detail": "Before the fire · nothing burned yet",
+      "resource": "Stories/highlights/plaskett-burn-scar/burn_2026-08-16",
+      "active": false
+     },
+     {
+      "date": "2026-08-28",
+      "label": "28 Aug",
+      "detail": "0.1 km² likely · 0.4 km² possibly burned",
+      "resource": "Stories/highlights/plaskett-burn-scar/burn_2026-08-28",
+      "active": true
+     },
+     {
+      "date": "2026-09-09",
+      "label": "9 Sep",
+      "detail": "17.6 km² likely · 14.0 km² possibly burned",
+      "resource": "Stories/highlights/plaskett-burn-scar/burn_2026-09-09",
+      "active": true
+     },
+     {
+      "date": "2026-09-21",
+      "label": "21 Sep",
+      "detail": "23.5 km² likely · 15.2 km² possibly burned",
+      "resource": "Stories/highlights/plaskett-burn-scar/burn_2026-09-21",
+      "active": true
+     },
+     {
+      "date": "2026-10-03",
+      "label": "3 Oct",
+      "detail": "30.1 km² likely · 14.7 km² possibly burned",
+      "resource": "Stories/highlights/plaskett-burn-scar/burn_2026-10-03",
+      "active": true
+     },
+     {
+      "date": "2026-10-15",
+      "label": "15 Oct",
+      "detail": "39.8 km² likely · 14.3 km² possibly burned",
+      "resource": "Stories/highlights/plaskett-burn-scar/burn_2026-10-15",
+      "active": true
+     }
+    ],
+    "kind": "pass",
+    "title": "BURN SCAR · RADAR PASS",
+    "defaultIndex": 4
    }
   },
   {
@@ -1024,17 +920,18 @@
    "lat": 25.6336,
    "lon": -80.8593,
    "changeClass": "significant",
-   "changeClassLabel": "Significant change",
    "changeType": "fire",
    "category": "fire",
-   "kindLabel": "FIRE · BURN SCAR",
+   "kindLabel": "FOREST FIRE",
+   "theme": "fire",
+   "themeLabel": "Forest fire",
+   "themeColor": "#F0484D",
    "metricLabel": "Likely burned area",
    "metricValue": 18.8,
    "metricUnit": "km² likely burned",
    "metricDirection": "upward",
    "periodStart": "2026-07-20",
    "periodEnd": "2026-09-30",
-   "periodLabel": "20 Jul 2026 – 30 Sep 2026",
    "passes": 6,
    "areaKm2": 41.4,
    "confidence": "moderate",
@@ -1078,162 +975,92 @@
      "value": 411.16
     }
    ],
-   "seriesLabel": "LIKELY BURNED AREA OVER TIME",
-   "measurements": [
-    {
-     "label": "13 Aug · likely burned",
-     "value": "34.5 km²"
-    },
-    {
-     "label": "13 Aug · possible burned",
-     "value": "53.6 km²"
-    },
-    {
-     "label": "25 Aug · likely burned",
-     "value": "15.6 km²"
-    },
-    {
-     "label": "25 Aug · possible burned",
-     "value": "24.5 km²"
-    },
-    {
-     "label": "6 Sep · likely burned",
-     "value": "240.3 km²"
-    },
-    {
-     "label": "6 Sep · possible burned",
-     "value": "125.5 km²"
-    },
-    {
-     "label": "18 Sep · likely burned",
-     "value": "530.4 km²"
-    },
-    {
-     "label": "18 Sep · possible burned",
-     "value": "179.0 km²"
-    },
-    {
-     "label": "30 Sep · likely burned",
-     "value": "400.1 km²"
-    },
-    {
-     "label": "30 Sep · possible burned",
-     "value": "183.0 km²"
-    }
+   "paragraphs": [
+    "A fire burned part of this area. Radar picked up about 18.8 km² of ground that is likely burned, and another 30 km² that is possibly burned, compared with 20 Jul, before the fire.",
+    "Later passes read much higher, up to 538 km² on 18 Sep. Rain and wet soil can also darken the radar signal, so 18.8 km² is the careful figure.",
+    "Fire strips the leaves and branches that bounce part of the radar signal back, so burned ground goes dark. Radar sees through smoke and cloud, day or night, which a normal camera from space cannot."
    ],
-   "layers": [
-    {
-     "label": "Radar false colour (R = HH, G = HV, B = HH−HV) · Everglades National Park",
-     "shortLabel": "False colour",
-     "bounds": [
-      -80.95,
-      25.65,
-      -80.55,
-      25.65,
-      -80.55,
-      25.25,
-      -80.95,
-      25.25
-     ],
-     "frames": [
-      {
-       "date": "2026-07-20",
-       "label": "20 Jul 2026",
-       "resource": "Stories/frames/everglades/rgb_2026-07-20"
-      },
-      {
-       "date": "2026-08-13",
-       "label": "13 Aug 2026",
-       "resource": "Stories/frames/everglades/rgb_2026-08-13"
-      },
-      {
-       "date": "2026-08-25",
-       "label": "25 Aug 2026",
-       "resource": "Stories/frames/everglades/rgb_2026-08-25"
-      },
-      {
-       "date": "2026-09-06",
-       "label": "6 Sep 2026",
-       "resource": "Stories/frames/everglades/rgb_2026-09-06"
-      },
-      {
-       "date": "2026-09-18",
-       "label": "18 Sep 2026",
-       "resource": "Stories/frames/everglades/rgb_2026-09-18"
-      },
-      {
-       "date": "2026-09-30",
-       "label": "30 Sep 2026",
-       "resource": "Stories/frames/everglades/rgb_2026-09-30"
-      }
-     ]
-    },
-    {
-     "label": "Burn mask: HV drop since 2026-07-20 · Everglades National Park",
-     "shortLabel": "Burn mask",
-     "bounds": [
-      -80.95,
-      25.65,
-      -80.55,
-      25.65,
-      -80.55,
-      25.25,
-      -80.95,
-      25.25
-     ],
-     "frames": [
-      {
-       "date": "2026-07-20",
-       "label": "20 Jul 2026",
-       "resource": "Stories/frames/everglades/burn_2026-07-20"
-      },
-      {
-       "date": "2026-08-13",
-       "label": "13 Aug 2026",
-       "resource": "Stories/frames/everglades/burn_2026-08-13"
-      },
-      {
-       "date": "2026-08-25",
-       "label": "25 Aug 2026",
-       "resource": "Stories/frames/everglades/burn_2026-08-25"
-      },
-      {
-       "date": "2026-09-06",
-       "label": "6 Sep 2026",
-       "resource": "Stories/frames/everglades/burn_2026-09-06"
-      },
-      {
-       "date": "2026-09-18",
-       "label": "18 Sep 2026",
-       "resource": "Stories/frames/everglades/burn_2026-09-18"
-      },
-      {
-       "date": "2026-09-30",
-       "label": "30 Sep 2026",
-       "resource": "Stories/frames/everglades/burn_2026-09-30"
-      }
-     ]
-    }
-   ],
-   "dataSource": [
-    "NASA-ISRO NISAR · GCOV (provisional), 6 radar granules",
-    "Study area: Everglades drought fires, Florida",
-    "Reported on the ground: 97.1 km² (nearly 24,000 acres across four fires in the park, 26 August 2026)",
-    "Thresholds: likely db -3.0 dB, possible db -2.0 dB",
-    "Method: NABA_NISAR_Explorer.ipynb Section 12"
+   "metricLine": "18.8 km² likely burned · 20 Jul – 30 Sep 2026",
+   "observedLabel": "20 Jul – 30 Sep",
+   "areaLabel": "41.4 km²",
+   "bbox": [
+    -80.9234,
+    25.269,
+    -80.55,
+    25.65
    ],
    "basemap": {
     "resource": "Stories/basemaps/everglades-burn-scar",
     "bounds": [
-     -81.62623841261038,
-     25.96428571428571,
-     -79.87376158738962,
-     25.96428571428571,
-     -79.87376158738962,
-     24.935714285714287,
-     -81.62623841261038,
-     24.935714285714287
+     -81.57138296264795,
+     25.949357142857142,
+     -79.90201703735205,
+     25.949357142857142,
+     -79.90201703735205,
+     24.969642857142855,
+     -81.57138296264795,
+     24.969642857142855
     ]
+   },
+   "highlights": {
+    "bounds": [
+     -81.57138296264795,
+     25.949357142857142,
+     -79.90201703735205,
+     25.949357142857142,
+     -79.90201703735205,
+     24.969642857142855,
+     -81.57138296264795,
+     24.969642857142855
+    ],
+    "zone": "Stories/highlights/everglades-burn-scar/zone",
+    "frames": [
+     {
+      "date": "2026-07-20",
+      "label": "20 Jul",
+      "detail": "Before the fire · nothing burned yet",
+      "resource": "Stories/highlights/everglades-burn-scar/burn_2026-07-20",
+      "active": false
+     },
+     {
+      "date": "2026-08-13",
+      "label": "13 Aug",
+      "detail": "34.5 km² likely · 53.6 km² possibly burned",
+      "resource": "Stories/highlights/everglades-burn-scar/burn_2026-08-13",
+      "active": true
+     },
+     {
+      "date": "2026-08-25",
+      "label": "25 Aug",
+      "detail": "15.6 km² likely · 24.5 km² possibly burned",
+      "resource": "Stories/highlights/everglades-burn-scar/burn_2026-08-25",
+      "active": true
+     },
+     {
+      "date": "2026-09-06",
+      "label": "6 Sep",
+      "detail": "240.3 km² likely · 125.5 km² possibly burned",
+      "resource": "Stories/highlights/everglades-burn-scar/burn_2026-09-06",
+      "active": true
+     },
+     {
+      "date": "2026-09-18",
+      "label": "18 Sep",
+      "detail": "530.4 km² likely · 179.0 km² possibly burned",
+      "resource": "Stories/highlights/everglades-burn-scar/burn_2026-09-18",
+      "active": true
+     },
+     {
+      "date": "2026-09-30",
+      "label": "30 Sep",
+      "detail": "400.1 km² likely · 183.0 km² possibly burned",
+      "resource": "Stories/highlights/everglades-burn-scar/burn_2026-09-30",
+      "active": true
+     }
+    ],
+    "kind": "pass",
+    "title": "BURN SCAR · RADAR PASS",
+    "defaultIndex": 2
    }
   }
  ]

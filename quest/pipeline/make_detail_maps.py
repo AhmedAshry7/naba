@@ -75,11 +75,10 @@ def fetch(url_tpl, z, x, y):
 
 
 def story_box(s):
-    """Same as StoryData.GetBounds in Unity."""
-    if s.get("layers") and len(s["layers"][0].get("bounds", [])) >= 8:
-        b = s["layers"][0]["bounds"]
-        lons, lats = b[0::2], b[1::2]
-        return min(lats), min(lons), max(lats), max(lons)
+    """Same as StoryData.GetBounds in Unity: the story zone's box from changes.geojson."""
+    if len(s.get("bbox", [])) == 4:
+        x0, y0, x1, y1 = s["bbox"]
+        return y0, x0, y1, x1
     km = max(30.0, math.sqrt(max(s.get("areaKm2", 1.0), 1.0)) * 3.0)
     d_lat = km / 111.0 * 0.5
     d_lon = d_lat / max(0.2, math.cos(math.radians(s["lat"])))

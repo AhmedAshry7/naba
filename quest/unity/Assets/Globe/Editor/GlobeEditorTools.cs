@@ -29,7 +29,7 @@ namespace Nisar.Globe.EditorTools
                 st.mipmapEnabled = true;
                 st.anisoLevel = 4;
                 st.wrapMode = TextureWrapMode.Clamp;
-                st.maxTextureSize = assetPath.Contains("/basemaps/") ? 2048 : 1024;
+                st.maxTextureSize = assetPath.Contains("/basemaps/") || assetPath.Contains("/highlights/") ? 2048 : 1024;
                 st.textureCompression = TextureImporterCompression.CompressedHQ;
                 return;
             }

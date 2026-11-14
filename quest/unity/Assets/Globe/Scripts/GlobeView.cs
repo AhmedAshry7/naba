@@ -325,6 +325,15 @@ namespace Nisar.Globe
             return Vector3.Lerp(globeEdge, mapEdge, Flatten) + right * (gap + width * 0.5f);
         }
 
+        /// Where a box `width` x `height` metres should float: to the lower left of the globe or the map window.
+        public Vector3 LowerLeftAnchor(float width, float height, float gap = 0.05f)
+        {
+            Vector3 right = transform.right, up = transform.up;
+            Vector3 globeCorner = Center - right * WorldRadius * 1.1f - up * WorldRadius * 0.9f;
+            Vector3 mapCorner = transform.TransformPoint(new Vector3(-mapSize.x * 0.5f, -mapSize.y * 0.5f, -radius));
+            return Vector3.Lerp(globeCorner, mapCorner, Flatten) - right * (gap + width * 0.5f) + up * height * 0.5f;
+        }
+
         /// Rolls the map back up into the globe.
         public void ExitMap()
         {

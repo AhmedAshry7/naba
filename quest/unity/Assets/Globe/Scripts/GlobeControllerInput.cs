@@ -33,7 +33,7 @@ namespace Nisar.Globe
         GlobeView globe;
         GlobeSites sites;
         StoryPresenter stories;
-        bool panelPressed, rayOnPanel;
+        bool panelPressed, rayOnPanel, stepLatched;
         Vector3 panelHit;
         LineRenderer line;
         Material lineMat;
@@ -145,6 +145,9 @@ namespace Nisar.Globe
                 else if (!selectHeld && panelPressed) { panel.Release(panelHit); panelPressed = false; }
                 float scrollInput = stick.y + zoomAxis * 0.25f;
                 if (Mathf.Abs(scrollInput) > 0.15f) panel.ScrollBy(-scrollInput * 900f * Time.deltaTime);
+                // thumbstick flick left / right steps the time slider
+                if (!stepLatched && Mathf.Abs(stick.x) > 0.7f) { panel.StepBy(stick.x > 0 ? 1 : -1); stepLatched = true; }
+                if (Mathf.Abs(stick.x) < 0.3f) stepLatched = false;
                 if (recenter && !wasRecenter) { if (globe.IsMap) globe.ExitMap(); else globe.Recenter(); }
                 wasHeld = held;
                 wasRecenter = recenter;

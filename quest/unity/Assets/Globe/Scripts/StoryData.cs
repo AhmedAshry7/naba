@@ -12,6 +12,13 @@ namespace Nisar.Globe
         public string id, headline, region, subtitle;
         public float lat, lon;
         public string changeClass, changeClassLabel, changeType, category, kindLabel;
+        /// Theme as in the web app: earthquake, flood (water rising), water (shrinking) or fire.
+        public string theme, themeLabel, themeColor;
+        /// The web panel's text: plain-language paragraphs and the one-line metric (frontend/src/lib.ts).
+        public string[] paragraphs;
+        public string metricLine, observedLabel, areaLabel;
+        /// Box of the story zone from changes.geojson: minLon, minLat, maxLon, maxLat.
+        public float[] bbox;
         public string metricLabel;
         public float metricValue;
         public string metricUnit, metricDirection;
@@ -32,13 +39,25 @@ namespace Nisar.Globe
         public string[] dataSource;
         /// Detailed local map of the story area (OpenStreetMap via CARTO, in the web map's colours).
         public StoryImage basemap;
+        /// The measured areas drawn like the web map (zones + per-month / per-pass areas).
+        public StoryHighlights highlights;
+
+        /// The story's theme colour (pins, badge, map highlights).
+        public Color ThemeColor =>
+            !string.IsNullOrEmpty(themeColor) && ColorUtility.TryParseHtmlString(themeColor, out var c) ? c : StoryDatabase.ClassColor(changeClass);
+
 
         public bool HasLayers => layers != null && layers.Length > 0;
         public bool HasSeries => series != null && series.Length > 1;
 
-        /// Geographic box to frame on the map: the radar layer's bounds, or a box sized from the area.
+        /// Geographic box to frame on the map: the story zone's box from changes.geojson, or a box sized from the area.
         public void GetBounds(out float minLat, out float minLon, out float maxLat, out float maxLon)
         {
+            if (bbox != null && bbox.Length == 4)
+            {
+                minLon = bbox[0]; minLat = bbox[1]; maxLon = bbox[2]; maxLat = bbox[3];
+                return;
+            }
             if (HasLayers && layers[0].bounds != null && layers[0].bounds.Length >= 8)
             {
                 minLat = minLon = float.MaxValue;
@@ -71,7 +90,27 @@ namespace Nisar.Globe
         public StoryFrame[] frames;
     }
 
-    [Serializable] public class StoryFrame { public string date, label, resource; }
+    [Serializable] public class StoryFrame
+    {
+        public string date, label, resource;
+        /// The measured value at this step, e.g. "2.42% of area flooded vegetation".
+        public string detail;
+        /// False when the event is not happening at this step (the map shows the zone in grey).
+        public bool active = true;
+    }
+
+    [Serializable]
+    public class StoryHighlights
+    {
+        /// Corners TL, TR, BR, BL as lon, lat pairs (same box as the basemap).
+        public float[] bounds;
+        /// Zones only (no measured areas).
+        public string zone;
+        /// Time steps of the panel's slider: month, pass (fire) or quake (before / after).
+        public StoryFrame[] frames;
+        public string kind, title;
+        public int defaultIndex;
+    }
 
     [Serializable]
     public class StoryImage
@@ -105,7 +144,16 @@ namespace Nisar.Globe
             }
         }
 
-        /// Legend colours, as on the web map.
+        /// The web app's theme legend (frontend/src/lib.ts THEME_META).
+        public static readonly (string label, Color color)[] ThemeLegend =
+        {
+            ("Earthquake", new Color(0.239f, 0.839f, 0.549f)),
+            ("Flooding (water rising)", new Color(0f, 0.808f, 0.820f)),
+            ("Water shrinking", new Color(0.290f, 0.659f, 1f)),
+            ("Forest fire", new Color(0.941f, 0.282f, 0.302f)),
+        };
+
+        /// Severity colours (kept for stories without a theme colour).
         public static Color ClassColor(string changeClass) => changeClass switch
         {
             "significant" => new Color(0.94f, 0.31f, 0.31f),
