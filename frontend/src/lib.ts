@@ -182,3 +182,7 @@ export function metricLine(s: ChangeStory): string {
   if (s.change_type === 'earthquake') return `Up to ${s.metric.value.toFixed(1)} m of ground motion · ${when}`
   return `${s.metric.value} ${s.metric.unit} · ${when}`
 }
+
+/** A file in public/, resolved against the site's base path ('/' locally, '/naba/' on GitHub Pages). Full URLs pass through. */
+export const asset = (path: string) =>
+  /^[a-z]+:\/\//i.test(path) ? path : import.meta.env.BASE_URL + path.replace(/^\//, '')

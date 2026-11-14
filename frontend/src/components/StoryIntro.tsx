@@ -3,6 +3,7 @@ import { ArrowRight, Pause, Play, RotateCcw, SkipForward, Volume2, VolumeX } fro
 import { draw } from '../intro/scene'
 import { pickKidVoice } from '../intro/voice'
 import { CHAPTERS, CUES, DURATION, cueIndexAt } from '../intro/script'
+import { asset } from '../lib'
 
 const fmt = (s: number) => {
   const v = Math.max(0, Math.min(DURATION, s))
@@ -45,7 +46,7 @@ export default function StoryIntro({ open, onDone }: { open: boolean; onDone: ()
     if (!clips.current) {
       clips.current = await Promise.all(
         CUES.map(async (_, i) => {
-          const url = `/intro/voice/cue-${i}.mp3`
+          const url = asset(`intro/voice/cue-${i}.mp3`)
           try {
             const r = await fetch(url, { method: 'HEAD' })
             return r.ok && (r.headers.get('content-type') ?? '').startsWith('audio') ? url : null

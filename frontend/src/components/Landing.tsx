@@ -1,4 +1,5 @@
 import { ArrowRight } from 'lucide-react'
+import { asset } from '../lib'
 
 /**
  * The opening visual inside IntroScreen: the NABA logo sweeps in left-to-right
@@ -10,7 +11,7 @@ export default function Landing({ onStart, active }: { onStart: () => void; acti
     <div className="relative z-10 flex flex-col items-center">
       <div className="logo-reveal">
         <img
-          src="/naba-logo-transparent.png"
+          src={asset('naba-logo-transparent.png')}
           alt="NABA"
           draggable={false}
           className="logo-reveal__img"

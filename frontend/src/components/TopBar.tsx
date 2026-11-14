@@ -1,4 +1,5 @@
 import SampleBadge from './SampleBadge'
+import { asset } from '../lib'
 
 /**
  * public/logo.png is the original logo (cropped). Its deep-blue/navy artwork disappears on black, so the UI uses
@@ -7,7 +8,7 @@ import SampleBadge from './SampleBadge'
 export function Logo({ width = 132, arabic = true }: { width?: number; arabic?: boolean }) {
   return (
     <div className="flex items-center gap-3">
-      <img src="/logo-dark.png" alt="Naba" draggable={false} style={{ width, height: 'auto', display: 'block' }} />
+      <img src={asset('logo-dark.png')} alt="Naba" draggable={false} style={{ width, height: 'auto', display: 'block' }} />
       {arabic && (
         <span className="font-arabic text-[24px] font-extrabold leading-none text-gold" lang="ar" dir="rtl">
           نبأ

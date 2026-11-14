@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { SkipForward, Volume2, VolumeX } from 'lucide-react'
 import { useStore, type FireTimeline } from '../store'
-import { fitZoom, layerFor, storyMeta } from '../lib'
+import { asset, fitZoom, layerFor, storyMeta } from '../lib'
 import type { ChangeStory, Layer } from '../types'
 import { CALM, mouthAt, renderReporter, visemesFor, type Viseme } from '../intro/reporter'
 import { pickKidVoice } from '../intro/voice'
@@ -180,7 +180,7 @@ export default function Tour() {
     visemes.current = visemesFor(text, nowS(), est) // the mouth moves even with sound off
     if (mutedRef.current) return
     // the recorded clip (scripts/make-tour-voice.py) wins; the browser voice is only the fallback
-    const url = `/intro/tour/tour-${scene}-${n}.mp3`
+    const url = asset(`intro/tour/tour-${scene}-${n}.mp3`)
     if (!clips.current.has(url)) {
       try {
         const r = await fetch(url, { method: 'HEAD' })
