@@ -89,6 +89,41 @@ def union_all(geoms) -> MultiPolygon:
     return merged
 
 
+def polygonal_parts(geom, min_area_km2: float = 0.0) -> MultiPolygon:
+    """Only the polygon parts of a geometry (a difference can leave lines and points), dropping
+    parts smaller than `min_area_km2` - e.g. slivers between two separately simplified outlines."""
+    if geom is None or geom.is_empty:
+        return MultiPolygon()
+    if not geom.is_valid:
+        geom = geom.buffer(0)
+    stack, polys = [geom], []
+    while stack:
+        g = stack.pop()
+        if g.geom_type == "Polygon":
+            if not g.is_empty and geodesic_area_km2(g) >= min_area_km2:
+                polys.append(g)
+        elif hasattr(g, "geoms"):
+            stack.extend(g.geoms)
+    return MultiPolygon(polys) if polys else MultiPolygon()
+
+
+def closed_outline(geom, close_m: float, simplify_m: float = SIMPLIFY_M) -> MultiPolygon:
+    """A smooth envelope around many small patches: grow by `close_m`, shrink back, simplify.
+
+    For drawing a story outline around a fragmented extent (e.g. a burn scar); gaps narrower than
+    about 2 x close_m are bridged. The detailed patches stay the measurement.
+    """
+    if geom is None or geom.is_empty:
+        return MultiPolygon()
+    d = close_m / M_PER_DEG
+    # mitre joins keep the right-angled corners of raster-derived patches, so the envelope is a
+    # true superset of the patches (round joins would shave their corners on the way back in)
+    out = geom.buffer(d, join_style="mitre").buffer(-d, join_style="mitre")
+    if simplify_m:
+        out = out.simplify(simplify_m / M_PER_DEG, preserve_topology=True)
+    return polygonal_parts(out)
+
+
 def round_coords(obj, precision: int = COORD_PRECISION):
     """Round every coordinate in a GeoJSON geometry mapping (keeps the export small and stable)."""
     if isinstance(obj, (list, tuple)):

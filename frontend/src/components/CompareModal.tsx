@@ -1,8 +1,8 @@
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import maplibregl, { type ImageSource } from 'maplibre-gl'
 import { Columns2, X } from 'lucide-react'
 import { useStore } from '../store'
-import { CLASS_META, fitZoom, formatDate, layerFor } from '../lib'
+import { CLASS_META, fitZoom, formatDate, layersForStory } from '../lib'
 import type { Frame, Layer } from '../types'
 import { BASEMAP } from './MapView'
 
@@ -58,29 +58,43 @@ function DateSelect({ id, label, value, onChange, layer }: { id: string; label: 
 
 export default function CompareModal() {
   const open = useStore((s) => s.compareOpen)
+  const layers = useStore((s) => s.layers)
   const story = useStore((s) => s.stories.find((x) => x.id === s.selectedId))
-  const layer = useStore((s) => layerFor(s.layers, story))
   const set = useStore((s) => s.set)
+  // a story can have several image layers (e.g. a fire: false colour and burn mask)
+  const storyLayers = useMemo(() => layersForStory(layers, story), [layers, story])
+  const [li, setLi] = useState(0)
+  const layer = storyLayers[li] ?? storyLayers[0]
   const [a, setA] = useState(0)
   const [b, setB] = useState(0)
   const [pos, setPos] = useState(50)
 
   useEffect(() => {
+    if (open) {
+      setLi(0)
+      setPos(50)
+    }
+  }, [open, story?.id])
+
+  useEffect(() => {
     if (open && layer) {
       setA(0)
       setB(layer.frames.length - 1)
-      setPos(50)
     }
   }, [open, layer])
 
-  if (!open || !layer || !story) return null
-  const [[w, n], [e], [, s]] = layer.bounds
-  const covered = story.lon >= w && story.lon <= e && story.lat >= s && story.lat <= n
+  if (!open || !story) return null
+  const covered = !!layer
   const meta = CLASS_META[story.change_class]
-  const views = layer.kind === 'views'
+  const views = layer?.kind === 'views'
+  const [[w, n], [e], [, s]] = layer?.bounds ?? [[0, 0], [0, 0], [0, 0]]
   const center: [number, number] = [(w + e) / 2, (n + s) / 2]
-  const zoom = fitZoom(layer)
+  const zoom = layer ? fitZoom(layer) : 8.4
   const [first, second] = views ? ['Left', 'Right'] : ['Before', 'After']
+  // clamp: for one render after switching layers the indices can still point past the new frames
+  const last = layer ? layer.frames.length - 1 : 0
+  const ia = Math.min(a, last)
+  const ib = Math.min(b, last)
   const close = () => set({ compareOpen: false })
 
   return (
@@ -106,17 +120,35 @@ export default function CompareModal() {
           <p className="px-6 py-12 text-center text-[15px] text-sub">The change images don't cover this area yet, so there is nothing to compare here.</p>
         ) : (
           <>
+            {storyLayers.length > 1 && (
+              <div className="flex px-5 pt-3" role="radiogroup" aria-label="Image type">
+                <div className="inline-flex rounded-card border border-line bg-card p-0.5">
+                  {storyLayers.map((l, i) => (
+                    <button
+                      key={l.id}
+                      role="radio"
+                      aria-checked={i === li}
+                      onClick={() => setLi(i)}
+                      title={l.label}
+                      className={`rounded-[6px] px-3 py-1 text-[13px] font-semibold transition-colors ${i === li ? 'bg-gold text-bg' : 'text-sub hover:text-text'}`}
+                    >
+                      {l.short_label ?? l.label}
+                    </button>
+                  ))}
+                </div>
+              </div>
+            )}
             <div className="flex flex-wrap items-center justify-between gap-3 px-5 py-3">
-              <DateSelect id="cmp-a" label={first} value={a} onChange={setA} layer={layer} />
-              <DateSelect id="cmp-b" label={second} value={b} onChange={setB} layer={layer} />
+              <DateSelect id="cmp-a" label={first} value={ia} onChange={setA} layer={layer} />
+              <DateSelect id="cmp-b" label={second} value={ib} onChange={setB} layer={layer} />
             </div>
             <div className="relative mx-5 aspect-[16/9] min-h-[240px] overflow-hidden rounded-card border border-line bg-card">
-              <MiniMap center={center} zoom={zoom} layer={layer} url={layer.frames[a].url} geometry={story.geometry} color={meta.color} />
+              <MiniMap center={center} zoom={zoom} layer={layer} url={layer.frames[ia].url} geometry={story.geometry} color={meta.color} />
               <div className="absolute inset-0" style={{ clipPath: `inset(0 0 0 ${pos}%)` }}>
-                <MiniMap center={center} zoom={zoom} layer={layer} url={layer.frames[b].url} geometry={story.geometry} color={meta.color} />
+                <MiniMap center={center} zoom={zoom} layer={layer} url={layer.frames[ib].url} geometry={story.geometry} color={meta.color} />
               </div>
-              <span className="absolute left-3 top-3 rounded-full bg-bg/85 px-3 py-1 text-[12px] font-semibold">{first} · {frameName(layer.frames[a])}</span>
-              <span className="absolute right-3 top-3 rounded-full bg-bg/85 px-3 py-1 text-[12px] font-semibold">{second} · {frameName(layer.frames[b])}</span>
+              <span className="absolute left-3 top-3 rounded-full bg-bg/85 px-3 py-1 text-[12px] font-semibold">{first} · {frameName(layer.frames[ia])}</span>
+              <span className="absolute right-3 top-3 rounded-full bg-bg/85 px-3 py-1 text-[12px] font-semibold">{second} · {frameName(layer.frames[ib])}</span>
               <div className="pointer-events-none absolute inset-y-0 w-0.5 bg-white shadow-[0_0_12px_rgba(0,0,0,.6)]" style={{ left: `${pos}%` }}>
                 <span className="absolute left-1/2 top-1/2 flex h-9 w-9 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full border-2 border-white bg-bg text-[13px] font-bold">⇆</span>
               </div>
@@ -133,7 +165,7 @@ export default function CompareModal() {
             <p className="px-5 pb-4 pt-3 text-[12px] text-sub">
               {views
                 ? 'Ground motion from a NASA–ISRO NISAR radar interferogram (two passes 12 days apart). Drag the handle to swipe between the motion map and the raw radar fringes. Blue and red are opposite directions of motion along the satellite’s line of sight.'
-                : <>Change maps from NASA–ISRO NISAR radar{story.is_sample ? ' · sample images for preview' : ''}. Drag the handle to swipe between the two dates.</>}
+                : <>{layer.label} · from NASA–ISRO NISAR radar{story.is_sample ? ' · sample images for preview' : ''}. Drag the handle to swipe between the two dates.</>}
             </p>
           </>
         )}

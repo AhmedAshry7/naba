@@ -332,8 +332,9 @@ def run_quake_export(preset: EarthquakePreset, public_data: Path = PUBLIC_DATA,
         west, south, east, north = preset.bbox
         layer = {
             "id": f"earthquake-{preset.key}",
+            "preset": preset.key,
             "kind": "views",
-            "story_id": preset.story_id,
+            "story_ids": [preset.story_id],
             "label": f"Ground motion · {preset.region}",
             "bounds": [[west, north], [east, north], [east, south], [west, south]],
             "legend": {"min": -round(vmax, 2), "max": round(vmax, 2), "unit": "m"},

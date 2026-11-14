@@ -3,7 +3,7 @@
 import type { FeatureCollection, Geometry, MultiPolygon, Polygon } from 'geojson'
 
 export type ChangeClass = 'significant' | 'moderate' | 'stable' | 'water'
-export type ChangeType = 'subsidence' | 'uplift' | 'moisture' | 'water' | 'vegetation' | 'construction' | 'earthquake'
+export type ChangeType = 'subsidence' | 'uplift' | 'moisture' | 'water' | 'vegetation' | 'construction' | 'fire' | 'earthquake'
 export type Confidence = 'low' | 'moderate' | 'high'
 export type Direction = 'upward' | 'downward' | 'steady'
 
@@ -62,8 +62,12 @@ export interface Layer {
   label: string
   /** 'time' (default): frames are dates of one place. 'views': frames are different views of one event. */
   kind?: 'time' | 'views'
-  /** When set, this layer belongs to that story only (e.g. an earthquake's ground-motion maps). */
-  story_id?: string
+  /** Short name for the layer picker in Compare dates, e.g. 'False colour'. */
+  short_label?: string
+  /** The exporter preset that wrote this layer (absent in files written before presets merged). */
+  preset?: string
+  /** The stories this layer's images illustrate; absent -> matched by bounds instead. */
+  story_ids?: string[]
   /** [lon, lat] corners: top-left, top-right, bottom-right, bottom-left */
   bounds: [[number, number], [number, number], [number, number], [number, number]]
   frames: Frame[]
@@ -91,8 +95,43 @@ export type WetlandFeatureProps = {
 
 export type WetlandData = FeatureCollection<Polygon | MultiPolygon, WetlandFeatureProps>
 
+/** One step on a time slider: a wetland month or a burn-scar radar pass. */
+export interface TimeStep {
+  /** 'YYYY-MM' for a month, 'YYYY-MM-DD' for a pass: the value features are filtered on. */
+  key: string
+  label: string
+}
+
 /** A month on the time slider, derived from the wetland features. */
 export interface MonthStep {
   month: string
   label: string
 }
+
+/** Burn tiers from the drop in cross-polarised (HV) radar after a fire (`naba-data` fires). */
+export type BurnTier = 'likely' | 'possible'
+
+/** One burn tier's extent at one radar pass, compared with the pass before the fire.
+ *  A type alias, as for wetlands. */
+export type FireFeatureProps = {
+  preset: string
+  story_id: string
+  tier: BurnTier
+  /** 'YYYY-MM-DD' of this radar pass - one step on the burn slider. */
+  date: string
+  /** '3 Oct' - ready to show. */
+  date_label: string
+  role: 'before' | 'during' | 'after'
+  /** True on the pass the story's headline number comes from. */
+  headline: boolean
+  /** 'YYYY-MM-DD' of the pre-fire pass every other pass is compared with. */
+  before: string
+  /** Area of the drawn (vectorized) polygons, km². */
+  area_km2: number
+  /** Area counted pixel by pixel, km² - the number the story quotes. */
+  pixel_km2: number
+  /** The dB drop in HV this tier starts at (-3 likely, -2 possible). */
+  threshold_db: number
+}
+
+export type FireData = FeatureCollection<Polygon | MultiPolygon, FireFeatureProps>

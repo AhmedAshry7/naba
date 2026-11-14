@@ -64,3 +64,19 @@ def test_round_coords_trims_precision_in_place_of_the_whole_mapping():
     out = round_coords(m, 5)
     assert out["coordinates"] == [[[31.12346, 31.98765]]]
     assert out["keep"] == "me"
+
+
+def test_closed_outline_bridges_narrow_gaps_but_keeps_far_patches_apart():
+    from naba_data.vectorize import closed_outline, polygonal_parts
+
+    mask = _blank()
+    mask[20:40, 10:30] = True
+    mask[20:40, 32:52] = True                 # 2 cells (~190 m) to the right: bridged
+    mask[70:90, 70:90] = True                 # far away: stays its own part
+    patches = mask_to_multipolygon(mask, BBOX, RES, min_area_km2=0.0, simplify_m=0, majority=0)
+    assert len(patches.geoms) == 3
+    env = closed_outline(patches, close_m=150.0, simplify_m=0)
+    assert len(env.geoms) == 2
+    assert geodesic_area_km2(env) >= geodesic_area_km2(patches)
+    assert env.covers(patches.buffer(-1e-9))
+    assert polygonal_parts(None).is_empty

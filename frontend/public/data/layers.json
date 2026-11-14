@@ -1,8 +1,11 @@
 {
  "layers": [
   {
-   "id": "wetland-classes-everglades",
-   "label": "Wetland classes · Everglades",
+   "id": "everglades-false-colour",
+   "preset": "everglades",
+   "story_ids": [
+    "everglades-burn-scar"
+   ],
    "bounds": [
     [
      -80.95,
@@ -21,121 +24,201 @@
      25.25
     ]
    ],
+   "short_label": "False colour",
+   "label": "Radar false colour (R = HH, G = HV, B = HH−HV) · Everglades National Park",
    "frames": [
     {
-     "date": "2026-06-01",
-     "url": "/data/frames/wetland_everglades_2026-06.png"
+     "date": "2026-07-20",
+     "url": "/data/frames/everglades/rgb_2026-07-20.webp"
     },
     {
-     "date": "2026-07-01",
-     "url": "/data/frames/wetland_everglades_2026-07.png"
+     "date": "2026-08-13",
+     "url": "/data/frames/everglades/rgb_2026-08-13.webp"
     },
     {
-     "date": "2026-08-01",
-     "url": "/data/frames/wetland_everglades_2026-08.png"
+     "date": "2026-08-25",
+     "url": "/data/frames/everglades/rgb_2026-08-25.webp"
     },
     {
-     "date": "2026-09-01",
-     "url": "/data/frames/wetland_everglades_2026-09.png"
+     "date": "2026-09-06",
+     "url": "/data/frames/everglades/rgb_2026-09-06.webp"
     },
     {
-     "date": "2026-10-01",
-     "url": "/data/frames/wetland_everglades_2026-10.png"
+     "date": "2026-09-18",
+     "url": "/data/frames/everglades/rgb_2026-09-18.webp"
+    },
+    {
+     "date": "2026-09-30",
+     "url": "/data/frames/everglades/rgb_2026-09-30.webp"
     }
    ]
   },
   {
-   "id": "wetland-classes-okavango",
-   "label": "Wetland classes · Okavango Delta",
+   "id": "everglades-burn",
+   "preset": "everglades",
+   "story_ids": [
+    "everglades-burn-scar"
+   ],
    "bounds": [
     [
-     22.55,
-     -19.2
+     -80.95,
+     25.65
     ],
     [
-     22.9,
-     -19.2
+     -80.55,
+     25.65
     ],
     [
-     22.9,
-     -19.55
+     -80.55,
+     25.25
     ],
     [
-     22.55,
-     -19.55
+     -80.95,
+     25.25
     ]
    ],
+   "short_label": "Burn mask",
+   "label": "Burn mask: HV drop since 2026-07-20 · Everglades National Park",
    "frames": [
     {
-     "date": "2026-06-01",
-     "url": "/data/frames/wetland_okavango_2026-06.png"
+     "date": "2026-07-20",
+     "url": "/data/frames/everglades/burn_2026-07-20.png"
     },
     {
-     "date": "2026-07-01",
-     "url": "/data/frames/wetland_okavango_2026-07.png"
+     "date": "2026-08-13",
+     "url": "/data/frames/everglades/burn_2026-08-13.png"
     },
     {
-     "date": "2026-08-01",
-     "url": "/data/frames/wetland_okavango_2026-08.png"
+     "date": "2026-08-25",
+     "url": "/data/frames/everglades/burn_2026-08-25.png"
     },
     {
-     "date": "2026-09-01",
-     "url": "/data/frames/wetland_okavango_2026-09.png"
+     "date": "2026-09-06",
+     "url": "/data/frames/everglades/burn_2026-09-06.png"
     },
     {
-     "date": "2026-10-01",
-     "url": "/data/frames/wetland_okavango_2026-10.png"
+     "date": "2026-09-18",
+     "url": "/data/frames/everglades/burn_2026-09-18.png"
+    },
+    {
+     "date": "2026-09-30",
+     "url": "/data/frames/everglades/burn_2026-09-30.png"
     }
    ]
   },
   {
-   "id": "wetland-classes-manzala",
-   "label": "Wetland classes · Lake Manzala",
+   "id": "plaskett-false-colour",
+   "preset": "plaskett",
+   "story_ids": [
+    "plaskett-burn-scar"
+   ],
    "bounds": [
     [
-     31.95,
-     31.4
+     -121.55,
+     36.02
     ],
     [
-     32.2,
-     31.4
+     -121.25,
+     36.02
     ],
     [
-     32.2,
-     31.15
+     -121.25,
+     35.78
     ],
     [
-     31.95,
-     31.15
+     -121.55,
+     35.78
     ]
    ],
+   "short_label": "False colour",
+   "label": "Radar false colour (R = HH, G = HV, B = HH−HV) · Big Sur",
    "frames": [
     {
-     "date": "2026-06-01",
-     "url": "/data/frames/wetland_manzala_2026-06.png"
+     "date": "2026-08-16",
+     "url": "/data/frames/plaskett/rgb_2026-08-16.webp"
     },
     {
-     "date": "2026-07-01",
-     "url": "/data/frames/wetland_manzala_2026-07.png"
+     "date": "2026-08-28",
+     "url": "/data/frames/plaskett/rgb_2026-08-28.webp"
     },
     {
-     "date": "2026-08-01",
-     "url": "/data/frames/wetland_manzala_2026-08.png"
+     "date": "2026-09-09",
+     "url": "/data/frames/plaskett/rgb_2026-09-09.webp"
     },
     {
-     "date": "2026-09-01",
-     "url": "/data/frames/wetland_manzala_2026-09.png"
+     "date": "2026-09-21",
+     "url": "/data/frames/plaskett/rgb_2026-09-21.webp"
     },
     {
-     "date": "2026-10-01",
-     "url": "/data/frames/wetland_manzala_2026-10.png"
+     "date": "2026-10-03",
+     "url": "/data/frames/plaskett/rgb_2026-10-03.webp"
+    },
+    {
+     "date": "2026-10-15",
+     "url": "/data/frames/plaskett/rgb_2026-10-15.webp"
+    }
+   ]
+  },
+  {
+   "id": "plaskett-burn",
+   "preset": "plaskett",
+   "story_ids": [
+    "plaskett-burn-scar"
+   ],
+   "bounds": [
+    [
+     -121.55,
+     36.02
+    ],
+    [
+     -121.25,
+     36.02
+    ],
+    [
+     -121.25,
+     35.78
+    ],
+    [
+     -121.55,
+     35.78
+    ]
+   ],
+   "short_label": "Burn mask",
+   "label": "Burn mask: HV drop since 2026-08-16 · Big Sur",
+   "frames": [
+    {
+     "date": "2026-08-16",
+     "url": "/data/frames/plaskett/burn_2026-08-16.png"
+    },
+    {
+     "date": "2026-08-28",
+     "url": "/data/frames/plaskett/burn_2026-08-28.png"
+    },
+    {
+     "date": "2026-09-09",
+     "url": "/data/frames/plaskett/burn_2026-09-09.png"
+    },
+    {
+     "date": "2026-09-21",
+     "url": "/data/frames/plaskett/burn_2026-09-21.png"
+    },
+    {
+     "date": "2026-10-03",
+     "url": "/data/frames/plaskett/burn_2026-10-03.png"
+    },
+    {
+     "date": "2026-10-15",
+     "url": "/data/frames/plaskett/burn_2026-10-15.png"
     }
    ]
   },
   {
    "id": "earthquake-panama",
+   "preset": "panama",
    "kind": "views",
-   "story_id": "panama-azuero-m77",
+   "story_ids": [
+    "panama-azuero-m77"
+   ],
    "label": "Ground motion · Azuero peninsula, Panama",
    "bounds": [
     [
@@ -170,6 +253,154 @@
      "date": "2026-10-14",
      "label": "Radar fringes (one colour cycle = 12 cm)",
      "url": "/data/frames/quake_panama_fringes.png"
+    }
+   ]
+  },
+  {
+   "id": "manzala-wetland-classes",
+   "preset": "manzala",
+   "story_ids": [
+    "manzala-flooded-vegetation"
+   ],
+   "label": "Wetland classes · Lake Manzala",
+   "short_label": "Wetland classes",
+   "bounds": [
+    [
+     31.95,
+     31.4
+    ],
+    [
+     32.2,
+     31.4
+    ],
+    [
+     32.2,
+     31.15
+    ],
+    [
+     31.95,
+     31.15
+    ]
+   ],
+   "frames": [
+    {
+     "date": "2026-06-01",
+     "url": "/data/frames/manzala/wetland_2026-06.png"
+    },
+    {
+     "date": "2026-07-01",
+     "url": "/data/frames/manzala/wetland_2026-07.png"
+    },
+    {
+     "date": "2026-08-01",
+     "url": "/data/frames/manzala/wetland_2026-08.png"
+    },
+    {
+     "date": "2026-09-01",
+     "url": "/data/frames/manzala/wetland_2026-09.png"
+    },
+    {
+     "date": "2026-10-01",
+     "url": "/data/frames/manzala/wetland_2026-10.png"
+    }
+   ]
+  },
+  {
+   "id": "okavango-wetland-classes",
+   "preset": "okavango",
+   "story_ids": [
+    "okavango-open-water"
+   ],
+   "label": "Wetland classes · Okavango Delta",
+   "short_label": "Wetland classes",
+   "bounds": [
+    [
+     22.55,
+     -19.2
+    ],
+    [
+     22.9,
+     -19.2
+    ],
+    [
+     22.9,
+     -19.55
+    ],
+    [
+     22.55,
+     -19.55
+    ]
+   ],
+   "frames": [
+    {
+     "date": "2026-06-01",
+     "url": "/data/frames/okavango/wetland_2026-06.png"
+    },
+    {
+     "date": "2026-07-01",
+     "url": "/data/frames/okavango/wetland_2026-07.png"
+    },
+    {
+     "date": "2026-08-01",
+     "url": "/data/frames/okavango/wetland_2026-08.png"
+    },
+    {
+     "date": "2026-09-01",
+     "url": "/data/frames/okavango/wetland_2026-09.png"
+    },
+    {
+     "date": "2026-10-01",
+     "url": "/data/frames/okavango/wetland_2026-10.png"
+    }
+   ]
+  },
+  {
+   "id": "everglades-wetlands-wetland-classes",
+   "preset": "everglades-wetlands",
+   "story_ids": [
+    "everglades-open-water",
+    "everglades-flooded-vegetation"
+   ],
+   "label": "Wetland classes · Everglades",
+   "short_label": "Wetland classes",
+   "bounds": [
+    [
+     -80.95,
+     25.65
+    ],
+    [
+     -80.55,
+     25.65
+    ],
+    [
+     -80.55,
+     25.25
+    ],
+    [
+     -80.95,
+     25.25
+    ]
+   ],
+   "frames": [
+    {
+     "date": "2026-06-01",
+     "url": "/data/frames/everglades-wetlands/wetland_2026-06.png"
+    },
+    {
+     "date": "2026-07-01",
+     "url": "/data/frames/everglades-wetlands/wetland_2026-07.png"
+    },
+    {
+     "date": "2026-08-01",
+     "url": "/data/frames/everglades-wetlands/wetland_2026-08.png"
+    },
+    {
+     "date": "2026-09-01",
+     "url": "/data/frames/everglades-wetlands/wetland_2026-09.png"
+    },
+    {
+     "date": "2026-10-01",
+     "url": "/data/frames/everglades-wetlands/wetland_2026-10.png"
     }
    ]
   }

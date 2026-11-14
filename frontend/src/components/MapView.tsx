@@ -2,8 +2,8 @@ import { useEffect, useRef, useState } from 'react'
 import maplibregl, { type GeoJSONSource } from 'maplibre-gl'
 import 'maplibre-gl/dist/maplibre-gl.css'
 import type { Feature, FeatureCollection } from 'geojson'
-import { useStore } from '../store'
-import { CLASS_META, DELTA_VIEW, EGYPT_VIEW, GLOBE_VIEW, WETLAND_META, fitZoom, layerFor } from '../lib'
+import { useStore, type FireTimeline } from '../store'
+import { CLASS_META, DELTA_VIEW, EGYPT_VIEW, FIRE_META, GLOBE_VIEW, WETLAND_META, fitZoom, formatDateShort, layerFor } from '../lib'
 
 export const BASEMAP = 'https://basemaps.cartocdn.com/gl/dark-matter-gl-style/style.json'
 
@@ -26,11 +26,33 @@ const wetlandColorExpr: maplibregl.ExpressionSpecification = [
   '#93A3C0',
 ]
 
+// Measured burn tiers, in the exporter's burn-mask colours (see FIRE_META).
+const fireColorExpr: maplibregl.ExpressionSpecification = [
+  'match',
+  ['get', 'tier'],
+  'likely', FIRE_META.likely.color,
+  'possible', FIRE_META.possible.color,
+  '#93A3C0',
+]
+
+// Layers with their own, more specific popup than the story headline.
+const DETAIL_LAYERS = ['wetland-fill', 'fire-fill']
+
 const monthFilter = (month: string | undefined): maplibregl.ExpressionSpecification => [
   '==',
   ['get', 'month'],
   month ?? '',
 ]
+
+// Each fire story's burn layer shows one radar pass at a time (its burn slider's step).
+const passFilter = (timelines: Record<string, FireTimeline>): maplibregl.ExpressionSpecification => {
+  const shown = Object.entries(timelines).map(([id, t]): maplibregl.ExpressionSpecification => [
+    'all',
+    ['==', ['get', 'story_id'], id],
+    ['==', ['get', 'date'], t.steps[t.index]?.key ?? ''],
+  ])
+  return shown.length ? ['any', ...shown] : ['==', ['get', 'date'], '']
+}
 
 const isDesktop = () => window.innerWidth >= 1024
 
@@ -50,6 +72,8 @@ export default function MapView() {
 
   const stories = useStore((s) => s.stories)
   const wetlands = useStore((s) => s.wetlands)
+  const fires = useStore((s) => s.fires)
+  const fireTimelines = useStore((s) => s.fireTimelines)
   const months = useStore((s) => s.months)
   const monthIndex = useStore((s) => s.monthIndex)
   const selectedId = useStore((s) => s.selectedId)
@@ -145,6 +169,29 @@ export default function MapView() {
       )
       map.setPaintProperty('wetland-fill', 'fill-opacity-transition', { duration: 250 })
 
+      // ---- measured burn scars: likely and possibly burned, not tied to the month slider ----
+      map.addSource('fires', { type: 'geojson', data: { type: 'FeatureCollection', features: [] } })
+      map.addLayer(
+        {
+          id: 'fire-fill',
+          type: 'fill',
+          source: 'fires',
+          filter: passFilter({}),
+          paint: { 'fill-color': fireColorExpr, 'fill-opacity': ['match', ['get', 'tier'], 'likely', 0.8, 0.6] },
+        },
+        'zones-line',
+      )
+      map.addLayer(
+        {
+          id: 'fire-line',
+          type: 'line',
+          source: 'fires',
+          filter: passFilter({}),
+          paint: { 'line-color': fireColorExpr, 'line-width': 1, 'line-opacity': 0.95 },
+        },
+        'zones-line',
+      )
+
       // The most specific thing under the cursor wins the popup: a measured wetland class beats
       // the story headline, which is also one click away on the dot and in the panel.
       map.on('mousemove', 'wetland-fill', (e) => {
@@ -158,6 +205,18 @@ export default function MapView() {
           .addTo(map)
       })
       map.on('mouseleave', 'wetland-fill', () => popup.remove())
+      map.on('mousemove', 'fire-fill', (e) => {
+        const f = e.features?.[0]
+        if (!f) return
+        map.getCanvas().style.cursor = 'pointer'
+        const props = f.properties as { tier: keyof typeof FIRE_META; pixel_km2: number; before: string; date: string }
+        const meta = FIRE_META[props.tier]
+        popup
+          .setLngLat(e.lngLat)
+          .setText(`${meta?.label ?? props.tier} · ${props.pixel_km2} km² · ${meta?.hint ?? ''} · ${formatDateShort(props.before)} → ${formatDateShort(props.date)}`)
+          .addTo(map)
+      })
+      map.on('mouseleave', 'fire-fill', () => popup.remove())
 
       // glowing dots so every story is visible when the whole planet is in view (fade out as polygons grow)
       map.addSource('changes-pts', { type: 'geojson', data: { type: 'FeatureCollection', features: [] } })
@@ -205,8 +264,9 @@ export default function MapView() {
           hoverId.current = id
           map.setFeatureState({ source: 'changes', id }, { hover: true })
         }
-        // inside a measured wetland polygon, that layer's own popup is the more specific one
-        if (map.getLayer('wetland-fill') && map.queryRenderedFeatures(e.point, { layers: ['wetland-fill'] }).length) return
+        // inside a measured wetland or burn polygon, that layer's own popup is the more specific one
+        const detail = DETAIL_LAYERS.filter((l) => map.getLayer(l))
+        if (detail.length && map.queryRenderedFeatures(e.point, { layers: detail }).length) return
         popup.setLngLat(e.lngLat).setText(f.properties?.headline as string).addTo(map)
       })
       map.on('mouseleave', 'zones-fill', () => {
@@ -270,6 +330,21 @@ export default function MapView() {
       wetlands ? ['case', ['boolean', ['feature-state', 'hover'], false], 0.18, 0] : ['case', ['boolean', ['feature-state', 'hover'], false], 0.82, 0.55],
     )
   }, [ready, wetlands])
+
+  // ---- burn scars: data once, then just re-filter as the radar pass changes ----
+  useEffect(() => {
+    const map = mapRef.current
+    if (!ready || !map) return
+    ;(map.getSource('fires') as GeoJSONSource).setData(fires ?? { type: 'FeatureCollection', features: [] })
+  }, [ready, fires])
+
+  useEffect(() => {
+    const map = mapRef.current
+    if (!ready || !map) return
+    const filter = passFilter(fireTimelines)
+    map.setFilter('fire-fill', filter)
+    map.setFilter('fire-line', filter)
+  }, [ready, fireTimelines])
 
   useEffect(() => {
     const map = mapRef.current

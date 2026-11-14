@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { ArrowDown, ArrowRight, ArrowUp, Check, Columns2, Link2, Sparkles, X } from 'lucide-react'
 import { useStore } from '../store'
-import { CLASS_META, formatCoords, formatDate, formatDateShort, formatValue, layerFor } from '../lib'
+import { CLASS_META, formatCoords, formatDate, formatDateShort, formatValue, layersForStory } from '../lib'
 import type { ChangeStory } from '../types'
 import ConfidenceBar from './ConfidenceBar'
 import SeriesChart from './SeriesChart'
@@ -21,7 +21,7 @@ function Stat({ label, value }: { label: string; value: string }) {
 function Body({ s }: { s: ChangeStory }) {
   const meta = CLASS_META[s.change_class]
   const Arrow = ARROWS[s.metric.direction] ?? ArrowRight
-  const layer = useStore((st) => layerFor(st.layers, s))
+  const layer = useStore((st) => layersForStory(st.layers, s)[0])
   const hasFrames = !!layer
   const isViews = layer?.kind === 'views'
   const set = useStore((st) => st.set)

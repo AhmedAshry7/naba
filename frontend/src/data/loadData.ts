@@ -1,10 +1,11 @@
 // The ONLY place the UI talks to a data source.
 // - VITE_API_URL unset -> static files in /public/data (always works, used for the demo).
 // - VITE_API_URL set   -> GET {API}/changes (GeoJSON FeatureCollection), GET {API}/layers
-//                         (layers.json shape) and GET {API}/wetlands (wetlands.geojson shape).
-// Swapping the backend (e.g. FastAPI + PostGIS) means serving the same three shapes; no component changes.
+//                         (layers.json shape), GET {API}/wetlands (wetlands.geojson shape) and
+//                         GET {API}/fires (fires.geojson shape).
+// Swapping the backend (e.g. FastAPI + PostGIS) means serving the same four shapes; no component changes.
 import type { Feature, FeatureCollection } from 'geojson'
-import type { ChangeStory, Layer, WetlandData } from '../types'
+import type { ChangeStory, FireData, Layer, WetlandData } from '../types'
 
 const API = (import.meta.env.VITE_API_URL as string | undefined)?.replace(/\/$/, '')
 const url = (apiPath: string, staticPath: string) => (API ? `${API}${apiPath}` : staticPath)
@@ -29,6 +30,18 @@ export async function loadWetlands(): Promise<WetlandData | null> {
     const fc = await getJson<WetlandData>(url('/wetlands', '/data/wetlands.geojson'))
     if (fc?.type !== 'FeatureCollection' || !Array.isArray(fc.features)) return null
     const features = fc.features.filter((f) => f.geometry && f.properties?.class && f.properties?.month)
+    return features.length ? { ...fc, features } : null
+  } catch {
+    return null
+  }
+}
+
+/** Burn-scar extents are optional too: if missing, the globe simply has no burn layer. */
+export async function loadFires(): Promise<FireData | null> {
+  try {
+    const fc = await getJson<FireData>(url('/fires', '/data/fires.geojson'))
+    if (fc?.type !== 'FeatureCollection' || !Array.isArray(fc.features)) return null
+    const features = fc.features.filter((f) => f.geometry && f.properties?.tier)
     return features.length ? { ...fc, features } : null
   } catch {
     return null

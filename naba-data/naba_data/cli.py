@@ -4,6 +4,9 @@
     estimate  what one AOI window read would cost            (metadata only, login needed)
     export    stream, classify, vectorize and write the app's dataset
 
+Presets have a theme: "wetlands" (monthly HH/HV classes) or "fires" (HV drop before/after an
+event). Each export replaces only its own preset's part of the dataset.
+
 Earthquakes (GUNW interferograms) have their own pair of commands:
 
     quake-search   the interferograms that exist over the earthquake's AOI (metadata only)
@@ -23,8 +26,9 @@ def _common(p: argparse.ArgumentParser) -> None:
     p.add_argument("--preset", default="manzala", choices=sorted(PRESETS),
                    help="area of interest (default: manzala)")
     p.add_argument("--max-dates", type=int, default=None,
-                   help="most acquisitions to use, spread evenly through the period "
-                        "(default: the preset's, usually 10)")
+                   help="wetlands: most acquisitions to use, spread evenly through the period "
+                        "(default: the preset's, usually 10); fires use every pass from the "
+                        "before date on")
     p.add_argument("--maturity", default=MATURITY,
                    choices=["PROVISIONAL", "BETA", "VALIDATED"])
     p.add_argument("--frequency", default=FREQUENCY, choices=["A", "B"],
@@ -58,7 +62,7 @@ def build_parser() -> argparse.ArgumentParser:
                    help="rebuild changes.geojson from sample-stories.json plus the real stories "
                         "already exported; no network, no credentials")
     x.add_argument("--no-frames", action="store_true",
-                   help="skip the monthly class-map PNGs (Compare dates will have no images)")
+                   help="skip the Compare-dates images (class maps / false colour / burn masks)")
     x.add_argument("--res-deg", type=float, default=GCOV_RES_DEG,
                    help=f"output grid in degrees (default: {GCOV_RES_DEG}, about 20 m)")
     x.add_argument("--min-area-km2", type=float, default=None,
@@ -134,21 +138,39 @@ def _cmd_quake_export(args) -> int:
     return 0
 
 
+def _select(preset, args):
+    """The acquisitions an export of this preset would use: (df, pre_row, post_row)."""
+    if preset.theme == "fires":
+        from .fires import select_fire_acquisitions
+
+        return select_fire_acquisitions(preset, maturity=args.maturity)
+    from .search import select_acquisitions
+
+    return select_acquisitions(preset, max_dates=args.max_dates, maturity=args.maturity), None, None
+
+
 def _cmd_search(args) -> int:
-    from .search import search_nisar, select_acquisitions, summarize
+    from .search import search_nisar, summarize
 
     preset = _resolve(args, get_preset(args.preset))
-    print(f"{preset.name}\n  bbox {list(preset.bbox)}  "
-          f"{preset.search_start} -> {preset.search_end}  {preset.product} {args.maturity}\n")
+    print(f"{preset.name}  [{preset.theme}]\n  bbox {list(preset.bbox)}  "
+          f"{preset.search_start} -> {preset.search_end}  {preset.product} {args.maturity}")
+    if preset.event_start:
+        print(f"  event {preset.event_start} -> {preset.event_end}")
+    print()
+    pre = post = None
     if args.all:
         df = search_nisar(preset.product, preset.bbox, preset.search_start, preset.search_end,
                           args.maturity)
     else:
-        df = select_acquisitions(preset, max_dates=args.max_dates, maturity=args.maturity)
+        df, pre, post = _select(preset, args)
     if df.empty:
         print("No granules found.")
         return 1
     print(summarize(df), "\n")
+    if pre is not None:
+        print(f"Before: {pre['date'].date()}  {pre['name']}\nAfter : {post['date'].date()}  "
+              f"{post['name']}\n")
     cols = [c for c in ("date", "track", "direction", "frame", "pol_code", "size_MB_catalog",
                         "name") if c in df]
     print(df[cols].to_string(index=False))
@@ -157,10 +179,10 @@ def _cmd_search(args) -> int:
 
 def _cmd_estimate(args) -> int:
     from .remote import close_all, estimate_read_mb
-    from .search import pol_vars, select_acquisitions
+    from .search import pol_vars
 
     preset = _resolve(args, get_preset(args.preset))
-    acq = select_acquisitions(preset, max_dates=args.max_dates, maturity=args.maturity)
+    acq, _pre, _post = _select(preset, args)
     if acq.empty:
         print("No usable dual-pol acquisitions.")
         return 1
@@ -192,8 +214,9 @@ def _cmd_export(args) -> int:
         majority=args.majority, public_data=out, with_samples=not args.no_samples,
         offline=args.offline, write_frames=not args.no_frames,
     )
-    print(f"\nWrote {result['stories']} real stories and {result['wetland_features']} monthly "
-          f"extents over {len(result['months'])} months ({', '.join(result['months'])}) -> {out}")
+    print(f"\n{preset.key} -> {out}")
+    for line in result["lines"]:
+        print(f"  {line}")
     for name, size in result["sizes"].items():
         print(f"  {name:<22} {size / 1e3:>8.1f} kB")
     print(f"  network moved          {result['provenance']['network_MB']:>8.3f} MB")

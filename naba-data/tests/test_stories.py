@@ -80,3 +80,58 @@ def test_trend_is_percentage_points_per_month():
     assert trend_per_month(ts["date"], ts["open_water_pct"]) == pytest.approx(1.0, abs=0.01)
     assert direction_of(0.0) == "steady"
     assert direction_of(-5.0) == "downward"
+
+
+# ---------------------------------------------------------------- fire stories
+def _fire_indicators(likely=(0.0, 5.0, 20.0, 31.0, 30.0), coverage=99.0):
+    labels = ["2026-08-16", "2026-08-28", "2026-09-21", "2026-10-03", "2026-10-15"][:len(likely)]
+    roles = ["before", "during", "during", "after", "after"][:len(likely)]
+    return pd.DataFrame(dict(label=labels, date=pd.to_datetime(labels), role=roles,
+                             likely_km2=list(likely), possible_km2=[v / 2 for v in likely],
+                             burned_km2=[1.5 * v for v in likely],
+                             likely_pct=[v / 10 for v in likely],
+                             coverage_pct=[coverage] * len(likely),
+                             HV_median=[-14.0] * len(likely), dHV_median=[-1.0] * len(likely),
+                             dCO_median=[0.0] * len(likely)))
+
+
+def _fire_story(ind=None):
+    from naba_data.stories import build_fire_story
+
+    return build_fire_story(get_preset("plaskett"), ind if ind is not None else _fire_indicators(),
+                            "2026-08-16", "2026-10-03", 44.0, lat=35.9, lon=-121.4)
+
+
+def test_fire_story_has_exactly_the_fields_the_frontend_expects():
+    src = TYPES_TS.read_text()
+    block = re.search(r"export interface ChangeStory \{(.*?)\n\}", src, re.S).group(1)
+    # optional fields (`name?:`) belong to some themes only, e.g. `event_date` on earthquakes
+    expected = {m.group(1) for m in re.finditer(r"^\s{2}(\w+):", block, re.M)}
+    expected.discard("geometry")
+    story = _fire_story()
+    assert set(story) == expected
+    json.dumps(story)
+    change_types = re.search(r"export type ChangeType = (.*)", src).group(1)
+    assert f"'{story['change_type']}'" in change_types
+
+
+def test_fire_story_quotes_the_after_pass_and_the_reported_size():
+    story = _fire_story()
+    assert story["id"] == "plaskett-burn-scar"
+    assert story["change_class"] == "significant"
+    assert story["metric"]["value"] == pytest.approx(31.0)       # the after pass, not the last pass
+    assert story["series"][0] == {"date": "2026-08-16", "value": 0.0}
+    assert story["period"] == {"start": "2026-08-16", "end": "2026-10-15"}
+    assert story["passes"] == 5
+    assert story["area_km2"] == pytest.approx(44.0)
+    assert "121 km²" in story["explanation"]
+    assert "bigsurkate.blog" in story["explanation"]
+    assert "3 October 2026" in story["summary"]
+
+
+def test_fire_story_is_never_high_confidence_or_ai_written():
+    story = _fire_story()
+    assert story["confidence"] == "moderate"
+    assert story["is_sample"] is False and story["explanation_ai_generated"] is False
+    assert "not a validated burn map" in story["confidence_note"]
+    assert _fire_story(_fire_indicators(coverage=50.0))["confidence"] == "low"
