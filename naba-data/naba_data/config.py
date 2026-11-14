@@ -72,6 +72,13 @@ class Preset:
     story_ids: dict[str, str] = field(default_factory=dict)
     # Sample stories this preset's real stories replace (same place, invented numbers).
     supersedes: tuple[str, ...] = ()
+    # Per-area defaults for the exporter (a command-line flag still wins). A delta of braided
+    # channels needs coarser vectors than a lagoon to stay a sensible size for the browser.
+    the: bool = False               # sentences say 'the Everglades', not 'Everglades'
+    max_dates: int = 10
+    min_area_km2: float | None = None
+    simplify_m: float | None = None
+    majority: int | None = None
 
 
 PRESETS: dict[str, Preset] = {
@@ -131,6 +138,40 @@ PRESETS: dict[str, Preset] = {
         next_step="Compare with river gauge records upstream before treating the change as confirmed.",
         story_ids={"open_water": "okavango-open-water",
                    "flooded_vegetation": "okavango-flooded-vegetation"},
+        the=True, max_dates=12, min_area_km2=2.0, simplify_m=400.0, majority=9,
+    ),
+    # "NISAR demo sites" file, Wetlands #3: Everglades, Florida. Two geometries cover it; the
+    # exporter keeps the most frequent one (47 A fr 14), as it does for every preset.
+    "everglades": Preset(
+        key="everglades",
+        name="Everglades, Florida, USA",
+        region="Everglades",
+        subtitle="Freshwater marsh and sawgrass prairie",
+        bbox=(-80.95, 25.25, -80.55, 25.65),
+        search_start="2026-06-17",
+        search_end="2026-11-13",
+        causes_water=(
+            "Seasonal rainfall refilling ponds and sloughs after the 2026 drought",
+            "Water managed through canals and control structures",
+            "Vegetation burned in the August 2026 fire, exposing open water",
+        ),
+        causes_flooded=(
+            "Rain-fed water rising into sawgrass and other marsh vegetation",
+            "Wet-season sheet flow spreading slowly across the marsh",
+            "Marsh plants regrowing through standing water after the fire",
+        ),
+        why_it_matters=(
+            "The Everglades depends on slow, shallow sheet flow. Summer 2026 brought extreme "
+            "drought and then fire in peat soil, so how much of the marsh is wet again decides "
+            "what wildlife, fire risk and Florida's water supply look like next."
+        ),
+        next_step=(
+            "Compare with water-level gauges from the South Florida Water Management District "
+            "and optical imagery before treating the change as confirmed."
+        ),
+        story_ids={"open_water": "everglades-open-water",
+                   "flooded_vegetation": "everglades-flooded-vegetation"},
+        the=True, max_dates=12, min_area_km2=2.0, simplify_m=400.0, majority=9,
     ),
 }
 

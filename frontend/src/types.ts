@@ -77,6 +77,8 @@ export type WetlandClass = 'open_water' | 'flooded_vegetation'
 /** One class's extent in one month, as measured by NISAR.
  *  A type alias (not an interface) so it satisfies GeoJsonProperties in FeatureCollection<G, P>. */
 export type WetlandFeatureProps = {
+  /** Which area: 'manzala', 'okavango', 'everglades'. Missing on older files (then Manzala). */
+  area?: string
   class: WetlandClass
   /** 'YYYY-MM' - the month whose acquisitions were composited. */
   month: string

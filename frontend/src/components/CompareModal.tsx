@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from 'react'
 import maplibregl, { type ImageSource } from 'maplibre-gl'
 import { Columns2, X } from 'lucide-react'
 import { useStore } from '../store'
-import { CLASS_META, formatDate, layerFor } from '../lib'
+import { CLASS_META, fitZoom, formatDate, layerFor } from '../lib'
 import type { Frame, Layer } from '../types'
 import { BASEMAP } from './MapView'
 
@@ -78,8 +78,8 @@ export default function CompareModal() {
   const covered = story.lon >= w && story.lon <= e && story.lat >= s && story.lat <= n
   const meta = CLASS_META[story.change_class]
   const views = layer.kind === 'views'
-  const center: [number, number] = views ? [(w + e) / 2, (n + s) / 2] : [story.lon, story.lat]
-  const zoom = views ? 8.9 : 8.4
+  const center: [number, number] = [(w + e) / 2, (n + s) / 2]
+  const zoom = fitZoom(layer)
   const [first, second] = views ? ['Left', 'Right'] : ['Before', 'After']
   const close = () => set({ compareOpen: false })
 

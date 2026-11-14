@@ -3,7 +3,7 @@ import maplibregl, { type GeoJSONSource } from 'maplibre-gl'
 import 'maplibre-gl/dist/maplibre-gl.css'
 import type { Feature, FeatureCollection } from 'geojson'
 import { useStore } from '../store'
-import { CLASS_META, DELTA_VIEW, EGYPT_VIEW, GLOBE_VIEW, WETLAND_META, layerFor } from '../lib'
+import { CLASS_META, DELTA_VIEW, EGYPT_VIEW, GLOBE_VIEW, WETLAND_META, fitZoom, layerFor } from '../lib'
 
 export const BASEMAP = 'https://basemaps.cartocdn.com/gl/dark-matter-gl-style/style.json'
 
@@ -296,7 +296,7 @@ export default function MapView() {
     markerRef.current?.remove()
     markerRef.current = null
     if (!story) return
-    const quakeLayer = layerFor(layers, story)?.kind === 'views'
+    const storyLayer = layerFor(layers, story)
     const el = document.createElement('div')
     el.className = 'naba-pulse'
     el.style.setProperty('--pulse', CLASS_META[story.change_class].color)
@@ -304,7 +304,7 @@ export default function MapView() {
     map.flyTo({
       center: [story.lon, story.lat],
       // bigger zones need a wider view
-      zoom: quakeLayer ? 8.2 : story.area_km2 > 2000 ? 4.6 : story.area_km2 > 800 ? 5.6 : story.area_km2 > 200 ? 7.4 : 8.8,
+      zoom: storyLayer ? fitZoom(storyLayer, 0.5) : story.area_km2 > 2000 ? 4.6 : story.area_km2 > 800 ? 5.6 : story.area_km2 > 200 ? 7.4 : 8.8,
       duration: 1500,
       essential: true,
       padding: cameraPadding(map.getContainer()),

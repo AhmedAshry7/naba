@@ -22,8 +22,9 @@ from .config import (EQ_PRESETS, FREQUENCY, GCOV_RES_DEG, GUNW_RES_DEG, MAJORITY
 def _common(p: argparse.ArgumentParser) -> None:
     p.add_argument("--preset", default="manzala", choices=sorted(PRESETS),
                    help="area of interest (default: manzala)")
-    p.add_argument("--max-dates", type=int, default=10,
-                   help="most acquisitions to use, spread evenly through the period (default: 10)")
+    p.add_argument("--max-dates", type=int, default=None,
+                   help="most acquisitions to use, spread evenly through the period "
+                        "(default: the preset's, usually 10)")
     p.add_argument("--maturity", default=MATURITY,
                    choices=["PROVISIONAL", "BETA", "VALIDATED"])
     p.add_argument("--frequency", default=FREQUENCY, choices=["A", "B"],
@@ -60,12 +61,12 @@ def build_parser() -> argparse.ArgumentParser:
                    help="skip the monthly class-map PNGs (Compare dates will have no images)")
     x.add_argument("--res-deg", type=float, default=GCOV_RES_DEG,
                    help=f"output grid in degrees (default: {GCOV_RES_DEG}, about 20 m)")
-    x.add_argument("--min-area-km2", type=float, default=MIN_AREA_KM2,
-                   help=f"drop polygon parts smaller than this (default: {MIN_AREA_KM2})")
-    x.add_argument("--simplify-m", type=float, default=SIMPLIFY_M,
-                   help=f"simplify tolerance in metres (default: {SIMPLIFY_M})")
-    x.add_argument("--majority", type=int, default=MAJORITY_FILTER,
-                   help=f"majority filter size, 0 to disable (default: {MAJORITY_FILTER})")
+    x.add_argument("--min-area-km2", type=float, default=None,
+                   help=f"drop polygon parts smaller than this (default: the preset's, else {MIN_AREA_KM2})")
+    x.add_argument("--simplify-m", type=float, default=None,
+                   help=f"simplify tolerance in metres (default: the preset's, else {SIMPLIFY_M})")
+    x.add_argument("--majority", type=int, default=None,
+                   help=f"majority filter size, 0 to disable (default: the preset's, else {MAJORITY_FILTER})")
     qs = sub.add_parser("quake-search", help="list GUNW interferograms over an earthquake's AOI")
     qs.add_argument("--preset", default="panama", choices=sorted(EQ_PRESETS))
     qs.add_argument("--maturity", default=MATURITY, choices=["PROVISIONAL", "BETA", "VALIDATED"])
@@ -83,6 +84,18 @@ def build_parser() -> argparse.ArgumentParser:
                     help=f"output grid in degrees (default: {GUNW_RES_DEG}, about 90 m)")
     qx.add_argument("-v", "--verbose", action="store_true")
     return ap
+
+
+def _resolve(args, preset):
+    """Fill flags the user left out: the preset's own value, else the global default."""
+    if getattr(args, "max_dates", None) is None:
+        args.max_dates = preset.max_dates
+    for flag, default in (("min_area_km2", MIN_AREA_KM2), ("simplify_m", SIMPLIFY_M),
+                          ("majority", MAJORITY_FILTER)):
+        if hasattr(args, flag) and getattr(args, flag) is None:
+            own = getattr(preset, flag)
+            setattr(args, flag, default if own is None else own)
+    return preset
 
 
 def _cmd_quake_search(args) -> int:
@@ -124,7 +137,7 @@ def _cmd_quake_export(args) -> int:
 def _cmd_search(args) -> int:
     from .search import search_nisar, select_acquisitions, summarize
 
-    preset = get_preset(args.preset)
+    preset = _resolve(args, get_preset(args.preset))
     print(f"{preset.name}\n  bbox {list(preset.bbox)}  "
           f"{preset.search_start} -> {preset.search_end}  {preset.product} {args.maturity}\n")
     if args.all:
@@ -146,7 +159,7 @@ def _cmd_estimate(args) -> int:
     from .remote import close_all, estimate_read_mb
     from .search import pol_vars, select_acquisitions
 
-    preset = get_preset(args.preset)
+    preset = _resolve(args, get_preset(args.preset))
     acq = select_acquisitions(preset, max_dates=args.max_dates, maturity=args.maturity)
     if acq.empty:
         print("No usable dual-pol acquisitions.")
@@ -166,7 +179,7 @@ def _cmd_export(args) -> int:
 
     from .export import run_export, run_samples_only
 
-    preset = get_preset(args.preset)
+    preset = _resolve(args, get_preset(args.preset))
     out = Path(args.out)
     if args.samples_only:
         run_samples_only(preset, out)

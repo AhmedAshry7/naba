@@ -150,6 +150,29 @@ def single_geometry(df: pd.DataFrame) -> pd.DataFrame:
     return out
 
 
+def one_per_acquisition(df: pd.DataFrame) -> pd.DataFrame:
+    """One granule per date, track, direction and frame.
+
+    NISAR can publish the same acquisition more than once: a re-processed version (`_001`,
+    `_002`) or a full-frame and a partial-frame product (`..._F_J_...` / `..._P_J_...`). Keeping
+    both would count that day twice in the monthly median, so prefer the full-frame product and
+    then the newest version.
+    """
+    if df.empty or "name" not in df:
+        return df
+    tok = df["name"].str.split("_")
+    full = tok.map(lambda t: len(t) >= 3 and t[-3] == "F").astype(int)
+    version = tok.map(lambda t: int(t[-1]) if t[-1].isdigit() else 0)
+    keys = [k for k in ("date", "track", "direction", "frame") if k in df]
+    ranked = df.assign(_full=full, _version=version).sort_values(
+        keys + ["_full", "_version"], ascending=[True] * len(keys) + [False, False])
+    out = ranked.drop_duplicates(subset=keys, keep="first").drop(columns=["_full", "_version"])
+    if len(out) < len(df):
+        log.info("Dropped %d duplicate granule(s) of the same acquisition (kept full-frame, "
+                 "newest version)", len(df) - len(out))
+    return out.sort_values("begin").reset_index(drop=True)
+
+
 def spread_dates(df: pd.DataFrame, max_dates: int) -> pd.DataFrame:
     """Spread the chosen acquisitions evenly through the period (notebook cell 50)."""
     if max_dates and len(df) > max_dates:
@@ -167,6 +190,7 @@ def select_acquisitions(preset: Preset, max_dates: int = 10, maturity: str = MAT
     sel = dual_pol_only(df)
     if lock_geometry:
         sel = single_geometry(sel)
+    sel = one_per_acquisition(sel)
     return spread_dates(sel, max_dates)
 
 

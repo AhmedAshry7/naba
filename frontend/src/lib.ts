@@ -53,3 +53,9 @@ const covers = (l: Layer, s: ChangeStory) => {
 /** The image layer that belongs to this story: its own layer if it has one, else one covering it. */
 export const layerFor = (layers: Layer[], s: ChangeStory | undefined): Layer | undefined =>
   !s ? undefined : layers.find((l) => l.story_id === s.id) ?? layers.find((l) => !l.story_id && covers(l, s))
+
+/** Zoom that frames a layer's image: smaller areas zoom in further. `extra` widens the view. */
+export const fitZoom = (l: Layer, extra = 0): number => {
+  const [[, n], , [, s]] = l.bounds
+  return Math.log2(330 / Math.max(0.05, n - s)) - extra
+}
