@@ -213,50 +213,6 @@
    ]
   },
   {
-   "id": "earthquake-panama",
-   "preset": "panama",
-   "kind": "views",
-   "story_ids": [
-    "panama-azuero-m77"
-   ],
-   "label": "Ground motion · Azuero peninsula, Panama",
-   "bounds": [
-    [
-     -81.1,
-     7.9
-    ],
-    [
-     -80.3,
-     7.9
-    ],
-    [
-     -80.3,
-     7.2
-    ],
-    [
-     -81.1,
-     7.2
-    ]
-   ],
-   "legend": {
-    "min": -1.16,
-    "max": 1.16,
-    "unit": "m"
-   },
-   "frames": [
-    {
-     "date": "2026-10-14",
-     "label": "Ground motion (blue to red, up to ±1.2 m)",
-     "url": "/data/frames/quake_panama_los.png"
-    },
-    {
-     "date": "2026-10-14",
-     "label": "Radar fringes (one colour cycle = 12 cm)",
-     "url": "/data/frames/quake_panama_fringes.png"
-    }
-   ]
-  },
-  {
    "id": "manzala-wetland-classes",
    "preset": "manzala",
    "story_ids": [
@@ -401,6 +357,50 @@
     {
      "date": "2026-10-01",
      "url": "/data/frames/everglades-wetlands/wetland_2026-10.png"
+    }
+   ]
+  },
+  {
+   "id": "earthquake-panama",
+   "preset": "panama",
+   "kind": "views",
+   "story_ids": [
+    "panama-azuero-m77"
+   ],
+   "label": "Ground motion · Azuero peninsula, Panama",
+   "bounds": [
+    [
+     -81.1,
+     7.9
+    ],
+    [
+     -80.3,
+     7.9
+    ],
+    [
+     -80.3,
+     7.2
+    ],
+    [
+     -81.1,
+     7.2
+    ]
+   ],
+   "legend": {
+    "min": -1.16,
+    "max": 1.16,
+    "unit": "m"
+   },
+   "frames": [
+    {
+     "date": "2026-10-14",
+     "label": "Ground motion (darker green = more, up to 1.2 m)",
+     "url": "/data/frames/quake_panama_los.png"
+    },
+    {
+     "date": "2026-10-14",
+     "label": "Radar fringes (one colour cycle = 12 cm)",
+     "url": "/data/frames/quake_panama_fringes.png"
     }
    ]
   }

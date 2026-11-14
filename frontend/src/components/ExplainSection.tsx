@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 import { SkipForward, Sparkles, X } from 'lucide-react'
 import { useStore } from '../store'
-import { CLASS_META, prefersReducedMotion } from '../lib'
+import { prefersReducedMotion, storyMeta } from '../lib'
 
 const TOTAL_MS = 1600
 const TICK_MS = 25
@@ -41,7 +41,7 @@ export default function ExplainSection() {
 
   if (!open || !story) return null
   const done = n >= text.length
-  const meta = CLASS_META[story.change_class]
+  const meta = storyMeta(story)
 
   return (
     <div className="fixed inset-0 z-40 flex items-center justify-center bg-black/55 p-4 animate-fadeIn" onClick={() => set({ explainOpen: false })}>

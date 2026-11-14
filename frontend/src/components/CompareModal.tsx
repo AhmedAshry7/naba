@@ -1,8 +1,8 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
 import maplibregl, { type ImageSource } from 'maplibre-gl'
-import { Columns2, X } from 'lucide-react'
+import { X } from 'lucide-react'
 import { useStore } from '../store'
-import { CLASS_META, fitZoom, formatDate, layersForStory } from '../lib'
+import { fitZoom, formatDate, layersForStory, storyMeta } from '../lib'
 import type { Frame, Layer } from '../types'
 import { BASEMAP } from './MapView'
 
@@ -85,7 +85,7 @@ export default function CompareModal() {
 
   if (!open || !story) return null
   const covered = !!layer
-  const meta = CLASS_META[story.change_class]
+  const meta = storyMeta(story)
   const views = layer?.kind === 'views'
   const [[w, n], [e], [, s]] = layer?.bounds ?? [[0, 0], [0, 0], [0, 0]]
   const center: [number, number] = [(w + e) / 2, (n + s) / 2]
@@ -107,7 +107,6 @@ export default function CompareModal() {
         className="flex max-h-[94vh] w-full max-w-[1000px] flex-col rounded-panel border border-line bg-bg shadow-panel animate-rise"
       >
         <div className="flex items-center gap-3 border-b border-line px-5 py-3.5">
-          <Columns2 size={18} className="text-gold" aria-hidden />
           <h2 id="cmp-title" className="font-display text-[20px] font-semibold">
             {views ? 'Ground motion' : 'Compare dates'} · <span className="text-sub">{story.region}</span>
           </h2>
@@ -162,11 +161,7 @@ export default function CompareModal() {
                 aria-label={views ? 'Drag to swipe between the two views' : 'Drag to compare before and after'}
               />
             </div>
-            <p className="px-5 pb-4 pt-3 text-[12px] text-sub">
-              {views
-                ? 'Ground motion from a NASA–ISRO NISAR radar interferogram (two passes 12 days apart). Drag the handle to swipe between the motion map and the raw radar fringes. Blue and red are opposite directions of motion along the satellite’s line of sight.'
-                : <>{layer.label} · from NASA–ISRO NISAR radar{story.is_sample ? ' · sample images for preview' : ''}. Drag the handle to swipe between the two dates.</>}
-            </p>
+            <div className="pb-4" />
           </>
         )}
       </div>

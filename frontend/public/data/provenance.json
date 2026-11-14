@@ -1,5 +1,5 @@
 {
-  "exported_at": "2026-11-14T02:21:19+02:00",
+  "exported_at": "2026-11-14T02:37:09+02:00",
   "exporter": "naba_data 0.1.0",
   "presets": {
     "everglades": {
@@ -275,7 +275,7 @@
       "sample_stories_kept": 0
     },
     "everglades-wetlands": {
-      "exported_at": "2026-11-14T02:21:19+02:00",
+      "exported_at": "2026-11-14T02:37:09+02:00",
       "exporter": "naba_data 0.1.0",
       "source": {
         "mission": "NASA-ISRO NISAR",
@@ -595,12 +595,12 @@
       "ledger_totals": {
         "1-METADATA": {
           "MB": 0.0,
-          "seconds": 2.64,
+          "seconds": 10.46,
           "operations": 1
         },
         "cache/local": {
           "MB": 288.28,
-          "seconds": 7.96,
+          "seconds": 7.25,
           "operations": 20
         }
       },
@@ -608,7 +608,7 @@
         "changes.geojson": 1348364,
         "wetlands.geojson": 666302,
         "layers.json": 7865,
-        "frames/everglades-wetlands/*": 2333627
+        "frames/everglades-wetlands/*": 2330877
       },
       "stories": [
         "everglades-open-water",
@@ -617,7 +617,7 @@
       "sample_stories_kept": 0
     },
     "manzala": {
-      "exported_at": "2026-11-14T02:18:09+02:00",
+      "exported_at": "2026-11-14T02:34:02+02:00",
       "exporter": "naba_data 0.1.0",
       "source": {
         "mission": "NASA-ISRO NISAR",
@@ -915,12 +915,12 @@
       "ledger_totals": {
         "1-METADATA": {
           "MB": 0.0,
-          "seconds": 2.67,
+          "seconds": 5.0,
           "operations": 1
         },
         "cache/local": {
           "MB": 98.701,
-          "seconds": 4.67,
+          "seconds": 4.09,
           "operations": 18
         }
       },
@@ -928,7 +928,7 @@
         "changes.geojson": 1348364,
         "wetlands.geojson": 666302,
         "layers.json": 7865,
-        "frames/manzala/*": 291142
+        "frames/manzala/*": 287604
       },
       "stories": [
         "manzala-flooded-vegetation"
@@ -936,7 +936,7 @@
       "sample_stories_kept": 0
     },
     "okavango": {
-      "exported_at": "2026-11-14T02:19:48+02:00",
+      "exported_at": "2026-11-14T02:35:31+02:00",
       "exporter": "naba_data 0.1.0",
       "source": {
         "mission": "NASA-ISRO NISAR",
@@ -1234,12 +1234,12 @@
       "ledger_totals": {
         "1-METADATA": {
           "MB": 0.0,
-          "seconds": 3.23,
+          "seconds": 8.72,
           "operations": 1
         },
         "cache/local": {
           "MB": 198.755,
-          "seconds": 6.35,
+          "seconds": 4.23,
           "operations": 18
         }
       },
@@ -1247,7 +1247,7 @@
         "changes.geojson": 1348364,
         "wetlands.geojson": 666302,
         "layers.json": 7865,
-        "frames/okavango/*": 2214171
+        "frames/okavango/*": 2212687
       },
       "stories": [
         "okavango-open-water"

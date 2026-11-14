@@ -119,17 +119,22 @@ def _lerp(stops, t):
     return np.stack([np.interp(t, pos, [s[1][i] for s in stops]) for i in range(3)], axis=-1)
 
 
-LOS_RAMP = [(0.0, (33, 102, 172)), (0.25, (103, 169, 207)), (0.5, (247, 247, 247)),
-            (0.75, (239, 138, 98)), (1.0, (178, 24, 43))]
+# Motion strength in green (the earthquake's colour): pale for little, deep green for a lot.
+LOS_RAMP = [(0.0, (214, 245, 226)), (0.4, (111, 220, 160)), (0.7, (40, 170, 100)),
+            (1.0, (5, 90, 45))]
 
 
 def los_rgba(disp: np.ndarray, vmax: float) -> np.ndarray:
-    """Blue <-> white <-> red for motion in opposite directions; invalid pixels transparent."""
+    """Strength of the ground motion in shades of green; invalid pixels transparent.
+
+    The sign (toward or away from the satellite) is dropped on purpose: one colour says "the
+    ground moved here", and the darker it is the more it moved. Little motion fades out.
+    """
     out = np.zeros((*disp.shape, 4), dtype="uint8")
     ok = np.isfinite(disp)
-    t = np.clip((np.where(ok, disp, 0) + vmax) / (2 * vmax), 0, 1)
+    t = np.clip(np.abs(np.where(ok, disp, 0)) / vmax, 0, 1)
     out[..., :3] = _lerp(LOS_RAMP, t).astype("uint8")
-    out[..., 3] = np.where(ok, 215, 0)
+    out[..., 3] = np.where(ok, 70 + 160 * t, 0).astype("uint8")
     return out
 
 
@@ -192,8 +197,8 @@ def build_quake_story(preset: EarthquakePreset, stats: dict, ref_date: str, sec_
                f"bracket the {event_day} earthquake. Comparing them shows the ground moved by up "
                f"to {peak:.1f} m along the satellite's line of sight. Across the map the two "
                f"extremes differ by about {span:.1f} m, which is {stats['fringes']:.0f} colour "
-               f"cycles ('fringes') of {stats['fringe_cm']:.0f} cm each. Blue and red on the map "
-               f"are motion in opposite directions along that line.")
+               f"cycles ('fringes') of {stats['fringe_cm']:.0f} cm each. On the map, the darker the "
+               f"green, the more the ground moved.")
     explanation = (
         f"NASA-ISRO NISAR flew over the Azuero peninsula on {_fmt_date(ref_date)} and again on "
         f"{_fmt_date(sec_date)}, from the same track and look direction. The earthquake "
@@ -339,7 +344,7 @@ def run_quake_export(preset: EarthquakePreset, public_data: Path = PUBLIC_DATA,
             "bounds": [[west, north], [east, north], [east, south], [west, south]],
             "legend": {"min": -round(vmax, 2), "max": round(vmax, 2), "unit": "m"},
             "frames": [
-                {"date": sec_date, "label": f"Ground motion (blue to red, up to ±{vmax:.1f} m)",
+                {"date": sec_date, "label": f"Ground motion (darker green = more, up to {vmax:.1f} m)",
                  "url": f"/data/frames/{los_path.name}"},
                 {"date": sec_date,
                  "label": f"Radar fringes (one colour cycle = {stats['fringe_cm']:.0f} cm)",

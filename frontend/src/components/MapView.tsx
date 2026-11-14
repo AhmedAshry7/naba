@@ -3,19 +3,12 @@ import maplibregl, { type GeoJSONSource } from 'maplibre-gl'
 import 'maplibre-gl/dist/maplibre-gl.css'
 import type { Feature, FeatureCollection } from 'geojson'
 import { useStore, type FireTimeline } from '../store'
-import { CLASS_META, DELTA_VIEW, EGYPT_VIEW, FIRE_META, GLOBE_VIEW, WETLAND_META, fitZoom, formatDateShort, layerFor } from '../lib'
+import { DELTA_VIEW, EGYPT_VIEW, FIRE_META, GLOBE_VIEW, WETLAND_META, fitZoom, formatDateShort, layerFor, storyMeta } from '../lib'
 
 export const BASEMAP = 'https://basemaps.cartocdn.com/gl/dark-matter-gl-style/style.json'
 
-const colorExpr: maplibregl.ExpressionSpecification = [
-  'match',
-  ['get', 'change_class'],
-  'significant', CLASS_META.significant.color,
-  'moderate', CLASS_META.moderate.color,
-  'stable', CLASS_META.stable.color,
-  'water', CLASS_META.water.color,
-  '#93A3C0',
-]
+// every story carries its theme colour (green earthquake, blue floods, red forest fire)
+const colorExpr: maplibregl.ExpressionSpecification = ['get', 'color']
 
 // Measured wetland classes, coloured as in the analysis notebook (see WETLAND_META).
 const wetlandColorExpr: maplibregl.ExpressionSpecification = [
@@ -129,18 +122,27 @@ export default function MapView() {
         },
       })
       map.setPaintProperty('zones-fill', 'fill-opacity-transition', { duration: 150 })
+      // the region border is white, marked with its theme colour by a wider coloured band under it
+      map.addLayer({
+        id: 'zones-casing',
+        type: 'line',
+        source: 'changes',
+        layout: { 'line-join': 'round' },
+        paint: { 'line-color': colorExpr, 'line-width': 2.6, 'line-opacity': 0.75 },
+      })
       map.addLayer({
         id: 'zones-line',
         type: 'line',
         source: 'changes',
-        paint: { 'line-color': colorExpr, 'line-width': 1.2, 'line-opacity': 0.95 },
+        layout: { 'line-join': 'round' },
+        paint: { 'line-color': '#ffffff', 'line-width': 0.8, 'line-opacity': 0.95 },
       })
       map.addLayer({
         id: 'zones-selected',
         type: 'line',
         source: 'changes',
         filter: ['==', ['get', 'id'], ''],
-        paint: { 'line-color': '#ffffff', 'line-width': 3 },
+        paint: { 'line-color': '#ffffff', 'line-width': 1.8 },
       })
 
       // ---- measured wetland extents, one month at a time ----
@@ -302,7 +304,7 @@ export default function MapView() {
       features: stories.map<Feature>((s) => ({
         type: 'Feature',
         geometry: s.geometry,
-        properties: { id: s.id, headline: s.headline, change_class: s.change_class },
+        properties: { id: s.id, headline: s.headline, color: storyMeta(s).color },
       })),
     }
     ;(map.getSource('changes') as GeoJSONSource).setData(fc)
@@ -311,7 +313,7 @@ export default function MapView() {
       features: stories.map<Feature>((s) => ({
         type: 'Feature',
         geometry: { type: 'Point', coordinates: [s.lon, s.lat] },
-        properties: { id: s.id, headline: s.headline, change_class: s.change_class },
+        properties: { id: s.id, headline: s.headline, color: storyMeta(s).color },
       })),
     })
   }, [ready, stories])
@@ -374,7 +376,7 @@ export default function MapView() {
     const storyLayer = layerFor(layers, story)
     const el = document.createElement('div')
     el.className = 'naba-pulse'
-    el.style.setProperty('--pulse', CLASS_META[story.change_class].color)
+    el.style.setProperty('--pulse', storyMeta(story).color)
     markerRef.current = new maplibregl.Marker({ element: el }).setLngLat([story.lon, story.lat]).addTo(map)
     map.flyTo({
       center: [story.lon, story.lat],

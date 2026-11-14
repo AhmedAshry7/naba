@@ -1,8 +1,8 @@
 import { useEffect } from 'react'
-import { Clock, Flame, Pause, Play } from 'lucide-react'
+import { Pause, Play } from 'lucide-react'
 import { useStore } from '../store'
 import { formatDate, formatDateShort, prefersReducedMotion } from '../lib'
-import type { TimeStep } from '../types'
+import type { ChangeStory, TimeStep } from '../types'
 
 const STEP_MS = 1200
 const STEP_MS_REDUCED = 2200   // the user asked for motion, so still play - just slower
@@ -10,35 +10,27 @@ const STEP_MS_REDUCED = 2200   // the user asked for motion, so still play - jus
 interface SliderProps {
   id: string
   title: string
-  icon: 'clock' | 'flame'
   steps: TimeStep[]
   index: number
   onChange: (i: number) => void
   ariaLabel: string
   playLabel: string
-  footnote: string
   className: string
-  /** Drop the footnote on phones, to keep the card short. */
-  compactOnPhone?: boolean
-  /** Extra controls shown above the slider (the earthquake's before/after). */
-  extra?: React.ReactNode
 }
 
-/** The slider card itself: play/pause, the active step, the range input and a footnote. */
-function SliderCard({ id, title, icon, steps, index, onChange, ariaLabel, playLabel, footnote, className, compactOnPhone, extra }: SliderProps) {
+/** The slider card itself: play/pause, the active step and the range input. */
+function SliderCard({ id, title, steps, index, onChange, ariaLabel, playLabel, className }: SliderProps) {
   const selected = useStore((s) => !!s.selectedId)
   const isPlaying = useStore((s) => s.isPlaying)
   const setPlaying = useStore((s) => s.setPlaying)
   const last = steps.length - 1
   const i = Math.min(index, last)
   const active = steps[i]
-  const Icon = icon === 'flame' ? Flame : Clock
 
   return (
     // centred on the globe; shifts left only while the story panel (right side) is open
     <div className={`absolute left-3 right-3 z-10 flex justify-center lg:bottom-8 lg:left-[252px] ${selected ? 'lg:right-[470px]' : 'lg:right-[252px]'} ${className}`}>
       <div className="w-full max-w-[560px] rounded-card border border-line bg-bg/90 px-4 py-3 shadow-card backdrop-blur">
-        {extra}
         <div className="flex items-center gap-3">
           <button
             onClick={() => setPlaying(!isPlaying)}
@@ -51,7 +43,6 @@ function SliderCard({ id, title, icon, steps, index, onChange, ariaLabel, playLa
 
           <div className="min-w-0 flex-1">
             <div className="mb-1 flex items-baseline gap-2">
-              <Icon size={13} className="shrink-0 text-sub" aria-hidden />
               <span className="section-label !text-[11px]">{title}</span>
               <span className="ml-auto font-display text-[17px] font-semibold tabular-nums text-gold">{active.label}</span>
             </div>
@@ -76,7 +67,48 @@ function SliderCard({ id, title, icon, steps, index, onChange, ariaLabel, playLa
             </div>
           </div>
         </div>
-        <p className={`mt-2 border-t border-line pt-2 text-[11px] leading-snug text-sub ${compactOnPhone ? 'max-lg:hidden' : ''}`}>{footnote}</p>
+      </div>
+    </div>
+  )
+}
+
+/**
+ * The earthquake's before / after control: one switch, not a slider. A single event has no
+ * months or passes to step through, only the ground before and after it moved.
+ */
+function QuakeSwitch({ story, after, onChange }: { story: ChangeStory; after: boolean; onChange: (after: boolean) => void }) {
+  const selected = useStore((s) => !!s.selectedId)
+  return (
+    <div className={`absolute left-3 right-3 z-10 flex justify-center max-lg:top-[68px] lg:bottom-8 lg:left-[252px] ${selected ? 'lg:right-[470px]' : 'lg:right-[252px]'}`}>
+      <div className="w-full max-w-[420px] rounded-card border border-line bg-bg/90 px-4 py-3 shadow-card backdrop-blur">
+        <div className="mb-2 flex items-baseline gap-2">
+          <span className="section-label !text-[11px]">Earthquake · before and after</span>
+          <span className="ml-auto font-display text-[17px] font-semibold tabular-nums text-gold">
+            {formatDate(after ? story.period.end : story.period.start)}
+          </span>
+        </div>
+        <div className="flex items-center justify-center gap-3">
+          <span className={`text-[13px] font-semibold ${after ? 'text-sub' : 'text-text'}`}>Before</span>
+          <button
+            type="button"
+            role="switch"
+            aria-checked={after}
+            aria-label="Show the ground after the earthquake"
+            onClick={() => onChange(!after)}
+            className={`relative h-7 w-14 shrink-0 rounded-full border transition-colors ${after ? 'border-[#3DD68C] bg-[#3DD68C]' : 'border-line bg-card'}`}
+          >
+            <span
+              className={`absolute top-0.5 h-5 w-5 rounded-full bg-white shadow transition-all ${after ? 'left-[30px]' : 'left-0.5'}`}
+              aria-hidden
+            />
+          </button>
+          <span className={`text-[13px] font-semibold ${after ? 'text-text' : 'text-sub'}`}>After</span>
+        </div>
+        <div className="mt-1.5 flex justify-between text-[11px] text-sub">
+          <span>{formatDateShort(story.period.start)}</span>
+          {story.event_date && <span className="font-semibold text-text">{formatDateShort(story.event_date)} · earthquake</span>}
+          <span>{formatDateShort(story.period.end)}</span>
+        </div>
       </div>
     </div>
   )
@@ -125,75 +157,36 @@ export default function TimeSlider() {
     if (count < 2 && isPlaying) setPlaying(false)
   }, [count, isPlaying, setPlaying])
 
+  // the earthquake gets a before / after switch instead of any slider
+  if (quake) return <QuakeSwitch story={quake} after={quakeStep >= 1} onChange={(a) => setQuakeStep(a ? 1 : 0)} />
+
   if (fireMode && selectedId) {
-    const before = fire.steps[0]
     return (
       <SliderCard
         id="fire-slider"
         title="Burn scar · radar pass"
-        icon="flame"
         steps={fire.steps}
         index={fire.index}
         onChange={(i) => setFireIndex(selectedId, i)}
         ariaLabel="Radar pass shown on the globe"
         playLabel="Play through the radar passes"
-        footnote={`Each step is one NISAR pass, compared with ${formatDateShort(before.key)}, before the fire. Data: NASA–ISRO NISAR.`}
         // phones: the story sheet covers the bottom of the map, so the burn slider moves to the top,
         // below the globe / flat-map toggle
         className="max-lg:top-[68px] lg:bottom-8"
-        compactOnPhone
       />
     )
   }
 
   if (months.length < 2) return null
-  const quakePanel = quake && (
-    <div className="mb-3 border-b border-line pb-3">
-      <div className="mb-1 flex items-baseline gap-2">
-        <span className="section-label !text-[11px]">Earthquake · before and after</span>
-        <span className="ml-auto font-display text-[17px] font-semibold tabular-nums text-gold">
-          {formatDate(quakeStep >= 1 ? quake.period.end : quake.period.start)}
-        </span>
-      </div>
-      <input
-        type="range"
-        min={0}
-        max={1}
-        step={1}
-        value={quakeStep}
-        onChange={(e) => setQuakeStep(Number(e.target.value))}
-        className="naba-months w-full"
-        aria-label="Radar pass date: before or after the earthquake"
-        aria-valuetext={quakeStep >= 1 ? 'After the earthquake' : 'Before the earthquake'}
-      />
-      <div className="mt-0.5 flex justify-between text-[11px] text-sub">
-        <span>{formatDateShort(quake.period.start)} · before</span>
-        {quake.event_date && <span className="font-semibold text-text">{formatDateShort(quake.event_date)} · earthquake</span>}
-        <span>{formatDateShort(quake.period.end)} · after</span>
-      </div>
-      <p className="mt-1.5 text-[12px] leading-snug text-sub">
-        {quakeStep >= 1
-          ? 'The ground moved suddenly during the earthquake. Blue and red show how far, in opposite directions.'
-          : 'First radar pass: nothing has moved yet. Slide right to the second pass.'}
-      </p>
-    </div>
-  )
   return (
     <SliderCard
       id="month-slider"
       title="Month shown on the map"
-      icon="clock"
       steps={months.map((m) => ({ key: m.month, label: m.label }))}
       index={monthIndex}
       onChange={setMonth}
       ariaLabel="Month shown on the globe"
       playLabel="Play through the months"
-      footnote={
-        quake
-          ? 'The month slider does not change the earthquake. It only steps through the wetlands (Lake Manzala, the Okavango Delta, the Everglades). The earthquake happened in one moment, so use the before / after slider above.'
-          : 'The filled areas show what NISAR measured in that month (several radar passes combined). Data: NASA–ISRO NISAR.'
-      }
-      extra={quakePanel}
       className={`bottom-3 ${selectedId ? 'max-lg:hidden' : ''}`}
     />
   )

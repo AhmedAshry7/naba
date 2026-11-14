@@ -41,7 +41,7 @@ CLASS_NAMES = {NO_DATA: "no data", OPEN_WATER: "open water",
                FLOODED_VEG: "flooded vegetation", OTHER: "other land/vegetation"}
 # Notebook's CLASS_COLORS; the frontend uses the same two values in WETLAND_META.
 CLASS_COLORS = {NO_DATA: "#000000", OPEN_WATER: "#1f4e9c",
-                FLOODED_VEG: "#e7298a", OTHER: "#a6d96a"}
+                FLOODED_VEG: "#00ced1", OTHER: "#a6d96a"}
 # Slugs shared with the frontend (`WetlandClass` in src/types.ts).
 CLASS_SLUGS = {OPEN_WATER: "open_water", FLOODED_VEG: "flooded_vegetation"}
 
