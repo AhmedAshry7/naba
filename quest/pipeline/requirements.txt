@@ -1,0 +1,7 @@
+# Python 3.12 packages used by the Quest asset scripts
+pillow
+numpy
+scipy
+geopandas
+matplotlib
+mapbox-vector-tile

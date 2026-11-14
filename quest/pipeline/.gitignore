@@ -1,0 +1,3 @@
+# downloaded Natural Earth data and map tiles (re-downloaded on demand)
+cache/
+__pycache__/

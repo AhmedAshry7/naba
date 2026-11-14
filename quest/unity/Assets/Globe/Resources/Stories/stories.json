@@ -1,0 +1,1240 @@
+{
+ "stories": [
+  {
+   "id": "panama-azuero-m77",
+   "headline": "Magnitude 7.7 earthquake moved the ground by up to 1.2 m on Panama's Azuero peninsula",
+   "region": "Azuero peninsula, Panama",
+   "subtitle": "Magnitude 7.7 earthquake, 9 October 2026",
+   "lat": 7.6069,
+   "lon": -80.7566,
+   "changeClass": "significant",
+   "changeClassLabel": "Significant change",
+   "changeType": "earthquake",
+   "category": "earthquake",
+   "kindLabel": "EARTHQUAKE",
+   "metricLabel": "Ground motion along the satellite's line of sight",
+   "metricValue": 1.16,
+   "metricUnit": "metres, up to",
+   "metricDirection": "upward",
+   "periodStart": "2026-10-02",
+   "periodEnd": "2026-10-14",
+   "periodLabel": "2 Oct 2026 – 14 Oct 2026",
+   "passes": 2,
+   "areaKm2": 3638.4,
+   "confidence": "moderate",
+   "confidenceNote": "One interferogram from two passes. Motion is along the satellite's line of sight only; atmosphere and unwrapping errors can affect it",
+   "summary": "Two radar passes 12 days apart, on 2 October 2026 and 14 October 2026, bracket the 9 October 2026 earthquake. Comparing them shows the ground moved by up to 1.2 m along the satellite's line of sight. Across the map the two extremes differ by about 1.4 m, which is 11 colour cycles ('fringes') of 12 cm each. On the map, the darker the green, the more the ground moved.",
+   "causes": [
+    "Sudden slip on the fault that ruptured in the magnitude 7.7 earthquake (USGS: 9 October 2026, about 10 km deep)",
+    "The magnitude 6.6, 6.0 and 6.1 aftershocks, which all fall inside the same 12-day window and add to the total",
+    "A small part of any radar interferogram is atmosphere (water vapour) or ionosphere, not ground motion"
+   ],
+   "whyItMatters": "Radar fringes show where and how far the ground moved, including places no seismometer or GPS station reaches. That helps responders and engineers see which parts of the peninsula were shaken and shifted most.",
+   "nextStep": "Compare with GPS stations, field reports and a second NISAR pair from a different track before using the numbers for damage or fault models.",
+   "explanation": "NASA-ISRO NISAR flew over the Azuero peninsula on 2 October 2026 and again on 14 October 2026, from the same track and look direction. The earthquake (magnitude 7.7, 9 October 2026, 10 km deep, per USGS) happened in between, with aftershocks of M6.6 on 9 October (20:25 UTC), M6.0 on 10 October, M6.1 on 12 October.\n\nAn interferogram compares the radar phase of the two passes. If the ground has not moved, the phase matches. If it moved even a few centimetres towards or away from the satellite, the phase shifts: one full colour cycle means the distance changed by half the L-band wavelength, about 12 cm. Counting cycles across the map gives about 11 fringes: the 1st to 99th percentile of the map runs from -1.16 m to +0.22 m, so the two extremes are about 1.4 m apart and the largest motion in either direction is 1.2 m.\n\nThe map is zeroed in the far field (median of 176001 far-field pixels), because an unwrapped phase only gives relative motion. Pixels with coherence below 0.3 are left out (the average coherence of what is shown is 0.54), so the map covers about 3,638 km2 rather than the whole frame.\n\nWhat this does not say: radar sees motion along one slanted line, not up, east and north separately, so 'up to 1.2 m' is not the full 3D movement. Atmosphere, the ionosphere and unwrapping errors where coherence is low can add or remove fringes. The aftershocks fall inside the same 12 days, so this is the sum of all of them.\n\nWhy it matters: Radar fringes show where and how far the ground moved, including places no seismometer or GPS station reaches. That helps responders and engineers see which parts of the peninsula were shaken and shifted most. Compare with GPS stations, field reports and a second NISAR pair from a different track before using the numbers for damage or fault models.",
+   "aiGenerated": false,
+   "eventDate": "2026-10-09",
+   "published": "2026-11-14",
+   "isSample": false,
+   "series": [],
+   "seriesLabel": "GROUND MOTION ALONG THE SATELLITE'S LINE OF SIGHT OVER TIME",
+   "measurements": [
+    {
+     "label": "Magnitude",
+     "value": "M7.7"
+    },
+    {
+     "label": "Depth",
+     "value": "10.0 km"
+    },
+    {
+     "label": "Peak line-of-sight motion",
+     "value": "1.16 m"
+    },
+    {
+     "label": "Fringes",
+     "value": "11.4 × 12.1 cm"
+    },
+    {
+     "label": "Mean coherence",
+     "value": "0.54"
+    },
+    {
+     "label": "Valid area",
+     "value": "3079.0 km² (45.1%)"
+    },
+    {
+     "label": "Aftershock",
+     "value": "M6.6 on 9 October (20:25 UTC)"
+    },
+    {
+     "label": "Aftershock",
+     "value": "M6.0 on 10 October"
+    },
+    {
+     "label": "Aftershock",
+     "value": "M6.1 on 12 October"
+    }
+   ],
+   "layers": [
+    {
+     "label": "Ground motion · Azuero peninsula, Panama",
+     "shortLabel": "Radar",
+     "bounds": [
+      -81.1,
+      7.9,
+      -80.3,
+      7.9,
+      -80.3,
+      7.2,
+      -81.1,
+      7.2
+     ],
+     "frames": [
+      {
+       "date": "2026-10-14",
+       "label": "14 Oct 2026",
+       "resource": "Stories/frames/panama/quake_panama_los"
+      },
+      {
+       "date": "2026-10-14",
+       "label": "14 Oct 2026",
+       "resource": "Stories/frames/panama/quake_panama_fringes"
+      }
+     ]
+    },
+    {
+     "label": "Interferogram · Azuero peninsula",
+     "shortLabel": "Interferogram",
+     "bounds": [
+      -81.1,
+      7.9,
+      -80.3,
+      7.9,
+      -80.3,
+      7.2,
+      -81.1,
+      7.2
+     ],
+     "frames": [
+      {
+       "date": "2026-10-14",
+       "label": "Fringes",
+       "resource": "Stories/frames/panama/quake_panama_fringes"
+      },
+      {
+       "date": "2026-10-14",
+       "label": "Line-of-sight motion",
+       "resource": "Stories/frames/panama/quake_panama_los"
+      }
+     ]
+    }
+   ],
+   "dataSource": [
+    "NASA-ISRO NISAR · GUNW (provisional), HH interferogram",
+    "Pair: 2 Oct 2026 and 14 Oct 2026",
+    "Earthquake details: USGS, as listed in the NISAR demo-sites file"
+   ],
+   "basemap": {
+    "resource": "Stories/basemaps/panama-azuero-m77",
+    "bounds": [
+     -82.09672417551474,
+     8.450000000000001,
+     -79.30327582448524,
+     8.450000000000001,
+     -79.30327582448524,
+     6.65,
+     -82.09672417551474,
+     6.65
+    ]
+   }
+  },
+  {
+   "id": "everglades-open-water",
+   "headline": "Open water is spreading across the Everglades",
+   "region": "Everglades",
+   "subtitle": "Freshwater marsh and sawgrass prairie",
+   "lat": 25.4257,
+   "lon": -80.6186,
+   "changeClass": "water",
+   "changeClassLabel": "Water-related story",
+   "changeType": "water",
+   "category": "water",
+   "kindLabel": "WATER-RELATED STORY",
+   "metricLabel": "Open water",
+   "metricValue": 12.5,
+   "metricUnit": "% of area under open water",
+   "metricDirection": "upward",
+   "periodStart": "2026-06-17",
+   "periodEnd": "2026-10-15",
+   "periodLabel": "17 Jun 2026 – 15 Oct 2026",
+   "passes": 10,
+   "areaKm2": 390.2,
+   "confidence": "moderate",
+   "confidenceNote": "Exploratory dB thresholds on L-band backscatter, not a validated flood map",
+   "summary": "Radar measured 12.5% of the analysed area as open water on 15 October 2026. That is more than the 4.2% measured on 17 June 2026. Open water looks dark to radar: a smooth surface reflects the signal away from the satellite instead of back to it.",
+   "causes": [
+    "Seasonal rainfall refilling ponds and sloughs after the 2026 drought",
+    "Water managed through canals and control structures",
+    "Vegetation burned in the August 2026 fire, exposing open water"
+   ],
+   "whyItMatters": "The Everglades depends on slow, shallow sheet flow. Summer 2026 brought extreme drought and then fire in peat soil, so how much of the marsh is wet again decides what wildlife, fire risk and Florida's water supply look like next.",
+   "nextStep": "Compare with water-level gauges from the South Florida Water Management District and optical imagery before treating the change as confirmed.",
+   "explanation": "NISAR passed over the Everglades 10 times between 17 June 2026 and 15 October 2026, all from the same track and look direction so the measurements can be compared. Each pass records two polarisations, HH and HV. Open water looks dark to radar: a smooth surface reflects the signal away from the satellite instead of back to it. Pixels darker than -15 dB in HH and -22 dB in HV are counted as open water.\n\nAcross those passes the share of the analysed area classed as open water grew from 4.2% to 12.5%, a change of +8.3 percentage points. The lowest reading was 4.1% on 28 August 2026 and the highest 27.0% on 3 October 2026, a trend of about +5.0 percentage points per month. The outline on the map is every part of the area that was open water in at least one month, and it covers about 390 km².\n\nWhat this does not say: these are threshold rules on radar brightness, not a verified flood map. Wind roughening the water surface, wet soil after rain and a different look angle can all move the same numbers. Short, sharp changes between two passes are more likely to be weather or geometry than real change on the ground.\n\nWhy it matters: The Everglades depends on slow, shallow sheet flow. Summer 2026 brought extreme drought and then fire in peat soil, so how much of the marsh is wet again decides what wildlife, fire risk and Florida's water supply look like next. Compare with water-level gauges from the South Florida Water Management District and optical imagery before treating the change as confirmed.",
+   "aiGenerated": false,
+   "eventDate": "",
+   "published": "2026-11-14",
+   "isSample": false,
+   "series": [
+    {
+     "date": "2026-06-17",
+     "value": 4.21
+    },
+    {
+     "date": "2026-06-29",
+     "value": 5.8
+    },
+    {
+     "date": "2026-07-11",
+     "value": 5.33
+    },
+    {
+     "date": "2026-07-23",
+     "value": 4.3
+    },
+    {
+     "date": "2026-08-16",
+     "value": 4.74
+    },
+    {
+     "date": "2026-08-28",
+     "value": 4.12
+    },
+    {
+     "date": "2026-09-09",
+     "value": 23.3
+    },
+    {
+     "date": "2026-09-21",
+     "value": 25.72
+    },
+    {
+     "date": "2026-10-03",
+     "value": 26.98
+    },
+    {
+     "date": "2026-10-15",
+     "value": 12.54
+    }
+   ],
+   "seriesLabel": "OPEN WATER OVER TIME",
+   "measurements": [
+    {
+     "label": "Jun 2026 · open water",
+     "value": "5.6 km²"
+    },
+    {
+     "label": "Jul 2026 · open water",
+     "value": "5.8 km²"
+    },
+    {
+     "label": "Aug 2026 · open water",
+     "value": "5.6 km²"
+    },
+    {
+     "label": "Sep 2026 · open water",
+     "value": "319.5 km²"
+    },
+    {
+     "label": "Oct 2026 · open water",
+     "value": "198.2 km²"
+    }
+   ],
+   "layers": [
+    {
+     "label": "Wetland classes · Everglades",
+     "shortLabel": "Wetland classes",
+     "bounds": [
+      -80.95,
+      25.65,
+      -80.55,
+      25.65,
+      -80.55,
+      25.25,
+      -80.95,
+      25.25
+     ],
+     "frames": [
+      {
+       "date": "2026-06-01",
+       "label": "1 Jun 2026",
+       "resource": "Stories/frames/everglades-wetlands/wetland_2026-06"
+      },
+      {
+       "date": "2026-07-01",
+       "label": "1 Jul 2026",
+       "resource": "Stories/frames/everglades-wetlands/wetland_2026-07"
+      },
+      {
+       "date": "2026-08-01",
+       "label": "1 Aug 2026",
+       "resource": "Stories/frames/everglades-wetlands/wetland_2026-08"
+      },
+      {
+       "date": "2026-09-01",
+       "label": "1 Sep 2026",
+       "resource": "Stories/frames/everglades-wetlands/wetland_2026-09"
+      },
+      {
+       "date": "2026-10-01",
+       "label": "1 Oct 2026",
+       "resource": "Stories/frames/everglades-wetlands/wetland_2026-10"
+      }
+     ]
+    }
+   ],
+   "dataSource": [
+    "NASA-ISRO NISAR · GCOV (provisional), 10 radar granules",
+    "Study area: Everglades, Florida, USA",
+    "Thresholds: water hh max -15.0 dB, water hv max -22.0 dB, flooded hh min -5.0 dB, flooded ratio min 7.0 dB",
+    "Method: NABA_NISAR_Explorer.ipynb Section 14"
+   ],
+   "basemap": {
+    "resource": "Stories/basemaps/everglades-open-water",
+    "bounds": [
+     -81.62623841261038,
+     25.96428571428571,
+     -79.87376158738962,
+     25.96428571428571,
+     -79.87376158738962,
+     24.935714285714287,
+     -81.62623841261038,
+     24.935714285714287
+    ]
+   }
+  },
+  {
+   "id": "everglades-flooded-vegetation",
+   "headline": "Flooding under marsh vegetation is spreading at the Everglades",
+   "region": "Everglades",
+   "subtitle": "Freshwater marsh and sawgrass prairie",
+   "lat": 25.4079,
+   "lon": -80.7812,
+   "changeClass": "water",
+   "changeClassLabel": "Water-related story",
+   "changeType": "vegetation",
+   "category": "water",
+   "kindLabel": "WATER-RELATED STORY",
+   "metricLabel": "Flooded vegetation",
+   "metricValue": 8.4,
+   "metricUnit": "% of area flooded vegetation",
+   "metricDirection": "upward",
+   "periodStart": "2026-06-17",
+   "periodEnd": "2026-10-15",
+   "periodLabel": "17 Jun 2026 – 15 Oct 2026",
+   "passes": 10,
+   "areaKm2": 72.5,
+   "confidence": "moderate",
+   "confidenceNote": "Exploratory dB thresholds on L-band backscatter, not a validated flood map",
+   "summary": "Radar measured 8.4% of the analysed area as flooded vegetation on 15 October 2026. That is more than the 4.4% measured on 17 June 2026. Flooded vegetation looks very bright to radar: water and plant stems form a corner that bounces the signal straight back, while the cross-polarised signal stays weak.",
+   "causes": [
+    "Rain-fed water rising into sawgrass and other marsh vegetation",
+    "Wet-season sheet flow spreading slowly across the marsh",
+    "Marsh plants regrowing through standing water after the fire"
+   ],
+   "whyItMatters": "The Everglades depends on slow, shallow sheet flow. Summer 2026 brought extreme drought and then fire in peat soil, so how much of the marsh is wet again decides what wildlife, fire risk and Florida's water supply look like next.",
+   "nextStep": "Compare with water-level gauges from the South Florida Water Management District and optical imagery before treating the change as confirmed.",
+   "explanation": "NISAR passed over the Everglades 10 times between 17 June 2026 and 15 October 2026, all from the same track and look direction so the measurements can be compared. Each pass records two polarisations, HH and HV. Flooded vegetation looks very bright to radar: water and plant stems form a corner that bounces the signal straight back, while the cross-polarised signal stays weak. Pixels brighter than -5 dB in HH whose HH is more than 7 dB above their HV are counted as flooded vegetation.\n\nAcross those passes the share of the analysed area classed as flooded vegetation grew from 4.4% to 8.4%, a change of +4.0 percentage points. The lowest reading was 4.4% on 17 June 2026 and the highest 10.4% on 11 July 2026, a trend of about +0.7 percentage points per month. The outline on the map is every part of the area that was flooded vegetation in at least one month, and it covers about 73 km².\n\nWhat this does not say: these are threshold rules on radar brightness, not a verified flood map. Wind roughening the water surface, wet soil after rain and a different look angle can all move the same numbers. Short, sharp changes between two passes are more likely to be weather or geometry than real change on the ground.\n\nWhy it matters: The Everglades depends on slow, shallow sheet flow. Summer 2026 brought extreme drought and then fire in peat soil, so how much of the marsh is wet again decides what wildlife, fire risk and Florida's water supply look like next. Compare with water-level gauges from the South Florida Water Management District and optical imagery before treating the change as confirmed.",
+   "aiGenerated": false,
+   "eventDate": "",
+   "published": "2026-11-14",
+   "isSample": false,
+   "series": [
+    {
+     "date": "2026-06-17",
+     "value": 4.37
+    },
+    {
+     "date": "2026-06-29",
+     "value": 4.77
+    },
+    {
+     "date": "2026-07-11",
+     "value": 10.45
+    },
+    {
+     "date": "2026-07-23",
+     "value": 5.35
+    },
+    {
+     "date": "2026-08-16",
+     "value": 7.32
+    },
+    {
+     "date": "2026-08-28",
+     "value": 8.06
+    },
+    {
+     "date": "2026-09-09",
+     "value": 8.89
+    },
+    {
+     "date": "2026-09-21",
+     "value": 8.55
+    },
+    {
+     "date": "2026-10-03",
+     "value": 7.29
+    },
+    {
+     "date": "2026-10-15",
+     "value": 8.42
+    }
+   ],
+   "seriesLabel": "FLOODED VEGETATION OVER TIME",
+   "measurements": [
+    {
+     "label": "Jun 2026 · flooded vegetation",
+     "value": "3.0 km²"
+    },
+    {
+     "label": "Jul 2026 · flooded vegetation",
+     "value": "19.4 km²"
+    },
+    {
+     "label": "Aug 2026 · flooded vegetation",
+     "value": "22.1 km²"
+    },
+    {
+     "label": "Sep 2026 · flooded vegetation",
+     "value": "60.5 km²"
+    },
+    {
+     "label": "Oct 2026 · flooded vegetation",
+     "value": "29.3 km²"
+    }
+   ],
+   "layers": [
+    {
+     "label": "Wetland classes · Everglades",
+     "shortLabel": "Wetland classes",
+     "bounds": [
+      -80.95,
+      25.65,
+      -80.55,
+      25.65,
+      -80.55,
+      25.25,
+      -80.95,
+      25.25
+     ],
+     "frames": [
+      {
+       "date": "2026-06-01",
+       "label": "1 Jun 2026",
+       "resource": "Stories/frames/everglades-wetlands/wetland_2026-06"
+      },
+      {
+       "date": "2026-07-01",
+       "label": "1 Jul 2026",
+       "resource": "Stories/frames/everglades-wetlands/wetland_2026-07"
+      },
+      {
+       "date": "2026-08-01",
+       "label": "1 Aug 2026",
+       "resource": "Stories/frames/everglades-wetlands/wetland_2026-08"
+      },
+      {
+       "date": "2026-09-01",
+       "label": "1 Sep 2026",
+       "resource": "Stories/frames/everglades-wetlands/wetland_2026-09"
+      },
+      {
+       "date": "2026-10-01",
+       "label": "1 Oct 2026",
+       "resource": "Stories/frames/everglades-wetlands/wetland_2026-10"
+      }
+     ]
+    }
+   ],
+   "dataSource": [
+    "NASA-ISRO NISAR · GCOV (provisional), 10 radar granules",
+    "Study area: Everglades, Florida, USA",
+    "Thresholds: water hh max -15.0 dB, water hv max -22.0 dB, flooded hh min -5.0 dB, flooded ratio min 7.0 dB",
+    "Method: NABA_NISAR_Explorer.ipynb Section 14"
+   ],
+   "basemap": {
+    "resource": "Stories/basemaps/everglades-flooded-vegetation",
+    "bounds": [
+     -81.62623841261038,
+     25.96428571428571,
+     -79.87376158738962,
+     25.96428571428571,
+     -79.87376158738962,
+     24.935714285714287,
+     -81.62623841261038,
+     24.935714285714287
+    ]
+   }
+  },
+  {
+   "id": "okavango-open-water",
+   "headline": "Open water is shrinking across the Okavango Delta",
+   "region": "Okavango Delta",
+   "subtitle": "Inland delta wetlands",
+   "lat": -19.375,
+   "lon": 22.8252,
+   "changeClass": "water",
+   "changeClassLabel": "Water-related story",
+   "changeType": "water",
+   "category": "water",
+   "kindLabel": "WATER-RELATED STORY",
+   "metricLabel": "Open water",
+   "metricValue": 14.3,
+   "metricUnit": "% of area under open water",
+   "metricDirection": "downward",
+   "periodStart": "2026-06-26",
+   "periodEnd": "2026-10-12",
+   "periodLabel": "26 Jun 2026 – 12 Oct 2026",
+   "passes": 9,
+   "areaKm2": 802.3,
+   "confidence": "moderate",
+   "confidenceNote": "Exploratory dB thresholds on L-band backscatter, not a validated flood map",
+   "summary": "Radar measured 14.3% of the analysed area as open water on 12 October 2026. That is less than the 48.0% measured on 26 June 2026. Open water looks dark to radar: a smooth surface reflects the signal away from the satellite instead of back to it.",
+   "causes": [
+    "The annual flood pulse arriving from the Angolan highlands",
+    "Seasonal evaporation drawing channels down"
+   ],
+   "whyItMatters": "The Okavango's flood pulse decides where wildlife, cattle and people find water each year.",
+   "nextStep": "Compare with river gauge records upstream before treating the change as confirmed.",
+   "explanation": "NISAR passed over the Okavango Delta 9 times between 26 June 2026 and 12 October 2026, all from the same track and look direction so the measurements can be compared. Each pass records two polarisations, HH and HV. Open water looks dark to radar: a smooth surface reflects the signal away from the satellite instead of back to it. Pixels darker than -15 dB in HH and -22 dB in HV are counted as open water.\n\nAcross those passes the share of the analysed area classed as open water shrank from 48.0% to 14.3%, a change of -33.7 percentage points. The lowest reading was 14.3% on 12 October 2026 and the highest 51.1% on 8 July 2026, a trend of about -10.5 percentage points per month. The outline on the map is every part of the area that was open water in at least one month, and it covers about 802 km².\n\nWhat this does not say: these are threshold rules on radar brightness, not a verified flood map. Wind roughening the water surface, wet soil after rain and a different look angle can all move the same numbers. Short, sharp changes between two passes are more likely to be weather or geometry than real change on the ground.\n\nWhy it matters: The Okavango's flood pulse decides where wildlife, cattle and people find water each year. Compare with river gauge records upstream before treating the change as confirmed.",
+   "aiGenerated": false,
+   "eventDate": "",
+   "published": "2026-11-14",
+   "isSample": false,
+   "series": [
+    {
+     "date": "2026-06-26",
+     "value": 48.05
+    },
+    {
+     "date": "2026-07-08",
+     "value": 51.12
+    },
+    {
+     "date": "2026-07-20",
+     "value": 42.53
+    },
+    {
+     "date": "2026-08-13",
+     "value": 35.29
+    },
+    {
+     "date": "2026-08-25",
+     "value": 31.93
+    },
+    {
+     "date": "2026-09-06",
+     "value": 25.22
+    },
+    {
+     "date": "2026-09-18",
+     "value": 20.88
+    },
+    {
+     "date": "2026-09-30",
+     "value": 17.04
+    },
+    {
+     "date": "2026-10-12",
+     "value": 14.31
+    }
+   ],
+   "seriesLabel": "OPEN WATER OVER TIME",
+   "measurements": [
+    {
+     "label": "Jun 2026 · open water",
+     "value": "689.7 km²"
+    },
+    {
+     "label": "Jul 2026 · open water",
+     "value": "690.6 km²"
+    },
+    {
+     "label": "Aug 2026 · open water",
+     "value": "378.8 km²"
+    },
+    {
+     "label": "Sep 2026 · open water",
+     "value": "120.6 km²"
+    },
+    {
+     "label": "Oct 2026 · open water",
+     "value": "28.3 km²"
+    }
+   ],
+   "layers": [
+    {
+     "label": "Wetland classes · Okavango Delta",
+     "shortLabel": "Wetland classes",
+     "bounds": [
+      22.55,
+      -19.2,
+      22.9,
+      -19.2,
+      22.9,
+      -19.55,
+      22.55,
+      -19.55
+     ],
+     "frames": [
+      {
+       "date": "2026-06-01",
+       "label": "1 Jun 2026",
+       "resource": "Stories/frames/okavango/wetland_2026-06"
+      },
+      {
+       "date": "2026-07-01",
+       "label": "1 Jul 2026",
+       "resource": "Stories/frames/okavango/wetland_2026-07"
+      },
+      {
+       "date": "2026-08-01",
+       "label": "1 Aug 2026",
+       "resource": "Stories/frames/okavango/wetland_2026-08"
+      },
+      {
+       "date": "2026-09-01",
+       "label": "1 Sep 2026",
+       "resource": "Stories/frames/okavango/wetland_2026-09"
+      },
+      {
+       "date": "2026-10-01",
+       "label": "1 Oct 2026",
+       "resource": "Stories/frames/okavango/wetland_2026-10"
+      }
+     ]
+    }
+   ],
+   "dataSource": [
+    "NASA-ISRO NISAR · GCOV (provisional), 9 radar granules",
+    "Study area: Okavango Delta (central delta), Botswana",
+    "Thresholds: water hh max -15.0 dB, water hv max -22.0 dB, flooded hh min -5.0 dB, flooded ratio min 7.0 dB",
+    "Method: NABA_NISAR_Explorer.ipynb Section 14"
+   ],
+   "basemap": {
+    "resource": "Stories/basemaps/okavango-open-water",
+    "bounds": [
+     21.991131500472438,
+     -18.924999999999997,
+     23.458868499527565,
+     -18.924999999999997,
+     23.458868499527565,
+     -19.825000000000003,
+     21.991131500472438,
+     -19.825000000000003
+    ]
+   }
+  },
+  {
+   "id": "manzala-flooded-vegetation",
+   "headline": "Flooding under marsh vegetation is spreading at Lake Manzala",
+   "region": "Lake Manzala",
+   "subtitle": "Coastal lagoon and reed beds",
+   "lat": 31.1848,
+   "lon": 32.0302,
+   "changeClass": "water",
+   "changeClassLabel": "Water-related story",
+   "changeType": "vegetation",
+   "category": "water",
+   "kindLabel": "WATER-RELATED STORY",
+   "metricLabel": "Flooded vegetation",
+   "metricValue": 2.6,
+   "metricUnit": "% of area flooded vegetation",
+   "metricDirection": "upward",
+   "periodStart": "2026-06-26",
+   "periodEnd": "2026-10-12",
+   "periodLabel": "26 Jun 2026 – 12 Oct 2026",
+   "passes": 9,
+   "areaKm2": 11.4,
+   "confidence": "moderate",
+   "confidenceNote": "Exploratory dB thresholds on L-band backscatter, not a validated flood map",
+   "summary": "Radar measured 2.6% of the analysed area as flooded vegetation on 12 October 2026. That is more than the 2.4% measured on 26 June 2026. Flooded vegetation looks very bright to radar: water and plant stems form a corner that bounces the signal straight back, while the cross-polarised signal stays weak.",
+   "causes": [
+    "Water rising into standing reeds and marsh vegetation",
+    "Seasonal flooding of fish farms and marsh margins",
+    "Vegetation growing up through shallow standing water"
+   ],
+   "whyItMatters": "Lake Manzala is one of Egypt's largest coastal wetlands. How much of it is open water and how much is flooded marsh decides what fishing, farming and wildlife it can support.",
+   "nextStep": "Compare with optical imagery and local water-level records before treating the change as confirmed.",
+   "explanation": "NISAR passed over Lake Manzala 9 times between 26 June 2026 and 12 October 2026, all from the same track and look direction so the measurements can be compared. Each pass records two polarisations, HH and HV. Flooded vegetation looks very bright to radar: water and plant stems form a corner that bounces the signal straight back, while the cross-polarised signal stays weak. Pixels brighter than -5 dB in HH whose HH is more than 7 dB above their HV are counted as flooded vegetation.\n\nAcross those passes the share of the analysed area classed as flooded vegetation grew from 2.4% to 2.6%, a change of +0.2 percentage points. The lowest reading was 2.3% on 8 July 2026 and the highest 3.4% on 18 September 2026, a trend of about +0.2 percentage points per month. The outline on the map is every part of the area that was flooded vegetation in at least one month, and it covers about 11 km².\n\nWhat this does not say: these are threshold rules on radar brightness, not a verified flood map. Wind roughening the water surface, wet soil after rain and a different look angle can all move the same numbers. Short, sharp changes between two passes are more likely to be weather or geometry than real change on the ground.\n\nWhy it matters: Lake Manzala is one of Egypt's largest coastal wetlands. How much of it is open water and how much is flooded marsh decides what fishing, farming and wildlife it can support. Compare with optical imagery and local water-level records before treating the change as confirmed.",
+   "aiGenerated": false,
+   "eventDate": "",
+   "published": "2026-11-14",
+   "isSample": false,
+   "series": [
+    {
+     "date": "2026-06-26",
+     "value": 2.42
+    },
+    {
+     "date": "2026-07-08",
+     "value": 2.29
+    },
+    {
+     "date": "2026-07-20",
+     "value": 2.31
+    },
+    {
+     "date": "2026-08-13",
+     "value": 3.17
+    },
+    {
+     "date": "2026-08-25",
+     "value": 2.52
+    },
+    {
+     "date": "2026-09-06",
+     "value": 2.83
+    },
+    {
+     "date": "2026-09-18",
+     "value": 3.39
+    },
+    {
+     "date": "2026-09-30",
+     "value": 3.21
+    },
+    {
+     "date": "2026-10-12",
+     "value": 2.59
+    }
+   ],
+   "seriesLabel": "FLOODED VEGETATION OVER TIME",
+   "measurements": [
+    {
+     "label": "Jun 2026 · flooded vegetation",
+     "value": "7.5 km²"
+    },
+    {
+     "label": "Jul 2026 · flooded vegetation",
+     "value": "7.0 km²"
+    },
+    {
+     "label": "Aug 2026 · flooded vegetation",
+     "value": "8.0 km²"
+    },
+    {
+     "label": "Sep 2026 · flooded vegetation",
+     "value": "9.2 km²"
+    },
+    {
+     "label": "Oct 2026 · flooded vegetation",
+     "value": "8.3 km²"
+    }
+   ],
+   "layers": [
+    {
+     "label": "Wetland classes · Lake Manzala",
+     "shortLabel": "Wetland classes",
+     "bounds": [
+      31.95,
+      31.4,
+      32.2,
+      31.4,
+      32.2,
+      31.15,
+      31.95,
+      31.15
+     ],
+     "frames": [
+      {
+       "date": "2026-06-01",
+       "label": "1 Jun 2026",
+       "resource": "Stories/frames/manzala/wetland_2026-06"
+      },
+      {
+       "date": "2026-07-01",
+       "label": "1 Jul 2026",
+       "resource": "Stories/frames/manzala/wetland_2026-07"
+      },
+      {
+       "date": "2026-08-01",
+       "label": "1 Aug 2026",
+       "resource": "Stories/frames/manzala/wetland_2026-08"
+      },
+      {
+       "date": "2026-09-01",
+       "label": "1 Sep 2026",
+       "resource": "Stories/frames/manzala/wetland_2026-09"
+      },
+      {
+       "date": "2026-10-01",
+       "label": "1 Oct 2026",
+       "resource": "Stories/frames/manzala/wetland_2026-10"
+      }
+     ]
+    }
+   ],
+   "dataSource": [
+    "NASA-ISRO NISAR · GCOV (provisional), 9 radar granules",
+    "Study area: Lake Manzala wetlands, Nile Delta, Egypt",
+    "Thresholds: water hh max -15.0 dB, water hv max -22.0 dB, flooded hh min -5.0 dB, flooded ratio min 7.0 dB",
+    "Method: NABA_NISAR_Explorer.ipynb Section 14"
+   ],
+   "basemap": {
+    "resource": "Stories/basemaps/manzala-flooded-vegetation",
+    "bounds": [
+     31.49641813101282,
+     31.59642857142857,
+     32.65358186898719,
+     31.59642857142857,
+     32.65358186898719,
+     30.953571428571426,
+     31.49641813101282,
+     30.953571428571426
+    ]
+   }
+  },
+  {
+   "id": "plaskett-burn-scar",
+   "headline": "Radar maps a burn scar of about 31 km² in Big Sur",
+   "region": "Big Sur",
+   "subtitle": "Plaskett Fire · Los Padres National Forest",
+   "lat": 35.9413,
+   "lon": -121.3976,
+   "changeClass": "significant",
+   "changeClassLabel": "Significant change",
+   "changeType": "fire",
+   "category": "fire",
+   "kindLabel": "FIRE · BURN SCAR",
+   "metricLabel": "Likely burned area",
+   "metricValue": 31.3,
+   "metricUnit": "km² likely burned",
+   "metricDirection": "upward",
+   "periodStart": "2026-08-16",
+   "periodEnd": "2026-10-15",
+   "periodLabel": "16 Aug 2026 – 15 Oct 2026",
+   "passes": 6,
+   "areaKm2": 45.9,
+   "confidence": "moderate",
+   "confidenceNote": "Exploratory thresholds on the drop in L-band cross-polarised radar, not a validated burn map",
+   "summary": "Comparing NISAR's radar pass on 3 October 2026 with 16 August 2026, before the fire, about 31 km² lost so much cross-polarised signal that it is likely burned, and another 15 km² is possibly burned. Healthy vegetation returns a strong cross-polarised (HV) radar signal from the leaves and branches of forest and chaparral; when fire removes them, the signal drops by several decibels.",
+   "causes": [
+    "Fire burning through forest and chaparral canopy, removing leaves and branches",
+    "Severe burns on steep slopes leaving bare soil and standing dead trunks",
+    "Smaller drops can also come from drying vegetation or a change in soil moisture"
+   ],
+   "whyItMatters": "Burned slopes above Highway 1 are prone to debris flows and landslides once the winter rains arrive. Knowing where the canopy is gone helps decide which roads, creeks and communities need protection first.",
+   "nextStep": "Compare with the official fire perimeter, Sentinel-2 burn-severity (dNBR) maps and NASA FIRMS hotspots before treating the outline as the burn scar.",
+   "explanation": "NISAR passed over Big Sur 6 times between 16 August 2026 and 15 October 2026, all from the same track and look direction so the passes can be compared. Each pass was compared with 16 August 2026, the last pass before the fire started. Healthy vegetation returns a strong cross-polarised (HV) radar signal from the leaves and branches of forest and chaparral; when fire removes them, the signal drops by several decibels. Before comparing, the radar brightness was averaged over about 100 m to reduce speckle. Pixels whose HV fell by more than 3 dB are counted as likely burned, and by 2–3 dB as possibly burned.\n\nWhile the fire was burning, the likely-burned area read 0.3 km² on 28 August 2026, 19 km² on 9 September 2026 and 25 km² on 21 September 2026. On 3 October 2026, the first pass after the fire period, it was 31 km², with 15 km² more possibly burned. The last pass, on 15 October 2026, read 41 km², so the area kept growing after the fire period. That can mean the fire was still spreading at its edges, or that scorched vegetation kept drying out and losing its leaves. On the map, the burned patches are filled in two colours, likely and possibly burned; together they cover about 46 km². The story outline is drawn around them.\n\nFire reports put the fire at about 121 km² (29,862 acres on 8 September 2026, 47% contained). The radar's likely-burned area is 26% of that, and 38% with the possibly burned pixels added. A reported fire area is the whole perimeter: it includes unburned islands and ground fire under a canopy that survived, where the radar signal barely changes, so the radar is expected to flag less than the reported area. Source: https://bigsurkate.blog/2026/09/08/.\n\nWhat this does not say: these are threshold rules on radar brightness, not a verified burn-severity map. Drying vegetation, a change in soil moisture after rain and wind in the vegetation can also lower the signal. Steep slopes facing away from the satellite are poorly seen, and the fire may have burned there too. Treat the outline as where to look first, not as the official burn scar.\n\nWhy it matters: Burned slopes above Highway 1 are prone to debris flows and landslides once the winter rains arrive. Knowing where the canopy is gone helps decide which roads, creeks and communities need protection first. Compare with the official fire perimeter, Sentinel-2 burn-severity (dNBR) maps and NASA FIRMS hotspots before treating the outline as the burn scar.",
+   "aiGenerated": false,
+   "eventDate": "",
+   "published": "2026-11-14",
+   "isSample": false,
+   "series": [
+    {
+     "date": "2026-08-16",
+     "value": 0.0
+    },
+    {
+     "date": "2026-08-28",
+     "value": 0.28
+    },
+    {
+     "date": "2026-09-09",
+     "value": 19.13
+    },
+    {
+     "date": "2026-09-21",
+     "value": 24.94
+    },
+    {
+     "date": "2026-10-03",
+     "value": 31.3
+    },
+    {
+     "date": "2026-10-15",
+     "value": 40.53
+    }
+   ],
+   "seriesLabel": "LIKELY BURNED AREA OVER TIME",
+   "measurements": [
+    {
+     "label": "28 Aug · likely burned",
+     "value": "0.1 km²"
+    },
+    {
+     "label": "28 Aug · possible burned",
+     "value": "0.4 km²"
+    },
+    {
+     "label": "9 Sep · likely burned",
+     "value": "17.6 km²"
+    },
+    {
+     "label": "9 Sep · possible burned",
+     "value": "14.0 km²"
+    },
+    {
+     "label": "21 Sep · likely burned",
+     "value": "23.5 km²"
+    },
+    {
+     "label": "21 Sep · possible burned",
+     "value": "15.2 km²"
+    },
+    {
+     "label": "3 Oct · likely burned",
+     "value": "30.1 km²"
+    },
+    {
+     "label": "3 Oct · possible burned",
+     "value": "14.7 km²"
+    },
+    {
+     "label": "15 Oct · likely burned",
+     "value": "39.8 km²"
+    },
+    {
+     "label": "15 Oct · possible burned",
+     "value": "14.3 km²"
+    }
+   ],
+   "layers": [
+    {
+     "label": "Radar false colour (R = HH, G = HV, B = HH−HV) · Big Sur",
+     "shortLabel": "False colour",
+     "bounds": [
+      -121.55,
+      36.02,
+      -121.25,
+      36.02,
+      -121.25,
+      35.78,
+      -121.55,
+      35.78
+     ],
+     "frames": [
+      {
+       "date": "2026-08-16",
+       "label": "16 Aug 2026",
+       "resource": "Stories/frames/plaskett/rgb_2026-08-16"
+      },
+      {
+       "date": "2026-08-28",
+       "label": "28 Aug 2026",
+       "resource": "Stories/frames/plaskett/rgb_2026-08-28"
+      },
+      {
+       "date": "2026-09-09",
+       "label": "9 Sep 2026",
+       "resource": "Stories/frames/plaskett/rgb_2026-09-09"
+      },
+      {
+       "date": "2026-09-21",
+       "label": "21 Sep 2026",
+       "resource": "Stories/frames/plaskett/rgb_2026-09-21"
+      },
+      {
+       "date": "2026-10-03",
+       "label": "3 Oct 2026",
+       "resource": "Stories/frames/plaskett/rgb_2026-10-03"
+      },
+      {
+       "date": "2026-10-15",
+       "label": "15 Oct 2026",
+       "resource": "Stories/frames/plaskett/rgb_2026-10-15"
+      }
+     ]
+    },
+    {
+     "label": "Burn mask: HV drop since 2026-08-16 · Big Sur",
+     "shortLabel": "Burn mask",
+     "bounds": [
+      -121.55,
+      36.02,
+      -121.25,
+      36.02,
+      -121.25,
+      35.78,
+      -121.55,
+      35.78
+     ],
+     "frames": [
+      {
+       "date": "2026-08-16",
+       "label": "16 Aug 2026",
+       "resource": "Stories/frames/plaskett/burn_2026-08-16"
+      },
+      {
+       "date": "2026-08-28",
+       "label": "28 Aug 2026",
+       "resource": "Stories/frames/plaskett/burn_2026-08-28"
+      },
+      {
+       "date": "2026-09-09",
+       "label": "9 Sep 2026",
+       "resource": "Stories/frames/plaskett/burn_2026-09-09"
+      },
+      {
+       "date": "2026-09-21",
+       "label": "21 Sep 2026",
+       "resource": "Stories/frames/plaskett/burn_2026-09-21"
+      },
+      {
+       "date": "2026-10-03",
+       "label": "3 Oct 2026",
+       "resource": "Stories/frames/plaskett/burn_2026-10-03"
+      },
+      {
+       "date": "2026-10-15",
+       "label": "15 Oct 2026",
+       "resource": "Stories/frames/plaskett/burn_2026-10-15"
+      }
+     ]
+    }
+   ],
+   "dataSource": [
+    "NASA-ISRO NISAR · GCOV (provisional), 6 radar granules",
+    "Study area: Plaskett Fire, Big Sur, California",
+    "Reported on the ground: 120.8 km² (29,862 acres on 8 September 2026, 47% contained)",
+    "Thresholds: likely db -3.0 dB, possible db -2.0 dB",
+    "Method: NABA_NISAR_Explorer.ipynb Section 12"
+   ],
+   "basemap": {
+    "resource": "Stories/basemaps/plaskett-burn-scar",
+    "bounds": [
+     -121.98605045842338,
+     36.20857142857144,
+     -120.81394954157663,
+     36.20857142857144,
+     -120.81394954157663,
+     35.59142857142857,
+     -121.98605045842338,
+     35.59142857142857
+    ]
+   }
+  },
+  {
+   "id": "everglades-burn-scar",
+   "headline": "Radar maps a burn scar of about 19 km² in Everglades National Park",
+   "region": "Everglades National Park",
+   "subtitle": "Drought fires in the sawgrass marshes · Florida",
+   "lat": 25.6336,
+   "lon": -80.8593,
+   "changeClass": "significant",
+   "changeClassLabel": "Significant change",
+   "changeType": "fire",
+   "category": "fire",
+   "kindLabel": "FIRE · BURN SCAR",
+   "metricLabel": "Likely burned area",
+   "metricValue": 18.8,
+   "metricUnit": "km² likely burned",
+   "metricDirection": "upward",
+   "periodStart": "2026-07-20",
+   "periodEnd": "2026-09-30",
+   "periodLabel": "20 Jul 2026 – 30 Sep 2026",
+   "passes": 6,
+   "areaKm2": 41.4,
+   "confidence": "moderate",
+   "confidenceNote": "Exploratory thresholds on the drop in L-band cross-polarised radar, not a validated burn map",
+   "summary": "Comparing NISAR's radar pass on 25 August 2026 with 20 July 2026, before the fire, about 19 km² lost so much cross-polarised signal that it is likely burned, and another 30 km² is possibly burned. Healthy vegetation returns a strong cross-polarised (HV) radar signal from the leaves and stems of sawgrass and other marsh plants; when fire removes them, the signal drops by several decibels.",
+   "causes": [
+    "Fire burning through drought-dried sawgrass and marsh vegetation",
+    "Ground fire in exposed peat soils, which can smoulder after the flames pass",
+    "Smaller drops can also come from vegetation dying back in the drought, or from water returning to the marsh after rain"
+   ],
+   "whyItMatters": "Burned sawgrass usually regrows, but when drought lets fire reach the peat, it burns away soil that took centuries to build, releases stored carbon and changes how water flows through the River of Grass.",
+   "nextStep": "Compare with the park's fire perimeters, Sentinel-2 burn-severity (dNBR) maps and NASA FIRMS hotspots, and check water levels, before treating the outline as the burn scar.",
+   "explanation": "NISAR passed over Everglades National Park 6 times between 20 July 2026 and 30 September 2026, all from the same track and look direction so the passes can be compared. Each pass was compared with 20 July 2026, the last pass before the fire started. Healthy vegetation returns a strong cross-polarised (HV) radar signal from the leaves and stems of sawgrass and other marsh plants; when fire removes them, the signal drops by several decibels. Before comparing, the radar brightness was averaged over about 100 m to reduce speckle. Pixels whose HV fell by more than 3 dB are counted as likely burned, and by 2–3 dB as possibly burned.\n\nWhile the fire was burning, the likely-burned area read 39 km² on 13 August 2026. On 25 August 2026, the first pass after the fire period, it was 19 km², with 30 km² more possibly burned. The last pass, on 30 September 2026, read 411 km², so the area kept growing after the fire period. That can mean the fire was still spreading at its edges, or that scorched vegetation kept drying out and losing its leaves. On the map, the burned patches are filled in two colours, likely and possibly burned; together they cover about 41 km². The story outline is drawn around them.\n\nFire reports put the fire at about 97 km² (nearly 24,000 acres across four fires in the park, 26 August 2026). The radar's likely-burned area is 19% of that, and 51% with the possibly burned pixels added. A reported fire area is the whole perimeter: it includes unburned islands and ground fire under a canopy that survived, where the radar signal barely changes, so the radar is expected to flag less than the reported area. Source: https://www.wlrn.org/environment/2026-08-26/drought-fire-everglades-peat-national-park.\n\nWhat this does not say: these are threshold rules on radar brightness, not a verified burn-severity map. Drying vegetation, a change in soil moisture after rain and wind in the vegetation can also lower the signal. In a wetland, standing water returning after rain darkens the radar much as a burn does, so drops in later passes may be water rather than fire. Treat the outline as where to look first, not as the official burn scar.\n\nWhy it matters: Burned sawgrass usually regrows, but when drought lets fire reach the peat, it burns away soil that took centuries to build, releases stored carbon and changes how water flows through the River of Grass. Compare with the park's fire perimeters, Sentinel-2 burn-severity (dNBR) maps and NASA FIRMS hotspots, and check water levels, before treating the outline as the burn scar.",
+   "aiGenerated": false,
+   "eventDate": "",
+   "published": "2026-11-14",
+   "isSample": false,
+   "series": [
+    {
+     "date": "2026-07-20",
+     "value": 0.0
+    },
+    {
+     "date": "2026-08-13",
+     "value": 39.32
+    },
+    {
+     "date": "2026-08-25",
+     "value": 18.83
+    },
+    {
+     "date": "2026-09-06",
+     "value": 250.78
+    },
+    {
+     "date": "2026-09-18",
+     "value": 537.73
+    },
+    {
+     "date": "2026-09-30",
+     "value": 411.16
+    }
+   ],
+   "seriesLabel": "LIKELY BURNED AREA OVER TIME",
+   "measurements": [
+    {
+     "label": "13 Aug · likely burned",
+     "value": "34.5 km²"
+    },
+    {
+     "label": "13 Aug · possible burned",
+     "value": "53.6 km²"
+    },
+    {
+     "label": "25 Aug · likely burned",
+     "value": "15.6 km²"
+    },
+    {
+     "label": "25 Aug · possible burned",
+     "value": "24.5 km²"
+    },
+    {
+     "label": "6 Sep · likely burned",
+     "value": "240.3 km²"
+    },
+    {
+     "label": "6 Sep · possible burned",
+     "value": "125.5 km²"
+    },
+    {
+     "label": "18 Sep · likely burned",
+     "value": "530.4 km²"
+    },
+    {
+     "label": "18 Sep · possible burned",
+     "value": "179.0 km²"
+    },
+    {
+     "label": "30 Sep · likely burned",
+     "value": "400.1 km²"
+    },
+    {
+     "label": "30 Sep · possible burned",
+     "value": "183.0 km²"
+    }
+   ],
+   "layers": [
+    {
+     "label": "Radar false colour (R = HH, G = HV, B = HH−HV) · Everglades National Park",
+     "shortLabel": "False colour",
+     "bounds": [
+      -80.95,
+      25.65,
+      -80.55,
+      25.65,
+      -80.55,
+      25.25,
+      -80.95,
+      25.25
+     ],
+     "frames": [
+      {
+       "date": "2026-07-20",
+       "label": "20 Jul 2026",
+       "resource": "Stories/frames/everglades/rgb_2026-07-20"
+      },
+      {
+       "date": "2026-08-13",
+       "label": "13 Aug 2026",
+       "resource": "Stories/frames/everglades/rgb_2026-08-13"
+      },
+      {
+       "date": "2026-08-25",
+       "label": "25 Aug 2026",
+       "resource": "Stories/frames/everglades/rgb_2026-08-25"
+      },
+      {
+       "date": "2026-09-06",
+       "label": "6 Sep 2026",
+       "resource": "Stories/frames/everglades/rgb_2026-09-06"
+      },
+      {
+       "date": "2026-09-18",
+       "label": "18 Sep 2026",
+       "resource": "Stories/frames/everglades/rgb_2026-09-18"
+      },
+      {
+       "date": "2026-09-30",
+       "label": "30 Sep 2026",
+       "resource": "Stories/frames/everglades/rgb_2026-09-30"
+      }
+     ]
+    },
+    {
+     "label": "Burn mask: HV drop since 2026-07-20 · Everglades National Park",
+     "shortLabel": "Burn mask",
+     "bounds": [
+      -80.95,
+      25.65,
+      -80.55,
+      25.65,
+      -80.55,
+      25.25,
+      -80.95,
+      25.25
+     ],
+     "frames": [
+      {
+       "date": "2026-07-20",
+       "label": "20 Jul 2026",
+       "resource": "Stories/frames/everglades/burn_2026-07-20"
+      },
+      {
+       "date": "2026-08-13",
+       "label": "13 Aug 2026",
+       "resource": "Stories/frames/everglades/burn_2026-08-13"
+      },
+      {
+       "date": "2026-08-25",
+       "label": "25 Aug 2026",
+       "resource": "Stories/frames/everglades/burn_2026-08-25"
+      },
+      {
+       "date": "2026-09-06",
+       "label": "6 Sep 2026",
+       "resource": "Stories/frames/everglades/burn_2026-09-06"
+      },
+      {
+       "date": "2026-09-18",
+       "label": "18 Sep 2026",
+       "resource": "Stories/frames/everglades/burn_2026-09-18"
+      },
+      {
+       "date": "2026-09-30",
+       "label": "30 Sep 2026",
+       "resource": "Stories/frames/everglades/burn_2026-09-30"
+      }
+     ]
+    }
+   ],
+   "dataSource": [
+    "NASA-ISRO NISAR · GCOV (provisional), 6 radar granules",
+    "Study area: Everglades drought fires, Florida",
+    "Reported on the ground: 97.1 km² (nearly 24,000 acres across four fires in the park, 26 August 2026)",
+    "Thresholds: likely db -3.0 dB, possible db -2.0 dB",
+    "Method: NABA_NISAR_Explorer.ipynb Section 12"
+   ],
+   "basemap": {
+    "resource": "Stories/basemaps/everglades-burn-scar",
+    "bounds": [
+     -81.62623841261038,
+     25.96428571428571,
+     -79.87376158738962,
+     25.96428571428571,
+     -79.87376158738962,
+     24.935714285714287,
+     -81.62623841261038,
+     24.935714285714287
+    ]
+   }
+  }
+ ]
+}
