@@ -1,7 +1,95 @@
 {
  "layers": [
   {
-   "id": "wetland-classes",
+   "id": "wetland-classes-everglades",
+   "label": "Wetland classes · Everglades",
+   "bounds": [
+    [
+     -80.95,
+     25.65
+    ],
+    [
+     -80.55,
+     25.65
+    ],
+    [
+     -80.55,
+     25.25
+    ],
+    [
+     -80.95,
+     25.25
+    ]
+   ],
+   "frames": [
+    {
+     "date": "2026-06-01",
+     "url": "/data/frames/wetland_everglades_2026-06.png"
+    },
+    {
+     "date": "2026-07-01",
+     "url": "/data/frames/wetland_everglades_2026-07.png"
+    },
+    {
+     "date": "2026-08-01",
+     "url": "/data/frames/wetland_everglades_2026-08.png"
+    },
+    {
+     "date": "2026-09-01",
+     "url": "/data/frames/wetland_everglades_2026-09.png"
+    },
+    {
+     "date": "2026-10-01",
+     "url": "/data/frames/wetland_everglades_2026-10.png"
+    }
+   ]
+  },
+  {
+   "id": "wetland-classes-okavango",
+   "label": "Wetland classes · Okavango Delta",
+   "bounds": [
+    [
+     22.55,
+     -19.2
+    ],
+    [
+     22.9,
+     -19.2
+    ],
+    [
+     22.9,
+     -19.55
+    ],
+    [
+     22.55,
+     -19.55
+    ]
+   ],
+   "frames": [
+    {
+     "date": "2026-06-01",
+     "url": "/data/frames/wetland_okavango_2026-06.png"
+    },
+    {
+     "date": "2026-07-01",
+     "url": "/data/frames/wetland_okavango_2026-07.png"
+    },
+    {
+     "date": "2026-08-01",
+     "url": "/data/frames/wetland_okavango_2026-08.png"
+    },
+    {
+     "date": "2026-09-01",
+     "url": "/data/frames/wetland_okavango_2026-09.png"
+    },
+    {
+     "date": "2026-10-01",
+     "url": "/data/frames/wetland_okavango_2026-10.png"
+    }
+   ]
+  },
+  {
+   "id": "wetland-classes-manzala",
    "label": "Wetland classes · Lake Manzala",
    "bounds": [
     [
@@ -24,23 +112,64 @@
    "frames": [
     {
      "date": "2026-06-01",
-     "url": "/data/frames/wetland_2026-06.png"
+     "url": "/data/frames/wetland_manzala_2026-06.png"
     },
     {
      "date": "2026-07-01",
-     "url": "/data/frames/wetland_2026-07.png"
+     "url": "/data/frames/wetland_manzala_2026-07.png"
     },
     {
      "date": "2026-08-01",
-     "url": "/data/frames/wetland_2026-08.png"
+     "url": "/data/frames/wetland_manzala_2026-08.png"
     },
     {
      "date": "2026-09-01",
-     "url": "/data/frames/wetland_2026-09.png"
+     "url": "/data/frames/wetland_manzala_2026-09.png"
     },
     {
      "date": "2026-10-01",
-     "url": "/data/frames/wetland_2026-10.png"
+     "url": "/data/frames/wetland_manzala_2026-10.png"
+    }
+   ]
+  },
+  {
+   "id": "earthquake-panama",
+   "kind": "views",
+   "story_id": "panama-azuero-m77",
+   "label": "Ground motion · Azuero peninsula, Panama",
+   "bounds": [
+    [
+     -81.1,
+     7.9
+    ],
+    [
+     -80.3,
+     7.9
+    ],
+    [
+     -80.3,
+     7.2
+    ],
+    [
+     -81.1,
+     7.2
+    ]
+   ],
+   "legend": {
+    "min": -1.16,
+    "max": 1.16,
+    "unit": "m"
+   },
+   "frames": [
+    {
+     "date": "2026-10-14",
+     "label": "Ground motion (blue to red, up to ±1.2 m)",
+     "url": "/data/frames/quake_panama_los.png"
+    },
+    {
+     "date": "2026-10-14",
+     "label": "Radar fringes (one colour cycle = 12 cm)",
+     "url": "/data/frames/quake_panama_fringes.png"
     }
    ]
   }

@@ -3,7 +3,7 @@
 import type { FeatureCollection, Geometry, MultiPolygon, Polygon } from 'geojson'
 
 export type ChangeClass = 'significant' | 'moderate' | 'stable' | 'water'
-export type ChangeType = 'subsidence' | 'uplift' | 'moisture' | 'water' | 'vegetation' | 'construction'
+export type ChangeType = 'subsidence' | 'uplift' | 'moisture' | 'water' | 'vegetation' | 'construction' | 'earthquake'
 export type Confidence = 'low' | 'moderate' | 'high'
 export type Direction = 'upward' | 'downward' | 'steady'
 
@@ -38,9 +38,12 @@ export interface ChangeStory {
   causes: string[]
   why_it_matters: string
   next_step: string
+  /** Time series for the chart; may be empty (a single earthquake pair has none). */
   series: SeriesPoint[]
   explanation: string
   explanation_ai_generated: boolean
+  /** For one-off events (an earthquake): the day it happened, between period.start and period.end. */
+  event_date?: string
   published: string
   is_sample: boolean
   /** Added by the loader from the GeoJSON feature. */
@@ -50,11 +53,17 @@ export interface ChangeStory {
 export interface Frame {
   date: string
   url: string
+  /** Shown instead of the date when set (e.g. 'Ground motion' / 'Radar fringes'). */
+  label?: string
 }
 
 export interface Layer {
   id: string
   label: string
+  /** 'time' (default): frames are dates of one place. 'views': frames are different views of one event. */
+  kind?: 'time' | 'views'
+  /** When set, this layer belongs to that story only (e.g. an earthquake's ground-motion maps). */
+  story_id?: string
   /** [lon, lat] corners: top-left, top-right, bottom-right, bottom-left */
   bounds: [[number, number], [number, number], [number, number], [number, number]]
   frames: Frame[]
@@ -68,6 +77,8 @@ export type WetlandClass = 'open_water' | 'flooded_vegetation'
 /** One class's extent in one month, as measured by NISAR.
  *  A type alias (not an interface) so it satisfies GeoJsonProperties in FeatureCollection<G, P>. */
 export type WetlandFeatureProps = {
+  /** Which area: 'manzala', 'okavango', 'everglades'. Missing on older files (then Manzala). */
+  area?: string
   class: WetlandClass
   /** 'YYYY-MM' - the month whose acquisitions were composited. */
   month: string

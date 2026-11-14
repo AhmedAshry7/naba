@@ -51,7 +51,7 @@ def direction_of(slope: float) -> str:
 
 
 def _headline(preset: Preset, class_value: int, direction: str) -> str:
-    region = preset.region
+    region = ("the " if preset.the else "") + preset.region
     if class_value == OPEN_WATER:
         return {"upward": f"Open water is spreading across {region}",
                 "downward": f"Open water is shrinking across {region}",
@@ -100,7 +100,7 @@ def _explanation(preset: Preset, class_value: int, ts: pd.DataFrame, field: str,
     change = last[field] - first[field]
     move = {"upward": "grew", "downward": "shrank", "steady": "stayed level"}[direction]
 
-    p1 = (f"NISAR passed over {preset.region} {passes} times between {_fmt_date(first['date'])} "
+    p1 = (f"NISAR passed over {'the ' if preset.the else ''}{preset.region} {passes} times between {_fmt_date(first['date'])} "
           f"and {_fmt_date(last['date'])}, all from the same track and look direction so the "
           f"measurements can be compared. Each pass records two polarisations, HH and HV. "
           f"{_physics_sentence(class_value)} {_threshold_sentence(class_value)}")

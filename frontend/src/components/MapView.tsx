@@ -3,7 +3,7 @@ import maplibregl, { type GeoJSONSource } from 'maplibre-gl'
 import 'maplibre-gl/dist/maplibre-gl.css'
 import type { Feature, FeatureCollection } from 'geojson'
 import { useStore } from '../store'
-import { CLASS_META, DELTA_VIEW, EGYPT_VIEW, GLOBE_VIEW, WETLAND_META } from '../lib'
+import { CLASS_META, DELTA_VIEW, EGYPT_VIEW, GLOBE_VIEW, WETLAND_META, fitZoom, layerFor } from '../lib'
 
 export const BASEMAP = 'https://basemaps.cartocdn.com/gl/dark-matter-gl-style/style.json'
 
@@ -53,6 +53,8 @@ export default function MapView() {
   const months = useStore((s) => s.months)
   const monthIndex = useStore((s) => s.monthIndex)
   const selectedId = useStore((s) => s.selectedId)
+  const layers = useStore((s) => s.layers)
+  const quakeStep = useStore((s) => s.quakeStep)
   const camera = useStore((s) => s.camera)
   const projection = useStore((s) => s.projection)
 
@@ -259,6 +261,14 @@ export default function MapView() {
     const map = mapRef.current
     if (!ready || !map) return
     ;(map.getSource('wetlands') as GeoJSONSource).setData(wetlands ?? { type: 'FeatureCollection', features: [] })
+    // The story zone is only an outline of the area. With measured classes on the map, its own
+    // blue tint would sit under (and next to) the pink/blue measurements and read as a second
+    // measurement, so keep just the outline and a faint hover highlight.
+    map.setPaintProperty(
+      'zones-fill',
+      'fill-opacity',
+      wetlands ? ['case', ['boolean', ['feature-state', 'hover'], false], 0.18, 0] : ['case', ['boolean', ['feature-state', 'hover'], false], 0.82, 0.55],
+    )
   }, [ready, wetlands])
 
   useEffect(() => {
@@ -286,6 +296,7 @@ export default function MapView() {
     markerRef.current?.remove()
     markerRef.current = null
     if (!story) return
+    const storyLayer = layerFor(layers, story)
     const el = document.createElement('div')
     el.className = 'naba-pulse'
     el.style.setProperty('--pulse', CLASS_META[story.change_class].color)
@@ -293,12 +304,36 @@ export default function MapView() {
     map.flyTo({
       center: [story.lon, story.lat],
       // bigger zones need a wider view
-      zoom: story.area_km2 > 2000 ? 4.6 : story.area_km2 > 800 ? 5.6 : story.area_km2 > 200 ? 7.4 : 8.8,
+      zoom: storyLayer ? fitZoom(storyLayer, 0.5) : story.area_km2 > 2000 ? 4.6 : story.area_km2 > 800 ? 5.6 : story.area_km2 > 200 ? 7.4 : 8.8,
       duration: 1500,
       essential: true,
       padding: cameraPadding(map.getContainer()),
     })
-  }, [ready, selectedId, stories])
+  }, [ready, selectedId, stories, layers])
+
+  // ---- one-off event (earthquake): its ground-motion map, which appears on the 'after' date ----
+  useEffect(() => {
+    const map = mapRef.current
+    if (!ready || !map) return
+    const story = stories.find((s) => s.id === selectedId)
+    const layer = story && layerFor(layers, story)?.kind === 'views' ? layerFor(layers, story) : undefined
+    const frame = layer?.frames[0]
+    if (!layer || !frame) {
+      if (map.getLayer('event-frame')) map.setPaintProperty('event-frame', 'raster-opacity', 0)
+      return
+    }
+    const existing = map.getSource('event-frame') as maplibregl.ImageSource | undefined
+    if (existing) existing.updateImage({ url: frame.url, coordinates: layer.bounds })
+    else {
+      map.addSource('event-frame', { type: 'image', url: frame.url, coordinates: layer.bounds })
+      map.addLayer(
+        { id: 'event-frame', type: 'raster', source: 'event-frame', paint: { 'raster-opacity': 0, 'raster-fade-duration': 0 } },
+        'zones-line',
+      )
+    }
+    // before the change: nothing; after it: the measured motion appears at once
+    map.setPaintProperty('event-frame', 'raster-opacity', quakeStep >= 1 ? 0.9 : 0)
+  }, [ready, selectedId, stories, layers, quakeStep])
 
   // ---- camera commands (demo mode / reset) ----
   useEffect(() => {

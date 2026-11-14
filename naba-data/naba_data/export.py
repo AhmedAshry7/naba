@@ -3,12 +3,13 @@
 This module is the **single writer** of the files the frontend loads:
 
     frontend/public/data/changes.geojson    sample stories + the real wetland stories
-    frontend/public/data/wetlands.geojson   monthly vector extents, drawn on the globe
+    frontend/public/data/wetlands.geojson   monthly vector extents of every area, drawn on the globe
     frontend/public/data/layers.json        the monthly class-map frames (Compare dates)
-    frontend/public/data/frames/*.png       those frames
-    frontend/public/data/provenance.json    every granule, threshold and byte count behind them
+    frontend/public/data/frames/*.png       those frames (wetland_<area>_<month>.png)
+    frontend/public/data/provenance-wetland-<area>.json   every granule, threshold and byte count
 
-Nothing else writes them, so re-running this is always safe and `npm run sample-data` cannot
+Each run replaces only its own area's stories, extents, layer and frames and keeps the others,
+so exporting one area never erases another. Nothing else writes them, so re-running is safe and `npm run sample-data` cannot
 clobber real measurements.
 """
 from __future__ import annotations
@@ -76,6 +77,31 @@ def _compose_changes(sample_features: list[dict], real_features: list[dict]) -> 
     return {"type": "FeatureCollection", "features": real_features + sample_features}
 
 
+def _other_stories(public_data: Path, own_ids: set[str]) -> list[dict]:
+    """Real stories this run does not own (other areas, earthquakes): kept exactly as they are."""
+    return [f for f in _real_features(public_data)
+            if f.get("properties", {}).get("id") not in own_ids]
+
+
+def _other_layers(public_data: Path, preset: Preset) -> list[dict]:
+    """Image layers of every other area or theme. `wetland-classes` was the old single id."""
+    path = public_data / "layers.json"
+    if not path.exists():
+        return []
+    mine = {f"wetland-classes-{preset.key}"} | ({"wetland-classes"} if preset.key == "manzala" else set())
+    return [l for l in json.loads(path.read_text(encoding="utf-8")).get("layers", [])
+            if l.get("id") not in mine]
+
+
+def _other_wetlands(public_data: Path, preset: Preset) -> list[dict]:
+    """Monthly extents of the other areas. Features written before areas existed are Manzala's."""
+    path = public_data / "wetlands.geojson"
+    if not path.exists():
+        return []
+    return [f for f in json.loads(path.read_text(encoding="utf-8")).get("features", [])
+            if f.get("properties", {}).get("area", "manzala") != preset.key]
+
+
 # ---------------------------------------------------------------- the pipeline
 def run_export(preset: Preset, max_dates: int = 10, maturity: str = MATURITY,
                frequency: str = FREQUENCY, res_deg: float = GCOV_RES_DEG,
@@ -130,7 +156,8 @@ def run_export(preset: Preset, max_dates: int = 10, maturity: str = MATURITY,
             wetland_features.append({
                 "type": "Feature",
                 "geometry": geom,
-                "properties": {"class": CLASS_SLUGS[class_value], "month": month,
+                "properties": {"area": preset.key, "class": CLASS_SLUGS[class_value],
+                               "month": month,
                                "month_label": _month_label(month),
                                "area_km2": item["area_km2"], "dates": item["dates"]},
             })
@@ -152,28 +179,36 @@ def run_export(preset: Preset, max_dates: int = 10, maturity: str = MATURITY,
     frames_dir = public_data / "frames"
     frame_entries, frame_bytes = [], 0
     if write_frames:
-        for stale in list(frames_dir.glob("change_*.png")) + list(frames_dir.glob("wetland_*.png")):
-            stale.unlink()
+        stale = list(frames_dir.glob(f"wetland_{preset.key}_*.png"))
+        if preset.key == "manzala":          # frames from before there were several areas
+            stale += list(frames_dir.glob("change_*.png")) + list(frames_dir.glob("wetland_2*.png"))
+        for old in stale:
+            old.unlink()
         for month, comp in months.items():
-            path = frames_dir / f"wetland_{month}.png"
+            path = frames_dir / f"wetland_{preset.key}_{month}.png"
             frame_bytes += write_class_png(comp["classes"], path)
             frame_entries.append({"date": f"{month}-01", "url": f"/data/frames/{path.name}"})
 
     west, south, east, north = preset.bbox
     layers = {"layers": [{
-        "id": "wetland-classes",
+        "id": f"wetland-classes-{preset.key}",
         "label": f"Wetland classes · {preset.region}",
         "bounds": [[west, north], [east, north], [east, south], [west, south]],
         "frames": frame_entries,
-    }]}
+    }] + _other_layers(public_data, preset)}
 
     # 7 - write everything
     samples = load_sample_features(public_data, set(preset.supersedes)) if with_samples else []
     sizes = {
         "changes.geojson": _write_json(public_data / "changes.geojson",
-                                       _compose_changes(samples, story_features)),
+                                       _compose_changes(
+                                           samples, story_features
+                                           + _other_stories(public_data,
+                                                            set(preset.story_ids.values())))),
         "wetlands.geojson": _write_json(public_data / "wetlands.geojson",
-                                        {"type": "FeatureCollection", "features": wetland_features}),
+                                        {"type": "FeatureCollection",
+                                         "features": _other_wetlands(public_data, preset)
+                                         + wetland_features}),
         "layers.json": _write_json(public_data / "layers.json", layers),
     }
     if write_frames:
@@ -217,7 +252,10 @@ def run_export(preset: Preset, max_dates: int = 10, maturity: str = MATURITY,
         "stories": [f["properties"]["id"] for f in story_features],
         "sample_stories_kept": len(samples),
     }
-    sizes["provenance.json"] = _write_json(public_data / "provenance.json", provenance, indent=2)
+    sizes[f"provenance-wetland-{preset.key}.json"] = _write_json(
+        public_data / f"provenance-wetland-{preset.key}.json", provenance, indent=2)
+    if preset.key == "manzala":              # the single provenance.json of the one-area dataset
+        (public_data / "provenance.json").unlink(missing_ok=True)
     close_all()
 
     budget = PAYLOAD_BUDGET_MB * 1e6
